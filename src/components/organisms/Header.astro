@@ -1,7 +1,8 @@
 ---
-/** Brand, section links (a bottom sheet on phones), theme and language menus. */
+/** Brand, section links (a bottom sheet on phones), link to the site's repository, theme and language menus. */
 import Icon from "../atoms/Icon.astro";
 import Dropdown from "../molecules/Dropdown.astro";
+import { SITE_REPO_URL } from "../../services/content/sources";
 import { LANGS, LANG_NAMES, SECTIONS, href } from "../../services/i18n/config";
 import { sharedMessages } from "../../services/i18n/messages";
 import type { Lang, Section } from "../../types/i18n";
@@ -40,6 +41,17 @@ const THEMES = ["system", "light", "dark"] as const;
 		>
 			<Icon name="menu" />
 		</button>
+
+		<a
+			class="ddbtn ic"
+			href={SITE_REPO_URL}
+			target="_blank"
+			rel="noopener"
+			aria-label={ui.siteRepo}
+			title={ui.siteRepo}
+		>
+			<Icon name="github" />
+		</a>
 
 		<Dropdown id="ddTheme" variant="icon" label="Theme" name="theme">
 			<span class="dd-icon" slot="button">

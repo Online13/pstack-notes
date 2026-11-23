@@ -317,6 +317,9 @@
 	background: none;
 	cursor: zoom-in;
 }
+.lfimg picture {
+	display: block;
+}
 .lfimg img {
 	display: block;
 	width: 100%;

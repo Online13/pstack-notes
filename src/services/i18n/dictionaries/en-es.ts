@@ -1,5 +1,6 @@
 /** English phrase -> Spanish. Spanish is always derived from the English text. */
 export const EN_ES: Record<string, string> = {
+	"Site source code on GitHub": "Código fuente del sitio en GitHub",
 	"Restate your goal and the smallest change": "Reformula tu objetivo y el cambio más pequeño",
 	"Pick the playbook": "Elige el playbook",
 	"Reflexes active in every flow": "Reflejos activos en cada flujo",

@@ -1,7 +1,7 @@
 ---
 /** A screenshot from the talk: tilted, opens in the lightbox, caption links to the talk. */
 import type { ImageMetadata } from "astro";
-import { Image } from "astro:assets";
+import { Picture, getImage } from "astro:assets";
 import { TALK_URL } from "../../../services/content/sources";
 import { homeMessages } from "../messages";
 import type { Lang } from "../../../types/i18n";
@@ -14,6 +14,8 @@ interface Props {
 }
 const { image, caption, lang, eager = false } = Astro.props;
 const ui = homeMessages(lang);
+/** Full-size WebP for the lightbox, so it never loads the PNG source. */
+const full = await getImage({ src: image, format: "webp", quality: 90 });
 ---
 
 <figure class="shot">
@@ -21,12 +23,21 @@ const ui = homeMessages(lang);
 		type="button"
 		class="zoomable"
 		data-lightbox
-		data-full={image.src}
+		data-full={full.src}
 		data-caption={caption}
 		data-source={TALK_URL}
 		aria-label={ui.zoomImage}
 	>
-		<Image src={image} alt={caption} loading={eager ? "eager" : "lazy"} />
+		<Picture
+			src={image}
+			alt={caption}
+			formats={["avif", "webp"]}
+			widths={[image.width / 2, image.width]}
+			sizes="(max-width: 760px) 100vw, 480px"
+			quality={88}
+			loading={eager ? "eager" : "lazy"}
+			fetchpriority={eager ? "high" : undefined}
+		/>
 	</button>
 	<figcaption>
 		{caption} ·{" "}

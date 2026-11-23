@@ -1,6 +1,6 @@
 ---
 /** One lesson: kicker, title, intro, then its body (steps, cards, cheat sheet or the feature map) and a prompt to try. */
-import { Image } from "astro:assets";
+import { Picture, getImage } from "astro:assets";
 import LessonChip from "./LessonChip.astro";
 import PromptBox from "./PromptBox.astro";
 import FeatureMap from "./FeatureMap.astro";
@@ -9,7 +9,7 @@ import { TALK_URL } from "../../../services/content/sources";
 import { sharedMessages } from "../../../services/i18n/messages";
 import { renderEmphasis } from "../../../helpers/markdown";
 import { lessonsMessages } from "../messages";
-import verifImage from "../assets/talk-verification-slide.jpg";
+import verifImage from "../assets/talk-verification-slide.png";
 import type { Lang } from "../../../types/i18n";
 import type { Lesson } from "../../../types/content";
 
@@ -21,6 +21,8 @@ interface Props {
 const { lesson: l, index, lang } = Astro.props;
 const m = lessonsMessages(lang);
 const copyLabel = sharedMessages(lang).copy.copy;
+/** Full-size WebP for the lightbox, so it never loads the PNG source. */
+const verifFull = await getImage({ src: verifImage, format: "webp", quality: 90 });
 ---
 
 <section class="gsl" id={`gsl-${index}`}>
@@ -35,12 +37,20 @@ const copyLabel = sharedMessages(lang).copy.copy;
 				type="button"
 				class="lfimg"
 				data-lightbox
-				data-full={verifImage.src}
+				data-full={verifFull.src}
 				data-caption={m.verifCaption}
 				data-source={TALK_URL}
 				aria-label={m.verifCaption}
 			>
-				<Image src={verifImage} alt={m.verifCaption} loading="lazy" />
+				<Picture
+					src={verifImage}
+					alt={m.verifCaption}
+					formats={["avif", "webp"]}
+					widths={[800, 1200, verifImage.width]}
+					sizes="(max-width: 760px) 100vw, 760px"
+					quality={85}
+					loading="lazy"
+				/>
 			</button>
 			<figcaption>
 				{m.verifCaption}{" "}

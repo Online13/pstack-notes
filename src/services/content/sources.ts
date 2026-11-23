@@ -3,6 +3,8 @@ export const REPO_URL = "https://github.com/cursor/plugins/tree/main/pstack";
 /** Prefix for a file of the repository, e.g. REPO_BLOB_URL + "skills/how/SKILL.md". */
 export const REPO_BLOB_URL = "https://github.com/cursor/plugins/blob/main/pstack/";
 /** The site's author (not pstack's). */
+/** This site's own source code. */
+export const SITE_REPO_URL = "https://github.com/Online13/pstack-notes";
 export const SITE_AUTHOR_URL = "https://nekena-rayane.com/";
 export const AUTHOR_X_URL = "https://x.com/poteto";
 export const TALK_URL = "https://x.com/poteto/status/2102050467505430555";

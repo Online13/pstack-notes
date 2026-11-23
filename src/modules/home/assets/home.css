@@ -166,6 +166,9 @@
 .zoomable:hover {
 	transform: rotate(0);
 }
+.zoomable picture {
+	display: block;
+}
 .zoomable img {
 	display: block;
 	width: 100%;

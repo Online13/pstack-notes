@@ -7,6 +7,7 @@ type Four = readonly [string, string, string, string];
 export const sharedMessages = defineMessages({
 	fr: {
 		brandSub: "guide non officiel",
+		siteRepo: "Code source du site sur GitHub",
 		sections: ["Accueil", "Getting started", "Use cases", "API reference"],
 		typeThis: "À taper",
 		theme: { system: "Système", light: "Clair", dark: "Sombre" },
@@ -36,6 +37,7 @@ export const sharedMessages = defineMessages({
 	},
 	en: {
 		brandSub: "unofficial guide",
+		siteRepo: "Site source code on GitHub",
 		sections: ["Home", "Getting started", "Use cases", "API reference"],
 		typeThis: "Type this",
 		theme: { system: "System", light: "Light", dark: "Dark" },
