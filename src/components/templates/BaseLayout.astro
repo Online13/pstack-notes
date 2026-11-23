@@ -8,6 +8,7 @@ import Header from "../organisms/Header.astro";
 import Footer from "../organisms/Footer.astro";
 import Lightbox from "../organisms/Lightbox.astro";
 import Tooltip from "../organisms/Tooltip.astro";
+import HeadIcons from "../atoms/HeadIcons.astro";
 import { THEME_STORAGE_KEY } from "../../helpers/theme";
 import { sharedMessages } from "../../services/i18n/messages";
 import { getPageSeo } from "../../services/seo/seo";
@@ -16,7 +17,7 @@ import type { Lang, Section } from "../../types/i18n";
 interface Props {
 	lang: Lang;
 	section: Section;
-	/** Page name, without the site name; omit it on the home page. */
+	/** Page name, without the site name. */
 	title?: string;
 	description: string;
 }
@@ -38,7 +39,7 @@ const seo = getPageSeo({ lang, section, title, description });
 			<link {...link} />
 		))}
 		<script type="application/ld+json" set:html={seo.jsonLd} />
-		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/favicon.svg`} />
+		<HeadIcons />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link

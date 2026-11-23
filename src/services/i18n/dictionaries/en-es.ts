@@ -1,5 +1,8 @@
 /** English phrase -> Spanish. Spanish is always derived from the English text. */
 export const EN_ES: Record<string, string> = {
+	"Unofficial guide to pstack, the agent skill kit": "Guía no oficial de pstack, el kit de skills para agentes",
+	"Learn pstack, the skill kit for shipping quality code with agents: step-by-step lessons, one card per situation, and a reference of every skill.":
+		"Aprende pstack, el kit de skills para entregar código de calidad con agentes: lecciones paso a paso, una ficha por situación y una referencia de cada skill.",
 	"Site source code on GitHub": "Código fuente del sitio en GitHub",
 	"Restate your goal and the smallest change": "Reformula tu objetivo y el cambio más pequeño",
 	"Pick the playbook": "Elige el playbook",

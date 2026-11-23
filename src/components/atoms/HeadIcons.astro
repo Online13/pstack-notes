@@ -1,0 +1,12 @@
+---
+/** Favicons (ICO and PNG for Google, SVG for browsers), home screen icons, web app manifest and toolbar color. */
+import { BASE_PATH } from "../../services/i18n/config";
+---
+
+<link rel="icon" href={`${BASE_PATH}/favicon.ico`} sizes="any" />
+<link rel="icon" type="image/svg+xml" href={`${BASE_PATH}/favicon.svg`} />
+<link rel="icon" type="image/png" sizes="32x32" href={`${BASE_PATH}/favicon-32x32.png`} />
+<link rel="apple-touch-icon" sizes="180x180" href={`${BASE_PATH}/apple-touch-icon.png`} />
+<link rel="manifest" href={`${BASE_PATH}/site.webmanifest`} />
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />

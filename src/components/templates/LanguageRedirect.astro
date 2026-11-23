@@ -1,16 +1,21 @@
 ---
 /**
  * The site root: sends the visitor to their language. Order: the language they picked in the menu,
- * then the browser's languages, then the fallback language. Without JavaScript, it lists the languages.
+ * then the browser's languages, then the fallback language. Without JavaScript, it shows the site's name
+ * and lists the languages. Link previews read its Open Graph and Twitter tags.
  */
 import { LANG_STORAGE_KEY } from "../../helpers/language";
 import { BASE_PATH, FALLBACK_LANG, LANGS, LANG_NAMES, href } from "../../services/i18n/config";
 import { getRootSeo } from "../../services/seo/seo";
+import HeadIcons from "../atoms/HeadIcons.astro";
 
 interface Props {
+	/** Page name, without the site name. */
+	title: string;
 	description: string;
 }
-const seo = getRootSeo(Astro.props.description);
+const { title, description } = Astro.props;
+const seo = getRootSeo(title, description);
 ---
 
 <!doctype html>
@@ -26,7 +31,7 @@ const seo = getRootSeo(Astro.props.description);
 			<link {...link} />
 		))}
 		<script type="application/ld+json" set:html={seo.jsonLd} />
-		<link rel="icon" type="image/svg+xml" href={`${BASE_PATH}/favicon.svg`} />
+		<HeadIcons />
 		<script is:inline define:vars={{ langs: LANGS, fallback: FALLBACK_LANG, key: LANG_STORAGE_KEY, base: BASE_PATH }}>
 			let lang = null;
 			try {
@@ -43,6 +48,8 @@ const seo = getRootSeo(Astro.props.description);
 		</script>
 	</head>
 	<body>
+		<h1>{title}</h1>
+		<p>{description}</p>
 		<noscript>
 			<ul>
 				{LANGS.map((l) => (

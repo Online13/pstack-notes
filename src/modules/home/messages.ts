@@ -8,6 +8,9 @@ type Idea = readonly [string, string, ...(string | readonly string[])[]];
 export const homeMessages = defineMessages({
 	fr: {
 		badge: "Guide non officiel",
+		metaTitle: "Guide non officiel de pstack, le kit de skills pour agents",
+		metaDesc:
+			"Apprendre pstack, le kit de skills pour livrer du code de qualité avec des agents : leçons pas à pas, une fiche par situation et la référence de chaque skill.",
 		h1: "Mes notes pour comprendre pstack",
 		lead: '<a href="https://github.com/cursor/plugins/tree/main/pstack" target="_blank" rel="noopener">pstack</a> est le kit de skills créé par <b><a href="https://x.com/poteto" target="_blank" rel="noopener">Lauren Tan (poteto)</a></b> pour livrer du code de qualité avec des agents. Ce site n\'en est qu\'un résumé : pour apprendre pstack, j\'ai demandé à Claude de lire son code et ses talks, puis d\'en tirer des leçons, des situations et une référence.',
 		credit:
@@ -115,6 +118,9 @@ export const homeMessages = defineMessages({
 	},
 	en: {
 		badge: "Unofficial guide",
+		metaTitle: "Unofficial guide to pstack, the agent skill kit",
+		metaDesc:
+			"Learn pstack, the skill kit for shipping quality code with agents: step-by-step lessons, one card per situation, and a reference of every skill.",
 		h1: "My notes to understand pstack",
 		lead: '<a href="https://github.com/cursor/plugins/tree/main/pstack" target="_blank" rel="noopener">pstack</a> is the skill kit <b><a href="https://x.com/poteto" target="_blank" rel="noopener">Lauren Tan (poteto)</a></b> built to ship quality code with agents. This site is only a summary: to learn pstack, I asked Claude to read its code and her talks, then turn them into lessons, situations and a reference.',
 		credit:

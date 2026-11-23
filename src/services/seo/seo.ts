@@ -35,18 +35,14 @@ function languageLinks(section: Section): PageSeo["links"] {
 	];
 }
 
-export function getPageSeo({ lang, section, title, description }: PageSeoInput): PageSeo {
-	const fullTitle = title ? `${title} · ${SITE_NAME}` : SITE_NAME;
-	const url = absolute(href(lang, section));
+/** Open Graph and Twitter card tags, the same on every page including the root, so shared links get a preview. */
+function socialMeta(lang: Lang, title: string, description: string, url: string): PageSeo["meta"] {
 	const image = absolute(`${base}${IMAGE.path}`);
 	const imageAlt = `${SITE_NAME}, ${sharedMessages(lang).brandSub}`;
-
-	const meta: PageSeo["meta"] = [
-		{ name: "description", content: description },
-		{ name: "author", content: AUTHOR },
+	return [
 		{ property: "og:type", content: "website" },
 		{ property: "og:site_name", content: SITE_NAME },
-		{ property: "og:title", content: fullTitle },
+		{ property: "og:title", content: title },
 		{ property: "og:description", content: description },
 		{ property: "og:url", content: url },
 		{ property: "og:locale", content: ogLocale(lang) },
@@ -56,10 +52,20 @@ export function getPageSeo({ lang, section, title, description }: PageSeoInput):
 		{ property: "og:image:height", content: String(IMAGE.height) },
 		{ property: "og:image:alt", content: imageAlt },
 		{ name: "twitter:card", content: "summary_large_image" },
-		{ name: "twitter:title", content: fullTitle },
+		{ name: "twitter:title", content: title },
 		{ name: "twitter:description", content: description },
 		{ name: "twitter:image", content: image },
 		{ name: "twitter:image:alt", content: imageAlt },
+	];
+}
+
+export function getPageSeo({ lang, section, title, description }: PageSeoInput): PageSeo {
+	const fullTitle = title ? `${title} · ${SITE_NAME}` : SITE_NAME;
+	const url = absolute(href(lang, section));
+	const meta: PageSeo["meta"] = [
+		{ name: "description", content: description },
+		{ name: "author", content: AUTHOR },
+		...socialMeta(lang, fullTitle, description, url),
 	];
 
 	const links: PageSeo["links"] = [{ rel: "canonical", href: url }, ...languageLinks(section)];
@@ -76,17 +82,24 @@ export function getPageSeo({ lang, section, title, description }: PageSeoInput):
 	return { title: fullTitle, meta, links, jsonLd: JSON.stringify(jsonLd).replace(/</g, "\\u003c") };
 }
 
-/** The root page, which only redirects to a language: its name, description and language versions. */
-export function getRootSeo(description: string): PageSeo {
+/** The root page, which only redirects to a language: its name, description, link preview and language versions. */
+export function getRootSeo(title: string, description: string): PageSeo {
+	const fullTitle = `${title} · ${SITE_NAME}`;
+	const url = absolute(rootHref());
 	return {
-		title: SITE_NAME,
-		meta: [{ name: "description", content: description }],
-		links: languageLinks("home"),
+		title: fullTitle,
+		meta: [
+			{ name: "description", content: description },
+			{ name: "author", content: AUTHOR },
+			...socialMeta(FALLBACK_LANG, fullTitle, description, url),
+		],
+		links: [{ rel: "canonical", href: url }, ...languageLinks("home")],
 		jsonLd: JSON.stringify({
 			"@context": "https://schema.org",
 			"@type": "WebSite",
 			name: SITE_NAME,
-			url: absolute(rootHref()),
+			description,
+			url,
 		}),
 	};
 }
