@@ -17,6 +17,7 @@
 	border-bottom: 1px solid var(--line);
 }
 .lp:last-child {
+	padding-bottom: 40px;
 	border-bottom: 0;
 }
 .lp-head {
@@ -199,10 +200,6 @@
 	grid-template-columns: 48px minmax(0, 1fr);
 	gap: 4px 16px;
 	padding: 28px 0;
-	border-top: 1px solid var(--line);
-}
-.plist li:last-child {
-	border-bottom: 1px solid var(--line);
 }
 .plist li::before {
 	counter-increment: p;
@@ -227,24 +224,16 @@
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	column-gap: 48px;
 }
-.plist.two li:nth-last-child(2) {
-	border-bottom: 1px solid var(--line);
-}
 
 .statrow {
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
-	border-top: 1px solid var(--line);
-	border-bottom: 1px solid var(--line);
 }
 .statrow div {
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
-	padding: 36px 24px;
-}
-.statrow div + div {
-	border-left: 1px solid var(--line);
+	padding: 24px 24px 24px 0;
 }
 .statrow b {
 	font: 700 clamp(2rem, 4vw, 2.8rem)/1 var(--f-display);
@@ -445,6 +434,9 @@
 	list-style: none;
 	margin: 0;
 	padding: 0;
+}
+/* rules only between the sources, none above the first or below the last */
+.tlist li + li {
 	border-top: 1px solid var(--line);
 }
 .tlist a {
@@ -452,7 +444,6 @@
 	grid-template-columns: minmax(0, 1fr) auto;
 	gap: 6px 32px;
 	padding: 28px 8px;
-	border-bottom: 1px solid var(--line);
 	color: inherit;
 	text-decoration: none;
 	transition: background 0.15s;
@@ -497,8 +488,6 @@
 .ctagrid {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
-	border-top: 1px solid var(--line);
-	border-bottom: 1px solid var(--line);
 }
 .cta-card {
 	display: flex;
@@ -513,9 +502,6 @@
 	text-decoration: none;
 	cursor: pointer;
 	transition: background 0.15s;
-}
-.cta-card + .cta-card {
-	border-left: 1px solid var(--line);
 }
 .cta-card:hover {
 	background: var(--ghost);
@@ -547,17 +533,8 @@
 	.plist.two {
 		grid-template-columns: 1fr;
 	}
-	.plist.two li:nth-last-child(2) {
-		border-bottom: 0;
-	}
 	.statrow {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-	.statrow div:nth-child(3) {
-		border-left: 0;
-	}
-	.statrow div:nth-child(n + 3) {
-		border-top: 1px solid var(--line);
 	}
 	.fgrid {
 		grid-template-columns: 1fr;
@@ -571,14 +548,13 @@
 	.ctagrid {
 		grid-template-columns: 1fr;
 	}
-	.cta-card + .cta-card {
-		border-left: 0;
-		border-top: 1px solid var(--line);
-	}
 }
 @media (max-width: 760px) {
 	.lp {
 		padding-block: 64px;
+	}
+	.lp:last-child {
+		padding-bottom: 32px;
 	}
 	.hero {
 		padding-block: 48px 56px;
