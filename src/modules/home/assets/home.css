@@ -1,4 +1,9 @@
-/* Home: hero, then full-width bands (.lp) separated by rules. */
+/* Home: hero, then full-width bands (.lp) separated by rules. The page itself has no side padding:
+   each band spans the whole width (so its rule does too) and keeps its content in the centered column,
+   like the header and footer (layout.css). */
+.wrap > main.home {
+	padding-inline: 0;
+}
 .home {
 	display: flex;
 	flex-direction: column;
@@ -6,7 +11,9 @@
 	padding-top: 0;
 }
 .lp {
-	padding: 96px 0;
+	padding-block: 96px;
+	padding-left: max(var(--gutter-l), calc((100% - var(--page)) / 2));
+	padding-right: max(var(--gutter-r), calc((100% - var(--page)) / 2));
 	border-bottom: 1px solid var(--line);
 }
 .lp:last-child {
@@ -43,7 +50,7 @@
 	grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
 	gap: 64px;
 	align-items: center;
-	padding: 80px 0 88px;
+	padding-block: 80px 88px;
 }
 .hero-text {
 	display: flex;
@@ -571,10 +578,10 @@
 }
 @media (max-width: 760px) {
 	.lp {
-		padding: 64px 0;
+		padding-block: 64px;
 	}
 	.hero {
-		padding: 48px 0 56px;
+		padding-block: 48px 56px;
 	}
 	.whatrow {
 		grid-template-columns: 1fr;
