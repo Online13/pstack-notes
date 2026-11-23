@@ -1,0 +1,58 @@
+---
+/**
+ * The site root: sends the visitor to their language. Order: the language they picked in the menu,
+ * then the browser's languages, then the fallback language. Without JavaScript, it lists the languages.
+ */
+import { LANG_STORAGE_KEY } from "../../helpers/language";
+import { BASE_PATH, FALLBACK_LANG, LANGS, LANG_NAMES, href } from "../../services/i18n/config";
+import { getRootSeo } from "../../services/seo/seo";
+
+interface Props {
+	description: string;
+}
+const seo = getRootSeo(Astro.props.description);
+---
+
+<!doctype html>
+<html lang={FALLBACK_LANG}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{seo.title}</title>
+		{seo.meta.map((tag) => (
+			<meta {...tag} />
+		))}
+		{seo.links.map((link) => (
+			<link {...link} />
+		))}
+		<script type="application/ld+json" set:html={seo.jsonLd} />
+		<link rel="icon" type="image/svg+xml" href={`${BASE_PATH}/favicon.svg`} />
+		<script is:inline define:vars={{ langs: LANGS, fallback: FALLBACK_LANG, key: LANG_STORAGE_KEY, base: BASE_PATH }}>
+			let lang = null;
+			try {
+				const saved = localStorage.getItem(key);
+				if (langs.includes(saved)) lang = saved;
+			} catch {
+				/* storage unavailable: use the browser's languages */
+			}
+			if (!lang) {
+				const wanted = (navigator.languages || [navigator.language]).map((l) => l.slice(0, 2).toLowerCase());
+				lang = wanted.find((l) => langs.includes(l)) || fallback;
+			}
+			location.replace(`${base}/${lang}/${location.hash}`);
+		</script>
+	</head>
+	<body>
+		<noscript>
+			<ul>
+				{LANGS.map((l) => (
+					<li>
+						<a href={href(l, "home")} hreflang={l} lang={l}>
+							{LANG_NAMES[l]}
+						</a>
+					</li>
+				))}
+			</ul>
+		</noscript>
+	</body>
+</html>

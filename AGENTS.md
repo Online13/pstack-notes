@@ -23,7 +23,8 @@ Package manager: bun.
 
 ```text
 src/
-├── pages/[...lang]/      routes only; each page renders a module's page component
+├── pages/index.astro     root: redirects to the visitor's language (picked language, then browser, then English)
+├── pages/[lang]/         routes only (/fr/, /en/, /es/); each page renders a module's page component
 │   └── items/[id].astro  HTML partials loaded into the item details panel
 ├── components/           shared components, atomic design
 │   ├── atoms/  molecules/  organisms/
@@ -75,4 +76,6 @@ src/
 - Content is written in French with English next to it (`{ fr, en }`). A plain string is the same in every language.
 - Call tree phrases are French and translated through `services/i18n/dictionaries/fr-en.ts`.
 - Spanish is never written by hand in the content: it is the English text looked up in `dictionaries/en-es.ts`. When you add or change an English string, add its Spanish entry there.
-- localStorage keys: `pd-theme` (theme), `pd-cases` (open use cases).
+- Every page is under its language (`/fr/`, `/en/`, `/es/`). The root `/` redirects: language picked in the menu,
+  else the browser's language, else English (`FALLBACK_LANG`).
+- localStorage keys: `pd-theme` (theme), `pd-lang` (language picked in the menu), `pd-cases` (open use cases).

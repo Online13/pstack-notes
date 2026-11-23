@@ -1,5 +1,9 @@
 /* Design tokens. Light by default; dark follows the system unless the visitor picked a theme (html[data-theme]). */
 :root {
+	/* content column (layout.css): its width, and the minimum space to each edge of the screen */
+	--page: 1180px;
+	--gutter-l: calc(8px + max(20px, env(safe-area-inset-left, 0px)));
+	--gutter-r: calc(8px + max(20px, env(safe-area-inset-right, 0px)));
 	--bg: #ffffff;
 	--card: #ffffff;
 	--ink: #0f1419;

@@ -3,13 +3,13 @@
 import type { InferGetStaticPropsType } from "astro";
 import ItemPanel from "../../../modules/item/components/ItemPanel.astro";
 import { listItemIds } from "../../../services/content/catalog";
-import { LANGS, langParam } from "../../../services/i18n/config";
+import { LANGS } from "../../../services/i18n/config";
 
 export const partial = true;
 
 export async function getStaticPaths() {
 	const ids = await listItemIds();
-	return LANGS.flatMap((lang) => ids.map((id) => ({ params: { lang: langParam(lang), id }, props: { lang, id } })));
+	return LANGS.flatMap((lang) => ids.map((id) => ({ params: { lang, id }, props: { lang, id } })));
 }
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;

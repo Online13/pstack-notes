@@ -22,7 +22,8 @@ export const sharedMessages = defineMessages({
 		imageSource: "Source de l'image",
 		theTalk: "le talk sur X",
 		footer: {
-			about: "Guide non officiel pour apprendre pstack, rédigé avec Claude par Rayane. Tout le contenu vient du travail de Lauren Tan.",
+			/** "{author}" becomes a link to the author's site. */
+			about: "Guide non officiel pour apprendre pstack, rédigé avec Claude par {author}. Tout le contenu vient du travail de Lauren Tan.",
 			site: "Le site",
 			src: "Sources",
 			gh: "pstack sur GitHub",
@@ -50,7 +51,8 @@ export const sharedMessages = defineMessages({
 		imageSource: "Image source",
 		theTalk: "the talk on X",
 		footer: {
-			about: "An unofficial guide to learn pstack, written with Claude by Rayane. All the content comes from Lauren Tan's work.",
+			/** "{author}" becomes a link to the author's site. */
+			about: "An unofficial guide to learn pstack, written with Claude by {author}. All the content comes from Lauren Tan's work.",
 			site: "The site",
 			src: "Sources",
 			gh: "pstack on GitHub",
@@ -71,7 +73,8 @@ export const sharedMessages = defineMessages({
 			"Un agente por PR, más verificación y auditorías regulares. Lo más caro de pstack.",
 		],
 		footer: {
-			about: "Una guía no oficial para aprender pstack, escrita con Claude por Rayane. Todo el contenido viene del trabajo de Lauren Tan.",
+			/** "{author}" becomes a link to the author's site. */
+			about: "Una guía no oficial para aprender pstack, escrita con Claude por {author}. Todo el contenido viene del trabajo de Lauren Tan.",
 			site: "El sitio",
 			src: "Fuentes",
 			gh: "pstack en GitHub",

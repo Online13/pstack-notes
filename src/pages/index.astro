@@ -1,0 +1,7 @@
+---
+import LanguageRedirect from "../components/templates/LanguageRedirect.astro";
+import { homeMessages } from "../modules/home/messages";
+import { FALLBACK_LANG } from "../services/i18n/config";
+---
+
+<LanguageRedirect description={homeMessages(FALLBACK_LANG).h1} />

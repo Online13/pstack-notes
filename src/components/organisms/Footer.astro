@@ -1,7 +1,7 @@
 ---
 /** About the site, its sections, its sources, and a back-to-top button. */
 import Icon from "../atoms/Icon.astro";
-import { AUTHOR_X_URL, REPO_URL, TALK_URL, TRIANGLE_POST_URL } from "../../services/content/sources";
+import { AUTHOR_X_URL, REPO_URL, SITE_AUTHOR_URL, TALK_URL, TRIANGLE_POST_URL } from "../../services/content/sources";
 import { SECTIONS, href } from "../../services/i18n/config";
 import { sharedMessages } from "../../services/i18n/messages";
 import type { Lang } from "../../types/i18n";
@@ -12,6 +12,7 @@ interface Props {
 const { lang } = Astro.props;
 const ui = sharedMessages(lang);
 const f = ui.footer;
+const [aboutBefore = "", aboutAfter = ""] = f.about.split("{author}");
 const sources = [
 	[REPO_URL, f.gh],
 	[AUTHOR_X_URL, f.x],
@@ -27,7 +28,13 @@ const sources = [
 				<Icon name="book" />
 				<span>pstack notes</span>
 			</a>
-			<p>{f.about}</p>
+			<p>
+				{aboutBefore}
+				<a class="sf-author" href={SITE_AUTHOR_URL} target="_blank" rel="noopener">
+					Rayane
+				</a>
+				{aboutAfter}
+			</p>
 		</div>
 		<nav class="sf-col">
 			<h4>{f.site}</h4>

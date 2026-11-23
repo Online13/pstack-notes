@@ -1,10 +1,22 @@
 /* Page frame: header (brand, sections, theme and language menus), the bottom sheet on phones, footer. */
 .wrap {
-	max-width: 1180px;
-	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
 	gap: 40px;
+}
+
+/* Header, page and footer span the whole width (backgrounds, borders); their content stays in a centered
+   column of --page width, never closer to the edges than the gutters. */
+.site-header,
+.wrap > main,
+.sitefoot {
+	padding-left: max(var(--gutter-l), calc((100% - var(--page)) / 2));
+	padding-right: max(var(--gutter-r), calc((100% - var(--page)) / 2));
+}
+.wrap > main {
+	width: auto;
+	max-width: none;
+	margin-inline: 0;
 }
 
 .site-header {
@@ -17,7 +29,7 @@
 	align-items: center;
 	gap: 12px 16px;
 	margin: 0;
-	padding: 14px 0;
+	padding-block: 14px;
 	background: color-mix(in srgb, var(--bg) 85%, transparent);
 	backdrop-filter: blur(8px);
 	border-bottom: 1px solid var(--line);
@@ -172,7 +184,7 @@
 /* footer */
 .sitefoot {
 	margin-top: 96px;
-	padding: 48px 0 32px;
+	padding-block: 48px 32px;
 	border-top: 1px solid var(--line);
 	color: var(--muted);
 	font-size: 0.92rem;
@@ -191,6 +203,15 @@
 .sf-about p {
 	margin: 0;
 	line-height: 1.65;
+}
+.sf-author {
+	color: var(--ink);
+	text-decoration: underline;
+	text-decoration-color: var(--line-strong);
+	text-underline-offset: 3px;
+}
+.sf-author:hover {
+	text-decoration-color: currentColor;
 }
 .sf-brand {
 	padding: 0;

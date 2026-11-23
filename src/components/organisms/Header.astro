@@ -88,8 +88,10 @@ const THEMES = ["system", "light", "dark"] as const;
 <script>
 	import { requireElement } from "../../helpers/dom";
 	import { initHeader } from "../../helpers/header";
+	import { initLanguageMenu } from "../../helpers/language";
 	import { initThemeMenu } from "../../helpers/theme";
 
 	initHeader(requireElement(".site-header", HTMLElement));
 	initThemeMenu(requireElement("#ddTheme", HTMLElement));
+	initLanguageMenu(requireElement("#ddLang", HTMLElement));
 </script>

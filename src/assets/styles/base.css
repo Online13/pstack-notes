@@ -14,8 +14,8 @@ body {
 	font-family: var(--f-body);
 	font-size: 16px;
 	line-height: 1.6;
+	margin: 0;
 	padding-block: 0 56px;
-	padding-inline: max(20px, env(safe-area-inset-left, 0px)) max(20px, env(safe-area-inset-right, 0px));
 }
 body[data-section="getting-started"] {
 	padding-bottom: 0;

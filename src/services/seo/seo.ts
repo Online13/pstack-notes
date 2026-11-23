@@ -3,9 +3,10 @@
  * Open Graph, Twitter card, structured data and robots.txt. Layouts call `getPageSeo` and render what it returns.
  * Absolute URLs come from the site URL (`site` in astro.config.mjs); without it they would stay relative.
  */
-import { DEFAULT_LANG, LANGS, LOCALES, href } from "../i18n/config";
+import { FALLBACK_LANG, LANGS, LOCALES, href, rootHref } from "../i18n/config";
 import { sharedMessages } from "../i18n/messages";
-import type { Lang } from "../../types/i18n";
+import { SITE_AUTHOR_URL } from "../content/sources";
+import type { Lang, Section } from "../../types/i18n";
 import type { PageSeo, PageSeoInput } from "../../types/seo";
 
 export const SITE_NAME = "pstack notes";
@@ -18,6 +19,21 @@ const site = import.meta.env.SITE;
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const absolute = (path: string): string => (site ? new URL(path, site).href : path);
 const ogLocale = (lang: Lang) => LOCALES[lang].replace("-", "_");
+
+/**
+ * The page in every language. `x-default` is the root (it picks the visitor's language) for the home page,
+ * and the fallback language for the other sections.
+ */
+function languageLinks(section: Section): PageSeo["links"] {
+	return [
+		...LANGS.map((l) => ({ rel: "alternate", hreflang: l, href: absolute(href(l, section)) })),
+		{
+			rel: "alternate",
+			hreflang: "x-default",
+			href: absolute(section === "home" ? rootHref() : href(FALLBACK_LANG, section)),
+		},
+	];
+}
 
 export function getPageSeo({ lang, section, title, description }: PageSeoInput): PageSeo {
 	const fullTitle = title ? `${title} · ${SITE_NAME}` : SITE_NAME;
@@ -46,11 +62,7 @@ export function getPageSeo({ lang, section, title, description }: PageSeoInput):
 		{ name: "twitter:image:alt", content: imageAlt },
 	];
 
-	const links: PageSeo["links"] = [
-		{ rel: "canonical", href: url },
-		...LANGS.map((l) => ({ rel: "alternate", hreflang: l, href: absolute(href(l, section)) })),
-		{ rel: "alternate", hreflang: "x-default", href: absolute(href(DEFAULT_LANG, section)) },
-	];
+	const links: PageSeo["links"] = [{ rel: "canonical", href: url }, ...languageLinks(section)];
 
 	const website = { "@type": "WebSite", name: SITE_NAME, url: absolute(href(lang, "home")) };
 	const jsonLd = {
@@ -58,10 +70,25 @@ export function getPageSeo({ lang, section, title, description }: PageSeoInput):
 		...(section === "home"
 			? { ...website, description, inLanguage: LOCALES[lang] }
 			: { "@type": "WebPage", name: fullTitle, description, url, inLanguage: LOCALES[lang], isPartOf: website }),
-		author: { "@type": "Person", name: AUTHOR },
+		author: { "@type": "Person", name: AUTHOR, url: SITE_AUTHOR_URL },
 	};
 
 	return { title: fullTitle, meta, links, jsonLd: JSON.stringify(jsonLd).replace(/</g, "\\u003c") };
+}
+
+/** The root page, which only redirects to a language: its name, description and language versions. */
+export function getRootSeo(description: string): PageSeo {
+	return {
+		title: SITE_NAME,
+		meta: [{ name: "description", content: description }],
+		links: languageLinks("home"),
+		jsonLd: JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebSite",
+			name: SITE_NAME,
+			url: absolute(rootHref()),
+		}),
+	};
 }
 
 /** robots.txt: everything but the item fragments, and the sitemap when the site URL is known. */
