@@ -13,8 +13,8 @@ Package manager: bun.
 - Start the dev server with `astro dev --background`; manage it with `astro dev stop|status|logs`.
 - Before reporting a change as done, all of these must pass with no error: `bun run lint`, `bun run check`,
   `bun run format:check`, `bun run build`. Run `bun run format` to format (Prettier: tabs, width 3).
-- Set `SITE_URL` when building for production (e.g. `SITE_URL=https://example.com bun run build`): canonical URLs,
-  Open Graph and the sitemap need it.
+- The public URL is https://pstack-notes.nekena-rayane.com (`site` in `astro.config.mjs`; the `SITE_URL` env var
+  overrides it). Canonical URLs, Open Graph and the sitemap are built from it.
 - TypeScript stays on 6.x: `astro check` does not support TypeScript 7 yet.
 - Deployment: Cloudflare Worker serving `./dist` as static assets (`wrangler.jsonc`, no Worker code). `bun run deploy`
   builds and deploys; `bun run preview:worker` serves the build locally the way Cloudflare does.

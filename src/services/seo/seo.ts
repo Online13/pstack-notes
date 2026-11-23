@@ -1,7 +1,7 @@
 /**
  * Everything search engines and link previews read: title, description, canonical URL, language alternates,
  * Open Graph, Twitter card, structured data and robots.txt. Layouts call `getPageSeo` and render what it returns.
- * Absolute URLs need the site URL (`site` in astro.config.mjs, from SITE_URL); without it they stay relative.
+ * Absolute URLs come from the site URL (`site` in astro.config.mjs); without it they would stay relative.
  */
 import { DEFAULT_LANG, LANGS, LOCALES, href } from "../i18n/config";
 import { sharedMessages } from "../i18n/messages";

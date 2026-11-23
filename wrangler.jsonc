@@ -8,4 +8,6 @@
 		// URLs end with "/" (astro.config.mjs: trailingSlash "always"): /api redirects to /api/
 		"html_handling": "force-trailing-slash",
 	},
+	// served on this domain; the zone must be on the same Cloudflare account
+	"routes": [{ "pattern": "pstack-notes.nekena-rayane.com", "custom_domain": true }],
 }

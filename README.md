@@ -17,8 +17,7 @@ bun run lint     # ESLint (règles de typage strictes)
 bun run format   # Prettier
 ```
 
-En production, définir `SITE_URL` (ex. `SITE_URL=https://example.com bun run build`) pour les URLs canoniques,
-Open Graph et le sitemap.
+Le site est publié sur https://pstack-notes.nekena-rayane.com (`site` dans `astro.config.mjs`, remplaçable par `SITE_URL`).
 
 ## Déploiement
 
@@ -26,7 +25,7 @@ Le site est servi par un Cloudflare Worker (fichiers statiques de `./dist`, conf
 
 ```sh
 bunx wrangler login
-SITE_URL=https://ton-domaine bun run deploy
+bun run deploy
 ```
 
 ## Organisation

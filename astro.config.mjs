@@ -4,9 +4,8 @@ import { defineConfig } from "astro/config";
 
 // Static site. French lives at the root, English under /en/, Spanish under /es/ (see src/services/i18n/config.ts).
 export default defineConfig({
-	// Public URL of the deployed site (e.g. SITE_URL=https://example.com bun run build).
-	// Needed for canonical URLs, Open Graph and the sitemap; without it the SEO service keeps URLs relative.
-	site: process.env.SITE_URL,
+	// Public URL of the site, for canonical URLs, Open Graph and the sitemap. SITE_URL overrides it (e.g. a preview).
+	site: process.env.SITE_URL ?? "https://pstack-notes.nekena-rayane.com",
 	trailingSlash: "always",
 	integrations: [
 		sitemap({
