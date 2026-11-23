@@ -1,0 +1,63 @@
+---
+/** About the site, its sections, its sources, and a back-to-top button. */
+import Icon from "../atoms/Icon.astro";
+import { AUTHOR_X_URL, REPO_URL, TALK_URL, TRIANGLE_POST_URL } from "../../services/content/sources";
+import { SECTIONS, href } from "../../services/i18n/config";
+import { sharedMessages } from "../../services/i18n/messages";
+import type { Lang } from "../../types/i18n";
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const ui = sharedMessages(lang);
+const f = ui.footer;
+const sources = [
+	[REPO_URL, f.gh],
+	[AUTHOR_X_URL, f.x],
+	[TALK_URL, f.talk],
+	[TRIANGLE_POST_URL, f.post],
+];
+---
+
+<footer class="sitefoot">
+	<div class="sf-in">
+		<div class="sf-about">
+			<a class="brand sf-brand" href={href(lang, "home")}>
+				<Icon name="book" />
+				<span>pstack notes</span>
+			</a>
+			<p>{f.about}</p>
+		</div>
+		<nav class="sf-col">
+			<h4>{f.site}</h4>
+			{SECTIONS.slice(1).map((s, i) => (
+				<a class="sf-link" href={href(lang, s)}>
+					{ui.sections[i + 1]}
+				</a>
+			))}
+		</nav>
+		<nav class="sf-col">
+			<h4>{f.src}</h4>
+			{sources.map(([url, label]) => (
+				<a class="sf-link" href={url} target="_blank" rel="noopener">
+					{label} ↗
+				</a>
+			))}
+		</nav>
+	</div>
+	<div class="sf-bot">
+		<span>{f.note}</span>
+		<button class="sf-top" type="button" data-scroll-top>
+			{f.top} ↑
+		</button>
+	</div>
+</footer>
+
+<script>
+	import { scrollBehavior } from "../../helpers/motion";
+
+	document
+		.querySelector("[data-scroll-top]")
+		?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: scrollBehavior() }));
+</script>

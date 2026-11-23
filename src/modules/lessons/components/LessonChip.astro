@@ -1,0 +1,27 @@
+---
+/** A skill name in a lesson. Hover shows the glossary line; click opens the item when it is in the catalog. */
+import { hasItem } from "../../../services/content/catalog";
+import { getGlossaryEntry } from "../../../services/content/lessons";
+import type { Lang } from "../../../types/i18n";
+
+interface Props {
+	id: string;
+	lang: Lang;
+}
+const { id, lang } = Astro.props;
+const [entry, openable] = await Promise.all([getGlossaryEntry(id, lang), hasItem(id)]);
+const kind = entry?.kind ?? "sk";
+const tip = entry?.desc ?? "";
+const label = entry?.label ?? id;
+---
+
+<span
+	class:list={["chip", { pb: kind === "pb", heavy: kind === "heavy", clk: openable }]}
+	data-open={openable ? id : undefined}
+	role={openable ? "button" : undefined}
+	data-tip={tip || undefined}
+	data-tip-t={tip ? label : undefined}
+	tabindex={tip || openable ? "0" : undefined}
+>
+	{label}
+</span>

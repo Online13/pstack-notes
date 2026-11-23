@@ -1,0 +1,40 @@
+---
+/** Stroke icons (24×24). */
+const PATHS = {
+	book: '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11M9 8h6"/>',
+	menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+	chevron: '<path d="m6 9 6 6 6-6"/>',
+	check: '<path d="M5 12.5 10 17 19 7"/>',
+	copy: '<rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/>',
+	table: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18M3 15h18M9 10v10"/>',
+	graph: '<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="8" r="2.5"/><circle cx="9" cy="18" r="2.5"/><path d="M8.3 7l7.4.8M7 8.3l1.4 7.3M16.4 10l-5.6 6.2"/>',
+	system: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
+	light: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+	dark: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+	curve: '<path d="M3 20h18M5 16c3-8 7-11 14-12"/>',
+	up: '<path d="M12 19V5M6 11l6-6 6 6"/>',
+	done: '<path d="M5 12l4 4 10-10"/>',
+	doc: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+} as const;
+export type IconName = keyof typeof PATHS;
+
+interface Props {
+	name: IconName;
+	class?: string;
+	/** Stroke width; the original icons use 2, the check mark 2.4. */
+	width?: number;
+}
+const { name, class: className, width = 2 } = Astro.props;
+---
+
+<svg
+	class={className}
+	viewBox="0 0 24 24"
+	fill="none"
+	stroke="currentColor"
+	stroke-width={width}
+	stroke-linecap="round"
+	stroke-linejoin={name === "book" || name === "check" || name === "copy" || name === "chevron" ? "round" : undefined}
+	aria-hidden="true"
+	set:html={PATHS[name]}
+/>

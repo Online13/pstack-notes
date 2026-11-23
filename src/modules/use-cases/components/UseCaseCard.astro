@@ -1,0 +1,70 @@
+---
+/** A situation: collapsed it shows title, cost and when to use it; open it shows the prompt and each recipe's steps. */
+import CostBar from "../../../components/atoms/CostBar.astro";
+import KindTag from "../../../components/atoms/KindTag.astro";
+import CopyIcon from "../../../components/atoms/CopyIcon.astro";
+import CaseStep from "./CaseStep.astro";
+import { sharedMessages } from "../../../services/i18n/messages";
+import type { Lang } from "../../../types/i18n";
+import type { UseCase } from "../../../types/content";
+
+interface Props {
+	useCase: UseCase;
+	lang: Lang;
+}
+const { useCase: u, lang } = Astro.props;
+const m = sharedMessages(lang);
+const via = (v?: string, cond?: string) => [v ? `via ${v}` : "", cond ?? ""].filter(Boolean).join(" · ");
+---
+
+<details class="case" id={`case-${u.id}`} data-case={u.id}>
+	<summary>
+		<span class="chev">▶</span>
+		<span class="ct">{u.title}</span>
+		<span class="cc">
+			<CostBar cost={u.cost} lang={lang} /> {m.costLabels[u.cost]}
+		</span>
+		<span class="cw">{u.when}</span>
+	</summary>
+	<div class="cbody">
+		{u.prompt && (
+			<div class="try">
+				<div class="lab">{m.typeThis}</div>
+				<pre class="copyable" role="button" tabindex="0" title={m.copy.copy}>{u.prompt}<CopyIcon /></pre>
+			</div>
+		)}
+		{u.units.map((unit) =>
+			unit.item ? (
+				<div class="unit">
+					<div class="uhead">
+						<span class="ic" style={`--kind: var(${unit.item.color})`}></span>
+						<span class="un">{unit.item.label}</span>
+						<KindTag kind={unit.item.kind} lang={lang} />
+						<CostBar cost={unit.item.cost} lang={lang} />
+						{via(unit.via, unit.cond) && <span class="via">{via(unit.via, unit.cond)}</span>}
+					</div>
+					<p class="ud">{unit.item.desc}</p>
+					{unit.steps.length > 0 && (
+						<ol class="steps">
+							{unit.steps.map((s) => (
+								<CaseStep node={s} lang={lang} />
+							))}
+						</ol>
+					)}
+				</div>
+			) : (
+				<div class="unit">
+					<div class="uhead">
+						<span class="ic step"></span>
+						<span class="un step">{unit.text}</span>
+					</div>
+					<ol class="steps">
+						{unit.steps.map((s) => (
+							<CaseStep node={s} lang={lang} />
+						))}
+					</ol>
+				</div>
+			),
+		)}
+	</div>
+</details>

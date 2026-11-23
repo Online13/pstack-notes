@@ -1,0 +1,48 @@
+---
+/** The inverted triangle: where a correction can live, from most effort (top) to least. */
+import { homeMessages } from "../messages";
+import type { Lang } from "../../../types/i18n";
+
+interface Props {
+	lang: Lang;
+}
+const p = homeMessages(Astro.props.lang).triangle;
+const W = 520,
+	H = 330,
+	n = p.l.length,
+	band = H / n,
+	gap = 6;
+const xAt = (y: number) => (y / H) * (W / 2 - 14);
+const bands = p.l.map(([title, sub], i) => {
+	const y0 = i * band + (i ? gap / 2 : 0),
+		y1 = (i + 1) * band - (i < n - 1 ? gap / 2 : 0);
+	const a = xAt(y0),
+		b = xAt(y1);
+	const points =
+		i < n - 1 ? `${a},${y0} ${W - a},${y0} ${W - b},${y1} ${b},${y1}` : `${a},${y0} ${W - a},${y0} ${W / 2},${H}`;
+	const cy = i < n - 1 ? (y0 + y1) / 2 : y0 + band * 0.36;
+	return { i, title, sub, points, cy };
+});
+---
+
+<figure class="pyramid" role="img" aria-label={p.l.map((x) => x[0]).join(", ")}>
+	<svg viewBox={`-4 -4 ${W + 8} ${H + 8}`}>
+		{bands.map((b) => (
+			<>
+				<polygon points={b.points} class={`pyr${b.i}`} />
+				<text x={W / 2} y={b.cy - (b.sub ? 7 : -5)} class={`pt pt${b.i}`}>
+					{b.title}
+				</text>
+				{b.sub && (
+					<text x={W / 2} y={b.cy + 13} class={`ps ps${b.i}`}>
+						{b.sub}
+					</text>
+				)}
+			</>
+		))}
+	</svg>
+	<figcaption>
+		<span>↑ {p.top}</span>
+		<span>↓ {p.bot}</span>
+	</figcaption>
+</figure>

@@ -1,0 +1,19 @@
+---
+/** Token cost as three bars. Hover or focus shows what the level means. */
+import { sharedMessages } from "../../services/i18n/messages";
+import type { Cost } from "../../types/content";
+import type { Lang } from "../../types/i18n";
+
+interface Props {
+	cost: Cost;
+	lang: Lang;
+}
+const { cost, lang } = Astro.props;
+const m = sharedMessages(lang);
+---
+
+<span class="costbar" data-cost={cost} tabindex="0" data-tip-t={m.costLabels[cost]} data-tip={m.costTips[cost]}>
+	<b></b>
+	<b></b>
+	<b></b>
+</span>

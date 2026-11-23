@@ -1,0 +1,17 @@
+---
+/** The kind of a catalog item: colored dot and name. */
+import { kindColor, kindName } from "../../services/content/kinds";
+import type { Kind } from "../../types/content";
+import type { Lang } from "../../types/i18n";
+
+interface Props {
+	kind: Kind;
+	lang: Lang;
+}
+const { kind, lang } = Astro.props;
+---
+
+<span class="kindtag">
+	<i style={`--kind: var(${kindColor(kind)})`}></i>
+	{kindName(kind, lang)}
+</span>

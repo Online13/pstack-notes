@@ -1,0 +1,202 @@
+# Lesson chips: color (sk | pb | heavy), optional label, one-line description.
+poteto-mode:
+   kind: sk
+   desc:
+      fr: Le routeur. Il lit ta demande, choisit la bonne recette (playbook) et la suit.
+      en: The router. It reads your request, picks the right recipe (playbook) and follows it.
+verify-app:
+   kind: sk
+   label: /verify-<app>
+   desc:
+      fr: Le skill de ton projet qui lance l'app et la pilote comme un humain. C'est la preuve que ça marche.
+      en: Your project's skill that starts the app and drives it like a person would. It is the proof that things work.
+create-verification-skill:
+   kind: sk
+   desc:
+      fr: Génère /verify-<app> et sa feature map, une fois par projet.
+      en: Generates /verify-<app> and its feature map, once per project.
+maintain-verification-skill:
+   kind: sk
+   desc:
+      fr: De temps en temps, remet /verify-<app> et la feature map d'accord avec le code.
+      en: Every so often, brings /verify-<app> and the feature map back in line with the code.
+how:
+   kind: sk
+   desc:
+      fr: « Comment ça marche ? » Explique l'architecture d'une partie du code.
+      en: “How does this work?” Explains the architecture of a part of the code.
+why:
+   kind: sk
+   desc:
+      fr: « Pourquoi c'est comme ça ? » Lit l'historique git et les PR pour retrouver les raisons.
+      en: “Why is it like this?” Reads git history and PRs to find the reasons.
+teach:
+   kind: sk
+   desc:
+      fr: Combine how et why pour t'expliquer un sujet pas à pas.
+      en: Combines how and why to explain a topic step by step.
+architect:
+   kind: sk
+   desc:
+      fr: Dessine la forme du code (types, fonctions, modules) avant de l'écrire. Peut appeler arena si le design est gros.
+      en: Sketches the shape of the code (types, functions, modules) before writing it. May call arena if the design is big.
+arena:
+   kind: heavy
+   desc:
+      fr: Plusieurs agents font la même tâche, un juge compare, on garde le meilleur. Coûteux.
+      en: Several agents do the same task, a judge compares, the best one wins. Expensive.
+swarm:
+   kind: heavy
+   desc:
+      fr: Découpe un travail en morceaux et lance un agent par morceau, en parallèle. Coûteux.
+      en: Splits work into pieces and runs one agent per piece, in parallel. Expensive.
+interrogate:
+   kind: heavy
+   desc:
+      fr: Des agents adverses essaient de casser ton code. Seuls les problèmes prouvés restent. Coûteux.
+      en: Adversarial agents try to break your code. Only proven problems survive. Expensive.
+poteto-agent:
+   kind: sk
+   desc:
+      fr: Le sous-agent qui écrit le code pendant que l'agent principal garde la direction.
+      en: The sub-agent that writes the code while the main agent stays in charge.
+tdd:
+   kind: sk
+   desc:
+      fr: Écrire d'abord un test qui échoue, puis corriger. Seulement si un test simple existe.
+      en: Write a failing test first, then fix. Only when a simple test exists.
+opening-a-pr:
+   kind: pb
+   label: Opening a PR
+   desc:
+      fr: "La recette de fin : petits commits propres, nettoyage, description courte."
+      en: "The closing recipe: small clean commits, cleanup, a short description."
+deslop:
+   kind: sk
+   label: /deslop
+   desc:
+      fr: Nettoie le code avant commit. Vient d'un plugin Cursor, pas de pstack.
+      en: Cleans code before commit. Comes from a Cursor plugin, not from pstack.
+no-comments:
+   kind: sk
+   desc:
+      fr: Lance un agent qui supprime les commentaires inutiles avant la review.
+      en: Runs an agent that removes useless comments before review.
+technical-writing:
+   kind: sk
+   desc:
+      fr: Règles d'écriture pour la description de PR et les messages de commit.
+      en: Writing rules for PR descriptions and commit messages.
+unslop:
+   kind: sk
+   desc:
+      fr: Retire les tics d'écriture IA d'un texte.
+      en: Removes AI writing tics from a text.
+babysit:
+   kind: pb
+   label: Babysit
+   desc:
+      fr: "Surveille la PR et la pousse jusqu'au vert : conflits, commentaires, CI."
+      en: "Watches the PR and pushes it to green: conflicts, comments, CI."
+shipping:
+   kind: pb
+   label: Shipping
+   desc:
+      fr: Fait vérifier chaque PR par un agent neuf, puis merge de bas en haut.
+      en: Has a fresh agent verify each PR, then merges from the bottom up.
+verifier:
+   kind: sk
+   label:
+      fr: agent vérificateur
+      en: verifier agent
+   desc:
+      fr: Un agent qui n'a pas écrit le code et qui teste la PR comme un utilisateur.
+      en: An agent that did not write the code and tests the PR like a user.
+loop:
+   kind: sk
+   label: /loop
+   desc:
+      fr: Réveille l'agent à intervalle régulier ou quand un événement arrive.
+      en: Wakes the agent at a set interval or when an event happens.
+show-me-your-work:
+   kind: sk
+   desc:
+      fr: "Tient un journal : une ligne par décision, avec la preuve."
+      en: "Keeps a log: one line per decision, with the evidence."
+ketchup:
+   kind: sk
+   desc:
+      fr: Te résume ce qui a changé depuis ton dernier message et ce qui attend ta décision.
+      en: Sums up what changed since your last message and what needs your decision.
+recall:
+   kind: sk
+   desc:
+      fr: Reconstruit où tu en étais sur un sujet, à partir de tes anciens chats.
+      en: Rebuilds where you were on a topic, from your past chats.
+bug-fix:
+   kind: pb
+   label: Bug fix
+   desc:
+      fr: La recette pour corriger un bug.
+      en: The recipe for fixing a bug.
+feature:
+   kind: pb
+   label: Feature
+   desc:
+      fr: La recette pour ajouter un comportement.
+      en: The recipe for adding a behavior.
+refactoring:
+   kind: pb
+   label: Refactoring
+   desc:
+      fr: La recette pour restructurer sans changer le comportement.
+      en: The recipe for restructuring without changing behavior.
+perf-issue:
+   kind: pb
+   label: Perf issue
+   desc:
+      fr: La recette pour corriger une lenteur, mesures à l'appui.
+      en: The recipe for fixing slowness, backed by measurements.
+prototype:
+   kind: pb
+   label: Prototype
+   desc:
+      fr: La recette pour choisir un design avec du code jetable.
+      en: The recipe for picking a design with throwaway code.
+autopilot:
+   kind: heavy
+   label: Autopilot
+   desc:
+      fr: Une file de PR traitée en parallèle, un agent par PR. Le plus coûteux de pstack.
+      en: A queue of PRs handled in parallel, one agent per PR. The most expensive part of pstack.
+benchmark-checklist:
+   kind: sk
+   desc:
+      fr: Vérifie qu'une mesure de vitesse veut vraiment dire quelque chose.
+      en: Checks that a speed measurement really means something.
+figure-it-out:
+   kind: sk
+   desc:
+      fr: "Pour un gros chantier sans recette : invente une recette sur mesure et la suit."
+      en: "For a big job with no recipe: designs a custom recipe and follows it."
+correct:
+   kind: sk
+   desc:
+      fr: Rend impossible une erreur que les agents répètent (types, lint, test).
+      en: Makes a mistake agents keep repeating impossible (types, lint, test).
+reflect:
+   kind: sk
+   desc:
+      fr: En fin de session, propose d'améliorer les skills avec ce qu'on a appris.
+      en: At the end of a session, suggests skill improvements from what was learned.
+automate-me:
+   kind: sk
+   desc:
+      fr: Crée ton propre skill « <toi>-mode » à partir de tes habitudes.
+      en: Creates your own “<you>-mode” skill from your habits.
+principle:
+   kind: sk
+   label: principle-*
+   desc:
+      fr: Une règle de jugement courte, par ex. « supprime avant d'ajouter » ou « prouve que ça marche ».
+      en: A short judgment rule, e.g. “delete before you add” or “prove it works”.

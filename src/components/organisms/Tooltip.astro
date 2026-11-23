@@ -1,0 +1,12 @@
+---
+/** The tooltip shown over anything with data-tip (helpers/tooltip.ts). */
+---
+
+<div class="tip" role="tooltip" hidden></div>
+
+<script>
+	import { requireElement } from "../../helpers/dom";
+	import { initTooltip } from "../../helpers/tooltip";
+
+	initTooltip(requireElement(".tip", HTMLElement));
+</script>

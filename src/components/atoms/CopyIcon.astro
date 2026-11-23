@@ -1,0 +1,16 @@
+---
+/** Icon placed inside a `.copyable` block; it turns into a check mark once copied (helpers/copyable.ts). */
+import Icon from "./Icon.astro";
+---
+
+<span class="cpy" aria-hidden="true">
+	<Icon name="copy" class="i-copy" />
+	<Icon name="check" class="i-ok" width={2.4} />
+</span>
+
+<script>
+	import { initCopyable } from "../../helpers/copyable";
+
+	const { copyLabel = "", copiedLabel = "" } = document.body.dataset;
+	initCopyable({ copyLabel, copiedLabel });
+</script>

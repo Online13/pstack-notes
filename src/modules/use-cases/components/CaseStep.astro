@@ -1,0 +1,59 @@
+---
+/** One step of a recipe: a direct call (chip), or a text step with its sub-steps and the items it calls. */
+import ItemChip from "../../../components/molecules/ItemChip.astro";
+import { refsIn } from "../../../helpers/call-tree";
+import { getItem } from "../../../services/content/catalog";
+import type { Lang } from "../../../types/i18n";
+import type { TreeNode } from "../../../types/content";
+
+interface Props {
+	node: TreeNode;
+	lang: Lang;
+}
+const { node, lang } = Astro.props;
+const item = node.ref ? await getItem(node.ref, lang) : undefined;
+const kids = node.kids ?? [];
+const refs = [...refsIn(kids)];
+const subSteps = kids.filter((k) => k.text);
+---
+
+{item ? (
+	<li>
+		<span class="sm ref" style={`--kind: var(${item.color})`}></span>
+		<div>
+			<div>
+				<ItemChip id={item.id} lang={lang} /> {node.cond && <span class="scd">{node.cond}</span>}
+			</div>
+		</div>
+	</li>
+) : (
+	<li>
+		<span class="sm"></span>
+		<div>
+			<div class="stx">{node.text}</div>
+			{node.cond && <div class="scd">{node.cond}</div>}
+			{subSteps.length > 0 && (
+				<ul class="sub">
+					{subSteps.map((x) => (
+						<li>
+							{x.text}
+							{x.cond && (
+								<>
+									{" "}
+									<i>({x.cond})</i>
+								</>
+							)}
+						</li>
+					))}
+				</ul>
+			)}
+			{refs.length > 0 && (
+				<div class="chips">
+					{refs.map((id) => (
+						<ItemChip id={id} lang={lang} />
+					))}
+				</div>
+			)}
+		</div>
+	</li>
+)}

@@ -1,0 +1,46 @@
+---
+/**
+ * A button that opens a listbox. Options are passed in the `options` slot as `.dd-option` elements
+ * (links navigate; buttons with data-value set the value). Behaviour: helpers/dropdown.ts.
+ */
+interface Props {
+	id?: string;
+	label: string;
+	/** "icon": round icon button; "pill": short text button; "field": full-width form field. */
+	variant: "icon" | "pill" | "field";
+	name?: string;
+	value?: string;
+	title?: string;
+}
+// `name` is renamed: in the template it would read as the deprecated global `window.name`
+const { id, label, variant, name: ddName, value, title } = Astro.props;
+const btnClass = { icon: "ddbtn ic", pill: "ddbtn", field: "ddbtn field" }[variant];
+---
+
+<div
+	class:list={["dd", { "dd-field": variant === "field" }]}
+	id={id}
+	data-dropdown
+	data-name={ddName}
+	data-value={value}
+>
+	<button
+		type="button"
+		class={btnClass}
+		aria-haspopup="listbox"
+		aria-expanded="false"
+		aria-label={label}
+		title={title}
+	>
+		<slot name="button" />
+	</button>
+	<div class="ddmenu" role="listbox" aria-label={label} hidden>
+		<slot name="options" />
+	</div>
+</div>
+
+<script>
+	import { initDropdowns } from "../../helpers/dropdown";
+
+	initDropdowns();
+</script>

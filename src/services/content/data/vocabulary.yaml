@@ -1,0 +1,51 @@
+# API reference guide: vocabulary.
+- id: skill
+  term: Skill
+  definition:
+     fr: Un fichier SKILL.md que l'agent lit et suit. Tu l'appelles avec /nom.
+     en: A SKILL.md file the agent reads and follows. You call it with /name.
+- id: playbook
+  term: Playbook
+  definition:
+     fr: Une recette pas à pas pour un type de tâche, ouverte par /poteto-mode.
+     en: A step-by-step recipe for one kind of task, opened by /poteto-mode.
+- id: principe-principle
+  term: Principe / Principle
+  definition:
+     fr: Un petit skill principle-* qui donne une règle de jugement.
+     en: A small principle-* skill that gives a judgment rule.
+- id: subagent
+  term: Subagent
+  definition:
+     fr: Un deuxième agent lancé par le premier, avec sa propre mémoire. Chaque lancement coûte des tokens.
+     en: A second agent launched by the first, with its own memory. Each launch costs tokens.
+- id: verify-app
+  term: /verify-<app>
+  definition:
+     fr: Le skill qui pilote ton app comme un humain, produit par create-verification-skill.
+     en: The skill that drives your app like a person, made by create-verification-skill.
+- id: worktree
+  term: Worktree
+  definition:
+     fr: Une deuxième copie de travail du repo, sur une autre branche, pour que plusieurs agents codent en même temps.
+     en: A second working copy of the repo on another branch, so several agents can code at once.
+- id: trunk
+  term: Trunk
+  definition:
+     fr: La branche principale, main.
+     en: The main branch, main.
+- id: stack
+  term: Stack
+  definition:
+     fr: Des PR empilées, chacune basée sur la précédente.
+     en: PRs stacked, each based on the previous one.
+- id: verdict
+  term: Verdict
+  definition:
+     fr: PASS ou FAIL donné par un agent qui n'a pas écrit le code.
+     en: PASS or FAIL given by an agent that did not write the code.
+- id: predicate
+  term: Predicate
+  definition:
+     fr: Une condition vérifiable qui dit « c'est fini ».
+     en: A checkable condition that says “done”.

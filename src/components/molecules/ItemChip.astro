@@ -1,0 +1,23 @@
+---
+/** A catalog item as a chip: hover for its description, click for its details (any [data-open] opens the item). */
+import { getItem } from "../../services/content/catalog";
+import type { Lang } from "../../types/i18n";
+
+interface Props {
+	id: string;
+	lang: Lang;
+}
+const { id, lang } = Astro.props;
+const item = await getItem(id, lang);
+if (!item) throw new Error(`ItemChip: unknown item "${id}"`);
+---
+
+<button
+	type="button"
+	class:list={["chip", { pb: item.kind === "pb", heavy: item.kind !== "pb" && item.cost >= 2 }]}
+	data-open={id}
+	data-tip={item.desc}
+	data-tip-t={item.label}
+>
+	{item.label}
+</button>

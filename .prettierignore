@@ -1,0 +1,6 @@
+dist/
+.astro/
+node_modules/
+bun.lock
+# copied verbatim from the pstack repository
+src/services/content/data/feature-map-example/

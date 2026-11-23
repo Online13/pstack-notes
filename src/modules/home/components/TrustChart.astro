@@ -1,0 +1,49 @@
+---
+/** Trust grows with the number of agents: the curve redrawn from the talk's slide. */
+import { localize } from "../../../services/i18n/localize";
+import type { Lang } from "../../../types/i18n";
+
+interface Props {
+	lang: Lang;
+}
+const pick = (fr: string, en: string) => localize({ fr, en }, Astro.props.lang);
+
+const ticks: [number, string][] = [
+	[40, "1"],
+	[95, "1–5"],
+	[150, "5–10"],
+	[205, "10–20"],
+	[330, pick("centaines", "hundreds")],
+	[440, pick("milliers", "thousands")],
+];
+const y = (x: number) => 200 - 150 * (1 - Math.exp(-(x - 40) / 90));
+let curve = "M40 200";
+for (let x = 40; x <= 470; x += 6) curve += ` L${x} ${y(x).toFixed(1)}`;
+---
+
+<svg
+	viewBox="0 0 480 250"
+	role="img"
+	aria-label={pick("La confiance grandit avec le nombre d'agents", "Trust grows with the number of agents")}
+>
+	<rect class="zone" x="40" y="40" width="165" height="160" rx="6" />
+	{ticks.slice(1).map(([x]) => (
+		<line class="tick" x1={x} y1="200" x2={x} y2={y(x)} />
+	))}
+	<path class="axis" d="M40 30 L40 200 L470 200" />
+	<path class="curve" d={curve} />
+	{ticks.map(([x, label]) => (
+		<text x={x} y="218" text-anchor="middle">
+			{label}
+		</text>
+	))}
+	<text x="255" y="242" text-anchor="middle">
+		{pick("nombre d'agents", "number of agents")}
+	</text>
+	<text x="14" y="120" transform="rotate(-90 14 120)" text-anchor="middle">
+		{pick("confiance", "trust")}
+	</text>
+	<text class="strong" x="122" y="58" text-anchor="middle">
+		{pick("là où on commence", "where you start")}
+	</text>
+</svg>

@@ -1,0 +1,25 @@
+# Use case groups, in display order.
+- id: start-here
+  name:
+     fr: Point de départ
+     en: Start here
+- id: understand
+  name:
+     fr: Comprendre
+     en: Understand
+- id: build
+  name:
+     fr: Construire
+     en: Build
+- id: ship
+  name:
+     fr: Livrer
+     en: Ship
+- id: without-you
+  name:
+     fr: Sans toi
+     en: Without you
+- id: system
+  name:
+     fr: Système
+     en: System

@@ -1,0 +1,1339 @@
+# Every skill, playbook, agent and principle. `steps`: what the item does, and the items it calls. Step text is French; English is in services/i18n/dictionaries/fr-en.ts.
+- id: investigation
+  kind: pb
+  cost: 0
+  label: Investigation
+  desc:
+     fr: Répondre à une question sur le code, en lecture seule. Produit une explication citée ou une recommandation, jamais un changement de code.
+     en: Answer a question about the code, read-only. Produces a cited explanation or a recommendation, never a code change.
+  path: skills/poteto-mode/playbooks/investigation.md
+  steps:
+     - text: Tracer le code concerné
+     - ref: why
+       cond: si la question est « pourquoi »
+     - text: Overview, concepts, fonctionnement, emplacements, pièges
+     - ref: unslop
+     - text: "Pas de PR. Si du code suit : Bug fix ou Feature"
+- id: bug-fix
+  kind: pb
+  cost: 1
+  label: Bug fix
+  desc:
+     fr: "Corriger un bug de façon scientifique : reproduire, trouver la cause par élimination, fixer le minimum que les preuves justifient, prouver sur la même surface."
+     en: "Fix a bug scientifically: reproduce, find the cause by elimination, fix only what the evidence justifies, prove it on the same surface."
+  path: skills/poteto-mode/playbooks/bug-fix.md
+  steps:
+     - text: 1. Reproduire soi-même
+       kids:
+          - ref: verify-app
+     - text: 2. Trouver la cause par élimination
+       kids:
+          - text: Tracer le sous-système
+          - ref: why
+            cond: historique des régressions
+          - text: Logs et instrumentation, ne pas deviner
+          - ref: loop
+            cond: si la chasse est longue
+          - ref: fix-root-causes
+          - ref: attack-the-premise
+            cond: si 2 fixes ratent pareil
+     - text: 3. Planifier le fix
+       kids:
+          - ref: architect
+            cond: si le fix traverse une fonction
+          - ref: interrogate
+            cond: si le mécanisme est à challenger
+          - ref: poteto-agent
+            cond: écrit le fix
+     - text: 4. Vérifier sur la même surface
+       kids:
+          - ref: verify-app
+          - ref: prove-it-works
+     - text: 5. Le test rouge avant le fix
+       kids:
+          - ref: tdd
+            cond: si un test pas cher existe
+          - ref: sequence-verifiable-units
+     - ref: opening-a-pr
+       cond: "6."
+- id: feature
+  kind: pb
+  cost: 1
+  label: Feature
+  desc:
+     fr: Ajouter un comportement. Tu gardes le design, tu délègues l'écriture du code à un subagent, tu vérifies sur la vraie app.
+     en: Add a behavior. You keep the design, a subagent writes the code, you verify on the real app.
+  path: skills/poteto-mode/playbooks/feature.md
+  steps:
+     - text: 1. Tracer le sous-système
+     - ref: architect
+       cond: 2. la forme du code
+     - text: 3. Checkpoint de parallélisme (4 items)
+       kids:
+          - ref: separate-before-serializing-shared-state
+     - text: 4. Déléguer le code
+       kids:
+          - ref: poteto-agent
+            cond: cas normal
+          - ref: arena
+            cond: si plusieurs formes valides, obligatoire
+          - ref: model-the-domain
+     - text: 5. Vérifier sur la vraie surface
+       kids:
+          - ref: verify-app
+     - text: 6. Petits commits ordonnés
+       kids:
+          - ref: sequence-verifiable-units
+     - ref: interrogate
+       cond: 7. si le design est contesté
+     - ref: opening-a-pr
+       cond: "8."
+- id: refactoring
+  kind: pb
+  cost: 1
+  label: Refactoring
+  desc:
+     fr: Changer la structure sans changer le comportement. On fige d'abord le comportement avec un test, puis on bouge par petits pas.
+     en: Change the structure without changing behavior. Pin the behavior with a test first, then move in small steps.
+  path: skills/poteto-mode/playbooks/refactoring.md
+  steps:
+     - text: 1. Figer le comportement par un test
+       kids:
+          - ref: test-behavior-not-implementation
+     - text: 2. Nommer la structure qui manque
+       kids:
+          - ref: model-the-domain
+     - text: 3. Nommer la forme cible
+       kids:
+          - ref: foundational-thinking
+          - ref: redesign-from-first-principles
+          - ref: architect
+            cond: si la cible traverse une fonction
+     - text: 4. Supprimer avant d'ajouter
+       kids:
+          - ref: subtract-before-you-add
+          - ref: laziness-protocol
+     - text: 5. Petits pas, test toujours vert
+       kids:
+          - ref: migrate-callers-then-delete-legacy-apis
+          - ref: poteto-agent
+            cond: éditions mécaniques
+     - text: 6. Prouver que rien n'a changé
+       kids:
+          - ref: prove-it-works
+          - ref: verify-app
+            cond: pour les gros changements
+     - text: 7. Ça vaut le coup ?
+       kids:
+          - ref: minimize-reader-load
+            cond: sinon revert
+     - ref: opening-a-pr
+       cond: 8. suppression, puis reshape
+     - ref: figure-it-out
+       cond: si c'est gros ou transverse
+- id: prototype
+  kind: pb
+  cost: 1
+  label: Prototype
+  desc:
+     fr: Construire du code jetable pour trancher un choix de design. Le résultat est une décision, pas du code à livrer.
+     en: Build throwaway code to settle a design choice. The result is a decision, not code to ship.
+  path: skills/poteto-mode/playbooks/prototype.md
+  steps:
+     - text: 1. Nommer la décision à prendre
+     - text: 2. Références et moodboard
+       cond: si l'espace est ouvert
+     - text: 3. Code jetable dans un dossier à part
+     - text: 4. Variantes derrière un switch
+       kids:
+          - ref: exhaust-the-design-space
+     - text: 5. Observer chaque variante
+       kids:
+          - ref: verify-app
+            cond: screenshots, interaction
+     - text: 6. Recommander
+       kids:
+          - ref: feature
+            cond: construction réelle
+          - ref: architect
+            cond: ou juste la forme
+- id: perf-issue
+  kind: pb
+  cost: 1
+  label: Perf issue
+  desc:
+     fr: Corriger une lenteur ponctuelle. Chaque fix est lié à une mesure avant et après.
+     en: Fix a one-off slowness. Every fix is tied to a before and after measurement.
+  path: skills/poteto-mode/playbooks/perf-issue.md
+  steps:
+     - text: 1. Trace de référence
+       kids:
+          - ref: verify-app
+          - ref: benchmark-checklist
+     - text: 2. Hypothèses dans l'ordre des mantras
+       cond: ne pas le faire, ne pas le refaire, moins, plus tard, en parallèle, moins cher
+     - text: 3. Fix
+       kids:
+          - ref: architect
+            cond: si le fix traverse une fonction
+          - ref: poteto-agent
+          - ref: sequence-verifiable-units
+     - text: 4. Comparer avant et après
+     - ref: opening-a-pr
+       cond: 5-6. avec le chiffre
+     - ref: hillclimb
+       cond: pour une amélioration continue
+- id: hillclimb
+  kind: pb
+  cost: 2
+  label: Hillclimb
+  desc:
+     fr: "Améliorer un chiffre en boucle : un changement, une mesure, garder ou annuler. Peut lancer plusieurs essais en parallèle."
+     en: "Improve a number in a loop: one change, one measurement, keep or revert. Can run several attempts in parallel."
+  path: skills/poteto-mode/playbooks/hillclimb.md
+  steps:
+     - text: 1. Cas réaliste, métrique, condition de fin
+     - text: 2. Outil de mesure, prouvé puis figé
+       kids:
+          - ref: build-the-lever
+          - ref: benchmark-checklist
+     - ref: show-me-your-work
+       cond: 3. decision.tsv, 1 ligne par essai
+     - text: 4. Hypothèses basées sur l'architecture
+       kids:
+          - ref: perf-issue
+            cond: ordre des mantras
+     - text: "5. Boucle : 1 changement, 1 mesure, garder ou annuler"
+       kids:
+          - ref: poteto-agent
+            cond: un par hypothèse, en parallèle possible
+          - ref: separate-before-serializing-shared-state
+          - ref: autonomous-run
+            cond: son réveil seulement, si tu n'es pas là
+     - text: 6. Dépasser le premier plateau
+       kids:
+          - ref: laziness-protocol
+     - ref: opening-a-pr
+       cond: 8. commits gagnants empilés
+- id: runtime-forensics
+  kind: pb
+  cost: 1
+  label: Runtime forensics
+  desc:
+     fr: Diagnostiquer un processus vivant (CPU qui tourne, fuite mémoire) en capturant un profil réel. Livre un diagnostic, pas un fix.
+     en: Diagnose a live process (spinning CPU, memory leak) by capturing a real profile. Delivers a diagnosis, not a fix.
+  path: skills/poteto-mode/playbooks/runtime-forensics.md
+  steps:
+     - text: 1. Capture live
+       kids:
+          - ref: verify-app
+            cond: profil CPU, heap, trace
+     - text: 2. Réduire l'artefact
+       kids:
+          - ref: subagent
+          - ref: guard-the-context-window
+     - text: 3. Prouver le mécanisme par instrumentation
+     - text: 4. Remonter au fichier et à la ligne
+     - text: Rend la main
+       kids:
+          - ref: bug-fix
+          - ref: perf-issue
+- id: trace-forensics
+  kind: pb
+  cost: 1
+  label: Trace forensics
+  desc:
+     fr: Diagnostiquer à partir d'un fichier de capture existant, converti en sqlite pour le requêter.
+     en: Diagnose from an existing capture file, converted to sqlite to query it.
+  path: skills/poteto-mode/playbooks/trace-forensics.md
+  steps:
+     - text: 1. Charger le fichier de capture
+       kids:
+          - ref: subagent
+            cond: si gros
+     - text: 2. Convertir en sqlite
+     - text: 3. Requêter le chemin chaud
+     - text: 4. Remonter à la source
+     - text: Rend la main
+       kids:
+          - ref: bug-fix
+          - ref: perf-issue
+- id: visual-parity
+  kind: pb
+  cost: 2
+  label: Visual parity
+  desc:
+     fr: Migrer des composants sans changer un pixel. La preuve est un diff d'image égal à zéro.
+     en: Migrate components without changing a pixel. The proof is an image diff of zero.
+  path: skills/poteto-mode/playbooks/visual-parity.md
+  steps:
+     - text: 1. Screenshots de référence avant de migrer
+     - text: 2. Interdit de toucher la référence
+     - text: 3. Un owner par composant
+       kids:
+          - ref: subagent
+            cond: 1 worktree chacun
+          - ref: separate-before-serializing-shared-state
+     - text: 4. Diff d'image jusqu'à zéro
+       kids:
+          - ref: verify-app
+          - ref: loop
+     - ref: opening-a-pr
+       cond: 5. par composant
+- id: multi-phase-plan
+  kind: pb
+  cost: 0
+  label: Multi-phase plan
+  desc:
+     fr: Écrire un plan de plusieurs PR, chacune avec sa preuve. Livre seulement le plan, l'exécution attend ton go.
+     en: Write a plan of several PRs, each with its own proof. Delivers only the plan, execution waits for your go.
+  path: skills/poteto-mode/playbooks/multi-phase-plan.md
+  steps:
+     - text: "1. 1 ou 2 fichiers : pas de plan"
+     - ref: prototype
+       cond: 2. trancher les questions ouvertes
+     - text: "3. Écrire le plan : PR, dépendances, fichiers"
+       kids:
+          - ref: sequence-verifiable-units
+     - text: 4. Cases unit, live, perf par PR
+     - text: 5. Stop, attend ton go
+- id: opening-a-pr
+  kind: pb
+  cost: 0
+  label: Opening a PR
+  desc:
+     fr: Appelé à la fin de presque tous les playbooks. Petits commits, nettoyage, titre type(scope), description courte avec des titres fixes.
+     en: Called at the end of almost every playbook. Small commits, cleanup, type(scope) title, short description with fixed headings.
+  path: skills/poteto-mode/playbooks/opening-a-pr.md
+  steps:
+     - text: Worktree propre, petits commits ordonnés
+     - ref: deslop
+       cond: avant commit
+     - ref: no-comments
+       cond: réflexe avant review
+     - ref: technical-writing
+       cond: titre et description
+     - ref: unslop
+     - text: PR ouverte prête, jamais en draft
+- id: babysit
+  kind: pb
+  cost: 1
+  label: Babysit
+  desc:
+     fr: "Pousser une PR jusqu'au vert : conflits, puis threads de review, puis CI. Ne rebase jamais, ne merge jamais."
+     en: "Push a PR to green: conflicts, then review threads, then CI. Never rebases, never merges."
+  path: skills/poteto-mode/playbooks/babysit.md
+  steps:
+     - text: "Déclarer un mode : drive, threads-only ou check"
+     - ref: watch-pr
+       cond: surveille la PR
+     - text: "Ordre : conflits, threads, CI"
+     - ref: bugbot-triage
+       cond: commentaires de bots
+     - text: Ne rebase ni ne merge jamais
+- id: shipping
+  kind: pb
+  cost: 2
+  label: Shipping
+  desc:
+     fr: Merger une stack de PR. Chaque PR est vérifiée par un agent qui n'a pas écrit le code, puis on merge de bas en haut.
+     en: Merge a stack of PRs. Each PR is verified by an agent that did not write the code, then merged bottom-up.
+  path: skills/poteto-mode/playbooks/shipping.md
+  steps:
+     - text: 1. Un vérificateur par PR
+       kids:
+          - ref: cloud-agent
+            cond: n'a pas écrit le code
+          - ref: verify-app
+     - text: 2. Garder la série vérifiée depuis le bas
+     - text: 3. Le verdict décrit-il encore le code ?
+       cond: git patch-id
+     - text: 4. Merger de bas en haut, une à la fois
+     - text: 5. Surveiller
+       kids:
+          - ref: watch-pr
+            cond: --queued-stack
+          - ref: loop
+     - text: 6. S'arrêter au plafond
+- id: autonomous-run
+  kind: pb
+  cost: 2
+  label: Autonomous run
+  desc:
+     fr: Travailler sans toi jusqu'à une condition de fin vérifiable. Se réveille tout seul, journalise chaque itération.
+     en: Work without you until a checkable stop condition. Wakes itself up, logs every iteration.
+  path: skills/poteto-mode/playbooks/autonomous-run.md
+  steps:
+     - text: 1. Condition de fin avant de commencer
+     - text: 2. Réveil
+       kids:
+          - ref: loop
+          - ref: subagent
+            cond: watcher sur CI ou merge
+     - text: "3. Itérer : changer, vérifier, garder ou annuler"
+       kids:
+          - ref: sequence-verifiable-units
+     - ref: poteto-mode
+       cond: 4. fixe les problèmes croisés en route
+     - ref: show-me-your-work
+       cond: 5. une ligne par itération
+     - text: 6. Stop à la condition de fin, pas au plateau
+- id: autopilot-full
+  kind: pb
+  cost: 3
+  label: Autopilot-full
+  desc:
+     fr: Traiter une file de PR en parallèle, de la construction au merge. Un agent par PR, un swarm de vérification, un audit toutes les heures. Le plus lourd de pstack.
+     en: Handle a queue of PRs in parallel, from build to merge. One agent per PR, a verification swarm, an hourly audit. The heaviest part of pstack.
+  path: skills/poteto-mode/playbooks/autopilot-full.md
+  steps:
+     - text: 1. Respecter tes portes
+     - text: 2. Un owner par PR, en parallèle
+       kids:
+          - ref: cloud-agent
+            cond: owner
+          - ref: opening-a-pr
+            cond: ouverte tôt
+          - ref: deslop
+          - ref: no-comments
+          - ref: verify-app
+            cond: preuve
+          - ref: babysit
+            cond: jusqu'au vert
+          - ref: show-me-your-work
+            cond: journal chez le chef
+     - ref: swarm
+       cond: 4. vérification, une fois au head prêt
+     - text: 5. L'owner merge ce qui est vérifié
+     - text: 6. Couche chef
+       kids:
+          - ref: loop
+            cond: audit toutes les heures
+          - ref: ketchup
+            cond: si quelque chose change pour toi
+     - text: 7. Stop sur ton ordre
+- id: autopilot-stack
+  kind: pb
+  cost: 3
+  label: Autopilot-stack
+  desc:
+     fr: Comme Autopilot-full, mais s'arrête à « vérifié et vert ». C'est toi qui merges.
+     en: Like Autopilot-full, but stops at “verified and green”. You do the merging.
+  path: skills/poteto-mode/playbooks/autopilot-stack.md
+  steps:
+     - ref: autopilot-full
+       cond: tout, sauf le merge
+     - text: S'arrête à vérifié et vert
+     - text: Empile une PR seulement si elle dépend d'une autre
+- id: session-pickup
+  kind: pb
+  cost: 1
+  label: Session pickup
+  desc:
+     fr: Reprendre le travail d'une session précédente sans refaire ce qui est fait.
+     en: Resume a previous session's work without redoing what is done.
+  path: skills/poteto-mode/playbooks/session-pickup.md
+  steps:
+     - text: 1. Lire la session précédente
+       kids:
+          - ref: subagent
+            cond: si le transcript est long
+          - ref: guard-the-context-window
+     - text: 2. Reconstruire l'état, ne rien refaire
+     - text: 3. Comparer fait et prévu
+     - ref: poteto-mode
+       cond: 4. router le reste
+     - ref: prove-it-works
+       cond: 5. vérifier ce qui est hérité
+- id: pause-safely
+  kind: pb
+  cost: 0
+  label: Pause safely
+  desc:
+     fr: "S'arrêter proprement : commit wip et note de reprise. Seulement si tu le demandes."
+     en: "Stop cleanly: wip commit and resume note. Only when you ask."
+  path: skills/poteto-mode/playbooks/pause-safely.md
+  steps:
+     - text: S'arrêter à une frontière propre
+     - text: Annuler les subagents
+     - text: "Commit wip:"
+     - text: Note de reprise
+       kids:
+          - ref: show-me-your-work
+            cond: ou pointer son journal
+- id: authoring-a-skill
+  kind: pb
+  cost: 0
+  label: Authoring a skill
+  desc:
+     fr: Créer ou modifier un skill, le valider, ouvrir une PR.
+     en: Create or change a skill, validate it, open a PR.
+  path: skills/poteto-mode/playbooks/authoring-a-skill.md
+  steps:
+     - ref: create-skill
+     - text: Valider frontmatter et liens
+     - ref: encode-lessons-in-structure
+     - ref: opening-a-pr
+- id: eval
+  kind: pb
+  cost: 2
+  label: Eval
+  desc:
+     fr: Tester si une variante de skill fait mieux. Candidats aveugles sur plusieurs modèles, un juge aveugle, lecture des transcripts.
+     en: Test whether a skill variant does better. Blind candidates on several models, a blind judge, transcript reading.
+  path: skills/poteto-mode/playbooks/eval.md
+  steps:
+     - text: 1. Cadrer, grille réservée au juge
+     - text: 2. Environnements aveugles
+     - text: 3. Un prompt d'utilisateur ordinaire
+     - ref: arena
+       cond: 4-5. phase B candidats, phase C juge
+     - text: 6. Lire les transcripts des candidats
+     - text: 7. Lire chaque sortie, synthétiser
+- id: worktree-cleanup
+  kind: pb
+  cost: 1
+  label: Worktree cleanup
+  desc:
+     fr: Libérer du disque en supprimant les worktrees et simulateurs inutiles, après avoir vérifié qu'aucun chat ne s'en sert.
+     en: Free disk space by removing unused worktrees and simulators, after checking no chat uses them.
+  path: skills/poteto-mode/playbooks/worktree-cleanup.md
+  steps:
+     - text: 1. Audit des worktrees par script
+       kids:
+          - ref: build-the-lever
+     - text: 2. Croiser avec tes chats épinglés
+     - text: 3. Vérifier l'usage
+       kids:
+          - ref: subagent
+            cond: lit les transcripts
+     - text: 4. Pause si travail non commité
+     - text: 5-6. Supprimer, puis simulateurs et caches
+- id: poteto-mode
+  kind: sk
+  cost: 1
+  label: /poteto-mode
+  desc:
+     fr: Le routeur. Il reformule ton but, choisit le playbook adapté, copie ses étapes dans la todo et applique des réflexes dans tous les flows.
+     en: The router. It restates your goal, picks the matching playbook, copies its steps into the todo list and applies reflexes in every flow.
+  path: skills/poteto-mode/SKILL.md
+  steps:
+     - text: Reformuler ton but et le plus petit changement
+     - text: Choisir le playbook
+       kids:
+          - ref: investigation
+          - ref: bug-fix
+          - ref: feature
+          - ref: refactoring
+          - ref: prototype
+          - ref: perf-issue
+          - ref: hillclimb
+          - ref: runtime-forensics
+          - ref: trace-forensics
+          - ref: visual-parity
+          - ref: multi-phase-plan
+          - ref: opening-a-pr
+          - ref: babysit
+          - ref: shipping
+          - ref: autonomous-run
+          - ref: autopilot-full
+          - ref: autopilot-stack
+          - ref: session-pickup
+          - ref: pause-safely
+          - ref: authoring-a-skill
+          - ref: eval
+          - ref: worktree-cleanup
+          - ref: figure-it-out
+            cond: rien ne colle, ou gros chantier
+     - text: Réflexes actifs dans tous les flows
+       kids:
+          - ref: architect
+            cond: code qui traverse une fonction
+          - ref: swarm
+            cond: travail parallélisable
+          - ref: arena
+            cond: comparer des versions
+          - ref: interrogate
+            cond: design contesté
+          - ref: prototype
+            cond: choix qu'un test peut trancher
+          - ref: unslop
+            cond: tout texte
+          - ref: technical-writing
+            cond: docs, PR, commits
+          - ref: deslop
+            cond: avant commit
+          - ref: no-comments
+            cond: avant review
+          - ref: benchmark-checklist
+            cond: chiffre mesuré
+          - ref: babysit
+            cond: statut de PR
+          - ref: show-me-your-work
+            cond: travail long ou sans toi
+     - text: Chaque subagent
+       kids:
+          - ref: poteto-agent
+            cond: lit worker.md en premier
+- id: figure-it-out
+  kind: sk
+  cost: 1
+  label: /figure-it-out
+  desc:
+     fr: "Quand aucun playbook ne colle : il conçoit un playbook sur mesure, le fait tourner en boucle d'hypothèses et laisse un journal auditable."
+     en: "When no playbook fits: it designs a custom playbook, runs it as a hypothesis loop and leaves an auditable log."
+  path: skills/figure-it-out/SKILL.md
+  steps:
+     - ref: poteto-mode
+       cond: lire ses Principes d'abord
+     - text: A. Cadrer
+       kids:
+          - ref: prove-it-works
+            cond: condition de fin
+          - ref: never-block-on-the-human
+     - text: B. Concevoir les phases
+       kids:
+          - ref: foundational-thinking
+          - ref: architect
+            cond: décisions irréversibles
+          - ref: separate-before-serializing-shared-state
+     - text: C. Boucle hypothèse, changement, mesure
+       kids:
+          - ref: sequence-verifiable-units
+     - ref: show-me-your-work
+       cond: D. journal, souvent commité
+     - text: E. Vérifier sur le vrai produit
+       kids:
+          - ref: encode-lessons-in-structure
+- id: architect
+  kind: sk
+  cost: 0
+  label: /architect
+  desc:
+     fr: Esquisser types, signatures et modules avant de coder. Deux formes, on garde la plus simple. Bascule en arena si le design est gros ou contesté.
+     en: Sketch types, signatures and modules before coding. Two shapes, keep the simpler. Switches to arena if the design is big or contested.
+  path: skills/architect/SKILL.md
+  steps:
+     - text: Tracer tout ce que le changement touche
+     - text: Esquisser 2 formes
+     - text: Garder la plus simple pour l'appelant
+     - ref: arena
+       cond: si le design est gros ou contesté
+- id: arena
+  kind: sk
+  cost: 2
+  label: /arena
+  desc:
+     fr: Lancer N candidats sur la même tâche, faire noter par un juge d'un autre fournisseur, garder la meilleure base et greffer les bonnes idées des autres.
+     en: Run N candidates on the same task, have a judge from another vendor score them, keep the best base and graft in the others' good ideas.
+  path: skills/arena/SKILL.md
+  steps:
+     - text: "A. Cadrer : même prompt, grille de 3 à 6 critères"
+     - text: B. Lancer N candidats en parallèle
+       kids:
+          - ref: subagent
+            cond: Fable, Opus, Gemini
+          - ref: separate-before-serializing-shared-state
+     - text: C. Juge d'un autre fournisseur
+       kids:
+          - ref: subagent
+     - text: D. Choisir la base critère par critère
+       kids:
+          - ref: laziness-protocol
+            cond: si égalité
+     - text: E. Greffer 1 ou 2 idées des perdants
+       kids:
+          - ref: redesign-from-first-principles
+     - text: F. Vérifier
+       kids:
+          - ref: prove-it-works
+- id: swarm
+  kind: sk
+  cost: 2
+  label: /swarm
+  desc:
+     fr: Lancer N workers en parallèle (tranches ou course), récupérer leurs résultats et rendre un seul rapport.
+     en: Run N workers in parallel (slices or a race), collect their results and return one report.
+  path: skills/swarm/SKILL.md
+  steps:
+     - text: "A. Cadrer : condition de fin, tranches ou course"
+     - text: B. Lancer N workers en parallèle
+       kids:
+          - ref: subagent
+            cond: PASS, ISSUES ou BLOCKED
+     - text: C. Agréger, relancer une fois un worker sans preuves
+     - text: D. Un seul rapport
+- id: interrogate
+  kind: sk
+  cost: 2
+  label: /interrogate
+  desc:
+     fr: Des agents adverses essaient de casser ton changement. Seuls les problèmes prouvés par une commande survivent. Ne corrige rien.
+     en: Adversarial agents try to break your change. Only problems proven by a command survive. Fixes nothing.
+  path: skills/interrogate/SKILL.md
+  steps:
+     - ref: in-your-own-words
+       cond: reformuler l'intention
+     - ref: arena
+       cond: réutilise ses phases A et B
+     - text: N adversaires en parallèle
+       kids:
+          - ref: subagent
+            cond: casse ce changement, prouve par une commande
+     - text: Relancer chaque commande, garder le prouvé
+     - text: "Rapport : findings et écartés, aucun fix"
+- id: how
+  kind: sk
+  cost: 1
+  label: /how
+  desc:
+     fr: « Comment ça marche ? » Un subagent en lecture seule explore le code et écrit une explication d'architecture.
+     en: “How does it work?” A read-only subagent explores the code and writes an architecture explanation.
+  path: skills/how/SKILL.md
+  steps:
+     - ref: subagent
+       cond: lecture seule, explore et explique
+     - text: Présente le résultat tel quel
+- id: why
+  kind: sk
+  cost: 0
+  label: /why
+  desc:
+     fr: « Pourquoi c'est fait comme ça ? » Lit l'historique des commits et PR, cite les auteurs, sépare faits et suppositions.
+     en: “Why is it like this?” Reads the commit and PR history, cites the authors, separates facts from guesses.
+  path: skills/why/SKILL.md
+  steps:
+     - text: Lire les commits et PR qui ont introduit le code
+     - text: Citer les auteurs, marquer les suppositions
+- id: teach
+  kind: sk
+  cost: 1
+  label: /teach
+  desc:
+     fr: Te faire vraiment comprendre un sujet. Lance how et why en parallèle et construit une explication progressive.
+     en: Make you really understand a topic. Runs how and why in parallel and builds a progressive explanation.
+  path: skills/teach/SKILL.md
+  steps:
+     - ref: how
+       cond: en parallèle
+     - ref: why
+       cond: en parallèle
+     - text: Explication progressive, diagramme par diagramme
+     - ref: unslop
+- id: blast-radius
+  kind: sk
+  cost: 1
+  label: /blast-radius
+  desc:
+     fr: Ce qu'un changement peut casser en dehors du diff. Trouve le fait unique dont dépend la sûreté et le prouve avec un script.
+     en: What a change could break outside the diff. Finds the one fact safety depends on and proves it with a script.
+  path: skills/blast-radius/SKILL.md
+  steps:
+     - text: Lire le diff et ce qu'il change sans le dire
+     - text: Trouver le fait dont dépend la sûreté
+     - text: Chercher là où grep ne voit pas
+     - text: Prouver ce fait par un script
+     - ref: arena
+       cond: si le changement est gros
+     - ref: unslop
+- id: in-your-own-words
+  kind: sk
+  cost: 0
+  label: /in-your-own-words
+  desc:
+     fr: Reformule ton but et ton problème, pour vérifier que l'agent a compris.
+     en: Restates your goal and problem, to check the agent understood.
+  path: skills/in-your-own-words/SKILL.md
+- id: sharpen
+  kind: sk
+  cost: 0
+  label: /sharpen
+  desc:
+     fr: Réécrit ton prompt pour une tâche plus profonde, pas plus grosse.
+     en: Rewrites your prompt for a deeper task, not a bigger one.
+  path: skills/sharpen/SKILL.md
+- id: bro
+  kind: sk
+  cost: 0
+  label: /bro
+  desc:
+     fr: Répète la dernière réponse en mots simples, sans jargon.
+     en: Repeats the last answer in plain words, no jargon.
+  path: skills/bro/SKILL.md
+- id: tdd
+  kind: sk
+  cost: 0
+  label: /tdd
+  desc:
+     fr: Écrire d'abord un test qui échoue, puis le fix. Seulement si un test pas cher existe.
+     en: Write a failing test first, then the fix. Only when a cheap test exists.
+  path: skills/tdd/SKILL.md
+  steps:
+     - text: Écrire le test qui échoue
+     - text: Vérifier qu'il échoue pour la bonne raison
+     - text: Plus petit fix
+     - text: "Relancer : vert"
+- id: unslop
+  kind: sk
+  cost: 0
+  label: /unslop
+  desc:
+     fr: Retire les tics d'écriture IA d'un texte. Appliqué à toute prose, réponses comprises.
+     en: Removes AI writing tics from a text. Applied to all prose, replies included.
+  path: skills/unslop/SKILL.md
+- id: technical-writing
+  kind: sk
+  cost: 0
+  label: /technical-writing
+  desc:
+     fr: Standard de rédaction pour docs, descriptions de PR et messages de commit.
+     en: Writing standard for docs, PR descriptions and commit messages.
+  path: skills/technical-writing/SKILL.md
+- id: no-comments
+  kind: sk
+  cost: 1
+  label: /no-comments
+  desc:
+     fr: Lance Comment Sicko sur le diff, applique ses suppressions valides et propose d'encoder les vraies contraintes en types ou lint.
+     en: Runs Comment Sicko on the diff, applies its valid deletions and offers to encode real constraints as types or lint.
+  path: skills/no-comments/SKILL.md
+  steps:
+     - ref: comment-sicko
+       cond: supprime les commentaires inutiles
+     - text: Trier ses suppressions, rejeter les abus
+     - ref: why
+       cond: si un « ne pas supprimer » est douteux
+     - ref: architect
+       cond: si un fix demande une nouvelle forme
+     - ref: fix-root-causes
+- id: benchmark-checklist
+  kind: sk
+  cost: 0
+  label: /benchmark-checklist
+  desc:
+     fr: Vérifier qu'une mesure de perf veut dire quelque chose avant de la croire ou de la rapporter.
+     en: Check that a perf measurement means something before trusting or reporting it.
+  path: skills/benchmark-checklist/SKILL.md
+  steps:
+     - text: Qu'est-ce qui limite le chiffre ?
+     - text: Réglages, erreurs, répétabilité
+     - text: Le travail a-t-il vraiment eu lieu ?
+     - ref: explain-the-number
+- id: show-me-your-work
+  kind: sk
+  cost: 1
+  label: /show-me-your-work
+  desc:
+     fr: Tenir un journal de décisions (TSV) pour le travail long ou sans toi. Un modèle d'un autre fournisseur relit le journal à la fin.
+     en: Keep a decision log (TSV) for long or unattended work. A model from another vendor reviews the log at the end.
+  path: skills/show-me-your-work/SKILL.md
+  steps:
+     - text: "Journal TSV : quoi, pourquoi, preuve, résultat"
+     - text: Auditer le journal contre le transcript
+     - ref: subagent
+       cond: autre fournisseur, section Attention
+     - ref: unslop
+- id: ketchup
+  kind: sk
+  cost: 0
+  label: /ketchup
+  desc:
+     fr: Te remettre à jour sur ce qui a changé depuis ton dernier message, avec chaque décision qui t'attend.
+     en: Catch you up on what changed since your last message, with each decision waiting on you.
+  path: skills/ketchup/SKILL.md
+  steps:
+     - ref: bro
+       cond: "sa voix : mots simples"
+     - text: Ce qui a changé depuis ton dernier message
+     - text: Chaque décision qui t'attend, avec sa recommandation
+- id: ketchup-video
+  kind: sk
+  cost: 1
+  label: /ketchup-video
+  desc:
+     fr: Comme ketchup, en petite vidéo de slides sous-titrée.
+     en: Like ketchup, as a short subtitled slide video.
+  path: skills/ketchup-video/SKILL.md
+  steps:
+     - ref: ketchup
+       cond: même contenu
+     - text: En vidéo de slides sous-titrée
+- id: recall
+  kind: sk
+  cost: 2
+  label: /recall
+  desc:
+     fr: Reconstruire où tu en étais sur un sujet, à partir de tes chats et du reste (git, tickets, Slack). Plusieurs subagents en parallèle.
+     en: Rebuild where you were on a topic from your chats and everything else (git, tickets, Slack). Several subagents in parallel.
+  path: skills/recall/SKILL.md
+  steps:
+     - text: Fixer le périmètre, 7 jours par défaut
+     - ref: subagent
+       cond: N en parallèle sur tes chats
+     - ref: subagent
+       cond: "un par source : git, tickets, Slack, erreurs"
+     - text: Vérifier contre git et gh
+     - ref: unslop
+       cond: brief final
+- id: create-verification-skill
+  kind: sk
+  cost: 1
+  label: /create-verification-skill
+  desc:
+     fr: Générer le skill local qui pilote ton app comme un humain, plus sa feature map.
+     en: Generate the local skill that drives your app like a person, plus its feature map.
+  path: skills/create-verification-skill/SKILL.md
+  steps:
+     - text: 1. Interroger le repo, pas toi
+     - text: 2. Générer le skill local
+       kids:
+          - ref: verify-app
+     - text: 3. Créer la feature map, un fichier par feature
+     - text: 4. Prouver le skill sur l'app
+     - ref: maintain-verification-skill
+       cond: 5. proposer la maintenance
+- id: maintain-verification-skill
+  kind: sk
+  cost: 2
+  label: /maintain-verification-skill
+  desc:
+     fr: Passe périodique qui remet la feature map et le skill de vérification d'accord avec le code. Un lecteur par feature.
+     en: Periodic pass that brings the feature map and verification skill back in line with the code. One reader per feature.
+  path: skills/maintain-verification-skill/SKILL.md
+  steps:
+     - text: Ranger l'index de la feature map
+     - ref: subagent
+       cond: un lecteur par feature, en parallèle
+     - text: Passe live sur chaque feature
+       kids:
+          - ref: verify-app
+     - text: "Trier : dérive de doc, trou du harnais, vrai bug"
+     - text: Au plus une PR de corrections prouvées
+- id: create-formal-verification-skill
+  kind: sk
+  cost: 1
+  label: /create-formal-verification-skill
+  desc:
+     fr: Générer un skill qui prouve formellement un invariant là où un bug coûte cher et où les tests voient mal.
+     en: Generate a skill that formally proves an invariant where a bug is costly and tests see poorly.
+  path: skills/create-formal-verification-skill/SKILL.md
+  steps:
+     - text: "Cible : bug cher, tests aveugles"
+     - text: Choisir l'outil (TLA+, model checker)
+     - text: Voir chaque check échouer sur une version cassée
+     - ref: statechart
+       cond: si TLA+
+     - ref: maintain-formal-verification-skill
+       cond: après des changements
+- id: maintain-formal-verification-skill
+  kind: sk
+  cost: 1
+  label: /maintain-formal-verification-skill
+  desc:
+     fr: Remettre le modèle formel d'accord avec le code après des changements, et dire si un échec est une dérive ou un vrai bug.
+     en: Bring the formal model back in line with the code after changes, and say whether a failure is drift or a real bug.
+  path: skills/maintain-formal-verification-skill/SKILL.md
+  steps:
+     - text: Commits qui touchent le code vérifié
+     - text: Mettre à jour modèle et propriétés
+     - text: "Relancer : dérive ou vrai bug ?"
+     - ref: statechart
+- id: statechart
+  kind: sk
+  cost: 0
+  label: /statechart
+  desc:
+     fr: Vérifier un modèle TLA+ et le dessiner en diagramme d'états. Donne le plus court chemin vers chaque état qui casse une règle.
+     en: Check a TLA+ model and draw it as a state diagram. Gives the shortest path to each state that breaks a rule.
+  path: skills/statechart/SKILL.md
+  steps:
+     - text: Écrire la spec TLA+ et ses règles
+     - text: Lancer le model checker TLC
+     - text: Diagramme d'états et chemin vers chaque bug
+     - text: Rejouer chaque bug sur le vrai code
+- id: correct
+  kind: sk
+  cost: 1
+  label: /correct
+  desc:
+     fr: "Rendre impossible une erreur que les agents répètent : architecture, puis types, puis lint, puis test, la doc en dernier."
+     en: "Make a mistake agents keep repeating impossible: architecture, then types, then lint, then test, docs last."
+  path: skills/correct/SKILL.md
+  steps:
+     - text: Trouver les erreurs répétées, 2 fois = une classe
+     - text: Architecture, puis types, puis lint, puis test, doc en dernier
+     - text: Prouver que chaque check échoue sur une vraie erreur
+     - text: Table règle et ce qui l'impose
+     - ref: encode-lessons-in-structure
+- id: reflect
+  kind: sk
+  cost: 0
+  label: /reflect
+  desc:
+     fr: Extraire les leçons durables d'une session et proposer des édits sur des skills existants.
+     en: Extract durable lessons from a session and propose edits to existing skills.
+  path: skills/reflect/SKILL.md
+  steps:
+     - text: Lire tout le transcript
+     - text: Garder les leçons durables
+     - text: Proposer des édits de skills, attendre ton OK
+- id: automate-me
+  kind: sk
+  cost: 2
+  label: /automate-me
+  desc:
+     fr: Créer ton propre skill « <toi>-mode » à partir de tes anciens transcripts.
+     en: Create your own “<you>-mode” skill from your past transcripts.
+  path: skills/automate-me/SKILL.md
+  steps:
+     - text: Chercher un <toi>-mode existant
+     - ref: subagent
+       cond: 3 en parallèle sur tes transcripts
+     - ref: create-skill
+     - ref: unslop
+- id: setup-pstack
+  kind: sk
+  cost: 0
+  label: /setup-pstack
+  desc:
+     fr: Choisir quel modèle et quel budget utiliser par rôle. Écrit une règle que les autres skills lisent.
+     en: Choose which model and budget to use per role. Writes a rule the other skills read.
+  path: skills/setup-pstack/SKILL.md
+  steps:
+     - text: Détecter les modèles disponibles
+     - text: Écrire la règle modèle et budget par rôle
+     - text: Lue par arena, swarm, interrogate et les playbooks
+- id: poteto-help
+  kind: sk
+  cost: 0
+  label: /poteto-help
+  desc:
+     fr: Te guide dans pstack et propose le skill ou playbook adapté à ta question.
+     en: Guides you through pstack and suggests the right skill or playbook for your question.
+  path: skills/poteto-help/SKILL.md
+  steps:
+     - text: Répond à tes questions sur pstack
+     - text: Propose le skill, playbook ou principe adapté
+- id: poteto-agent
+  kind: ag
+  cost: 1
+  label: poteto-agent
+  desc:
+     fr: Le subagent qui écrit le code dans les playbooks. Il relit poteto-mode et worker.md avant de travailler.
+     en: The subagent that writes code in playbooks. It rereads poteto-mode and worker.md before working.
+  path: agents/poteto-agent.md
+  steps:
+     - ref: poteto-mode
+       cond: relit SKILL.md en entier
+     - text: "Lit worker.md : pas de question à l'humain, PR jamais en draft"
+- id: comment-sicko
+  kind: ag
+  cost: 1
+  label: comment-sicko
+  desc:
+     fr: Subagent qui déteste les commentaires. Supprime narration, code commenté et justifications de contournement. Ne touche pas au code.
+     en: A subagent that hates comments. Deletes narration, commented-out code and workaround justifications. Doesn't touch code.
+  path: agents/comment-sicko.md
+  steps:
+     - ref: why
+       cond: vérifier une justification
+- id: subagent
+  kind: ag
+  cost: 1
+  label:
+     fr: subagent générique
+     en: generic subagent
+  desc:
+     fr: Un agent lancé en arrière-plan pour une tâche précise (lire, explorer, vérifier). Chaque lancement coûte des tokens.
+     en: An agent launched in the background for a precise task (read, explore, verify). Each launch costs tokens.
+- id: cloud-agent
+  kind: ag
+  cost: 2
+  label:
+     fr: agent cloud Cursor
+     en: Cursor cloud agent
+  desc:
+     fr: Un agent distant, un par PR, qui construit ou vérifie. Spécifique à Cursor.
+     en: A remote agent, one per PR, that builds or verifies. Cursor-specific.
+- id: verify-app
+  kind: loc
+  cost: 0
+  label: /verify-<app>
+  desc:
+     fr: Le skill de vérification de ton projet (ex. /verify-terms-era), généré par create-verification-skill. C'est la « vraie surface » sur laquelle les playbooks prouvent leur travail.
+     en: Your project's verification skill (e.g. /verify-terms-era), generated by create-verification-skill. It is the “real surface” where playbooks prove their work.
+  path: dans ton repo, .claude/skills/verify-<app>/
+- id: loop
+  kind: ext
+  cost: 0
+  label: /loop
+  desc:
+     fr: Commande Cursor qui relance l'agent à intervalle ou sur événement. Claude Code a aussi un /loop.
+     en: Cursor command that reruns the agent on an interval or on an event. Claude Code has a /loop too.
+- id: deslop
+  kind: ext
+  cost: 0
+  label: /deslop
+  desc:
+     fr: Skill du plugin cursor-team-kit qui nettoie le code avant commit. Pas dans pstack.
+     en: Skill from the cursor-team-kit plugin that cleans code before commit. Not part of pstack.
+- id: create-skill
+  kind: ext
+  cost: 0
+  label: create-skill
+  desc:
+     fr: "Skill intégré à Cursor pour écrire un SKILL.md. Côté Claude : skill-creator."
+     en: "Cursor built-in skill for writing a SKILL.md. Claude side: skill-creator."
+- id: watch-pr
+  kind: tool
+  cost: 0
+  label: watch-pr
+  desc:
+     fr: Script TypeScript livré avec poteto-mode qui surveille l'état d'une PR GitHub.
+     en: TypeScript script shipped with poteto-mode that watches a GitHub PR's state.
+  path: skills/poteto-mode/scripts/watch-pr/
+- id: bugbot-triage
+  kind: tool
+  cost: 0
+  label: bugbot-triage.md
+  desc:
+     fr: "Référence pour trier les commentaires de bots de review : fixer les vrais, réfuter le bruit."
+     en: "Reference for triaging review-bot comments: fix the real ones, disprove the noise."
+  path: skills/poteto-mode/references/bugbot-triage.md
+- id: setup-benny
+  kind: bn
+  cost: 0
+  label: setup-benny
+  desc:
+     fr: Installe les automatisations Benny dans le repo cible.
+     en: Installs the Benny automations in the target repo.
+  path: automations/benny/skills/setup-benny/SKILL.md
+  steps:
+     - text: Copie le pack dans le repo
+     - text: Active pstack dans le repo
+     - ref: triage-issue-reports
+     - ref: reproduce-and-fix-issues
+- id: triage-issue-reports
+  kind: bn
+  cost: 1
+  label: triage-issue-reports
+  desc:
+     fr: "Automatisation : trie chaque rapport de bug posté sur Slack."
+     en: "Automation: triages each bug report posted on Slack."
+  path: automations/benny/skills/triage-issue-reports/SKILL.md
+  steps:
+     - text: Trier chaque rapport Slack
+     - text: Écrire le contrat de triage
+     - ref: reproduce-and-fix-issues
+       cond: si le bug est confirmé
+- id: reproduce-and-fix-issues
+  kind: bn
+  cost: 1
+  label: reproduce-and-fix-issues
+  desc:
+     fr: "Automatisation : reproduit un bug confirmé sur la vraie UI, le corrige si c'est borné, ouvre une PR draft."
+     en: "Automation: reproduces a confirmed bug on the real UI, fixes it if bounded, opens a draft PR."
+  path: automations/benny/skills/reproduce-and-fix-issues/SKILL.md
+  steps:
+     - text: Control adapter et feature map
+       kids:
+          - ref: verify-app
+            cond: même idée
+     - text: Reproduire 2 fois, vidéo et screenshot
+     - text: Root cause et fix borné
+       kids:
+          - ref: fix-root-causes
+     - text: Prouver le fix 2 fois sur la même UI
+     - text: Ouvrir une PR draft
+- id: laziness-protocol
+  kind: pr
+  cost: 0
+  label: laziness-protocol
+  desc:
+     fr: Biais vers la suppression et le plus petit changement qui règle le problème.
+     en: Bias toward deletion and the smallest change that solves the problem.
+  path: skills/principle-laziness-protocol/SKILL.md
+- id: foundational-thinking
+  kind: pr
+  cost: 0
+  label: foundational-thinking
+  desc:
+     fr: Penser types et structures de données avant d'écrire la logique.
+     en: Think about types and data structures before writing logic.
+  path: skills/principle-foundational-thinking/SKILL.md
+- id: redesign-from-first-principles
+  kind: pr
+  cost: 0
+  label: redesign-from-first-principles
+  desc:
+     fr: Intégrer une nouvelle exigence comme si elle existait depuis le début.
+     en: Integrate a new requirement as if it had existed from day one.
+  path: skills/principle-redesign-from-first-principles/SKILL.md
+- id: attack-the-premise
+  kind: pr
+  cost: 0
+  label: attack-the-premise
+  desc:
+     fr: "Deux fixes ratés pour la même raison : tester directement la prémisse commune."
+     en: "Two fixes failed for the same reason: test the shared premise directly."
+  path: skills/principle-attack-the-premise/SKILL.md
+- id: subtract-before-you-add
+  kind: pr
+  cost: 0
+  label: subtract-before-you-add
+  desc:
+     fr: Supprimer le poids mort avant de construire.
+     en: Remove dead weight before building.
+  path: skills/principle-subtract-before-you-add/SKILL.md
+- id: minimize-reader-load
+  kind: pr
+  cost: 0
+  label: minimize-reader-load
+  desc:
+     fr: Moins de couches et d'état caché à suivre pour qui lit le code.
+     en: Fewer layers and less hidden state for whoever reads the code.
+  path: skills/principle-minimize-reader-load/SKILL.md
+- id: outcome-oriented-execution
+  kind: pr
+  cost: 0
+  label: outcome-oriented-execution
+  desc:
+     fr: Viser l'architecture cible, sans états de compatibilité jetables.
+     en: Aim for the target architecture, no throwaway compatibility states.
+  path: skills/principle-outcome-oriented-execution/SKILL.md
+- id: experience-first
+  kind: pr
+  cost: 0
+  label: experience-first
+  desc:
+     fr: Choisir le plaisir de l'utilisateur plutôt que la facilité d'implémentation.
+     en: Choose user delight over implementation convenience.
+  path: skills/principle-experience-first/SKILL.md
+- id: exhaust-the-design-space
+  kind: pr
+  cost: 0
+  label: exhaust-the-design-space
+  desc:
+     fr: Construire 2 ou 3 prototypes concurrents avant de choisir.
+     en: Build 2 or 3 competing prototypes before choosing.
+  path: skills/principle-exhaust-the-design-space/SKILL.md
+- id: build-the-lever
+  kind: pr
+  cost: 0
+  label: build-the-lever
+  desc:
+     fr: Construire l'outil (script, codemod) plutôt que faire à la main.
+     en: Build the tool (script, codemod) rather than doing it by hand.
+  path: skills/principle-build-the-lever/SKILL.md
+- id: model-the-domain
+  kind: pr
+  cost: 0
+  label: model-the-domain
+  desc:
+     fr: "Encoder le domaine dans une structure : machine à états, table, type."
+     en: "Encode the domain in a structure: state machine, table, type."
+  path: skills/principle-model-the-domain/SKILL.md
+- id: boundary-discipline
+  kind: pr
+  cost: 0
+  label: boundary-discipline
+  desc:
+     fr: Valider aux frontières du système, garder la logique métier pure.
+     en: Validate at system boundaries, keep business logic pure.
+  path: skills/principle-boundary-discipline/SKILL.md
+- id: type-system-discipline
+  kind: pr
+  cost: 0
+  label: type-system-discipline
+  desc:
+     fr: Rendre les états illégaux impossibles à écrire.
+     en: Make illegal states impossible to write.
+  path: skills/principle-type-system-discipline/SKILL.md
+- id: make-operations-idempotent
+  kind: pr
+  cost: 0
+  label: make-operations-idempotent
+  desc:
+     fr: Relancer une étape donne le même état final.
+     en: Rerunning a step gives the same end state.
+  path: skills/principle-make-operations-idempotent/SKILL.md
+- id: migrate-callers-then-delete-legacy-apis
+  kind: pr
+  cost: 0
+  label: migrate-callers-then-delete-legacy-apis
+  desc:
+     fr: Migrer tous les appelants et supprimer l'ancienne API en une seule vague.
+     en: Migrate all callers and delete the old API in one wave.
+  path: skills/principle-migrate-callers-then-delete-legacy-apis/SKILL.md
+- id: separate-before-serializing-shared-state
+  kind: pr
+  cost: 0
+  label: separate-before-serializing-shared-state
+  desc:
+     fr: Supprimer le partage (un worktree par agent) avant de sérialiser les accès.
+     en: Remove sharing (one worktree per agent) before serializing access.
+  path: skills/principle-separate-before-serializing-shared-state/SKILL.md
+- id: prove-it-works
+  kind: pr
+  cost: 0
+  label: prove-it-works
+  desc:
+     fr: Vérifier sur le vrai artefact, pas « ça compile ».
+     en: Verify on the real artifact, not “it compiles”.
+  path: skills/principle-prove-it-works/SKILL.md
+- id: fix-root-causes
+  kind: pr
+  cost: 0
+  label: fix-root-causes
+  desc:
+     fr: Remonter au premier endroit où le système a dérapé et fixer là.
+     en: Trace back to the first place the system went wrong and fix it there.
+  path: skills/principle-fix-root-causes/SKILL.md
+- id: sequence-verifiable-units
+  kind: pr
+  cost: 0
+  label: sequence-verifiable-units
+  desc:
+     fr: Découper en petites unités qui finissent chacune par une vérification.
+     en: Split into small units that each end with a check.
+  path: skills/principle-sequence-verifiable-units/SKILL.md
+- id: test-behavior-not-implementation
+  kind: pr
+  cost: 0
+  label: test-behavior-not-implementation
+  desc:
+     fr: Tester ce que l'utilisateur observe, pas les détails internes.
+     en: Test what the user observes, not internal details.
+  path: skills/principle-test-behavior-not-implementation/SKILL.md
+- id: explain-the-number
+  kind: pr
+  cost: 0
+  label: explain-the-number
+  desc:
+     fr: Comprendre ce qui limite un chiffre avant d'y croire.
+     en: Understand what limits a number before believing it.
+  path: skills/principle-explain-the-number/SKILL.md
+- id: guard-the-context-window
+  kind: pr
+  cost: 0
+  label: guard-the-context-window
+  desc:
+     fr: Envoyer le gros volume aux subagents, garder les résumés.
+     en: Send bulk to subagents, keep the summaries.
+  path: skills/principle-guard-the-context-window/SKILL.md
+- id: never-block-on-the-human
+  kind: pr
+  cost: 0
+  label: never-block-on-the-human
+  desc:
+     fr: Sur du réversible, faire puis montrer, au lieu de demander.
+     en: On reversible work, do it and show it, rather than asking.
+  path: skills/principle-never-block-on-the-human/SKILL.md
+- id: encode-lessons-in-structure
+  kind: pr
+  cost: 0
+  label: encode-lessons-in-structure
+  desc:
+     fr: Une consigne répétée devient un lint, un script ou un check.
+     en: A repeated instruction becomes a lint, a script or a check.
+  path: skills/principle-encode-lessons-in-structure/SKILL.md

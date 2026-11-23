@@ -1,0 +1,67 @@
+---
+/** “Guide” tab: how to read token cost, vocabulary, and what is Cursor-specific. */
+import CostBar from "../../../components/atoms/CostBar.astro";
+import { listCursorSpecific, listVocabulary } from "../../../services/content/guide";
+import { COST_LEVELS } from "../../../services/content/kinds";
+import { referenceMessages } from "../messages";
+import type { Lang } from "../../../types/i18n";
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const m = referenceMessages(lang);
+const [vocabulary, cursorSpecific] = await Promise.all([listVocabulary(lang), listCursorSpecific(lang)]);
+---
+
+<div class="guide" id="apiGuide" role="tabpanel" hidden>
+	<p>{m.guideIntro}</p>
+	<section class="panelcard">
+		<h3>{m.costTitle}</h3>
+		{COST_LEVELS.map((c) => (
+			<div class="lvrow">
+				<CostBar cost={c} lang={lang} />
+				<b>{m.costLevels[c][0]}</b>
+				<span>{m.costLevels[c][1]}</span>
+			</div>
+		))}
+		<p class="note">{m.costNote}</p>
+	</section>
+	<section class="panelcard">
+		<h3>{m.vocab}</h3>
+		<div class="gloss">
+			{vocabulary.map((v) => (
+				<div>
+					<b>{v.term}</b>
+					<p>{v.definition}</p>
+				</div>
+			))}
+		</div>
+	</section>
+	<section class="panelcard">
+		<h3>{m.cursorTitle}</h3>
+		<p>{m.cursorText}</p>
+		<div class="tablewrap">
+			<table>
+				<thead>
+					<tr>
+						{m.cursorCols.map((c) => (
+							<th>{c}</th>
+						))}
+					</tr>
+				</thead>
+				<tbody>
+					{cursorSpecific.map((x) => (
+						<tr>
+							<td>
+								<code>{x.name}</code>
+							</td>
+							<td>{x.what}</td>
+							<td>{x.equivalent}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</div>
+	</section>
+</div>

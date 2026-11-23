@@ -1,0 +1,407 @@
+/* Shared pieces: section intros, labels, buttons, chips, cost bar, kind tag, dropdowns, tooltip, copy-on-click. */
+.sec-intro {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	max-width: 720px;
+}
+.sec-intro h2 {
+	margin: 0;
+	font-family: var(--f-display);
+	font-size: clamp(1.35rem, 2vw, 1.6rem);
+	font-weight: 700;
+	line-height: 1.25;
+	text-wrap: balance;
+}
+.sec-intro p {
+	margin: 0;
+	max-width: 70ch;
+	color: var(--muted);
+	font-size: 1rem;
+	line-height: 1.65;
+}
+
+.lab {
+	font: 700 0.7rem var(--f-body);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+.hint {
+	color: var(--muted);
+	font-size: 0.82rem;
+}
+.note {
+	margin: 0;
+	max-width: 80ch;
+	padding: 10px 12px;
+	border-radius: 10px;
+	background: var(--accent-soft);
+	font-size: 0.92rem;
+}
+.srcline {
+	font-size: 0.84rem;
+	color: var(--muted);
+}
+.srcline:hover {
+	color: var(--ink);
+}
+.srcline + .srcline {
+	margin-top: -6px;
+}
+
+.btn {
+	display: inline-block;
+	padding: 9px 16px;
+	border: 1px solid var(--line-strong);
+	border-radius: 99px;
+	background: transparent;
+	color: var(--ink);
+	font: 600 0.9rem var(--f-body);
+	text-decoration: none;
+	cursor: pointer;
+}
+.btn:hover {
+	background: var(--ghost);
+}
+.btn.sm {
+	padding: 5px 11px;
+	border-radius: 8px;
+	font-size: 0.82rem;
+}
+.btn.primary {
+	background: var(--ink);
+	border-color: var(--ink);
+	color: var(--bg);
+}
+.btn.primary:hover {
+	background: var(--ink);
+	opacity: 0.85;
+}
+.linkbtn {
+	align-self: flex-start;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: var(--accent);
+	font: 600 0.84rem var(--f-body);
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* chips: skill names; green skill, blue playbook, red token-heavy */
+.chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+}
+.chip {
+	padding: 4px 10px;
+	border: 1px solid transparent;
+	border-radius: 99px;
+	background: var(--k-sk-soft);
+	color: var(--k-sk);
+	font: 500 0.84rem/1.4 var(--f-mono);
+	cursor: pointer;
+}
+.chip.pb {
+	background: var(--k-pb-soft);
+	color: var(--k-pb);
+}
+.chip.heavy {
+	background: var(--heavy-soft);
+	color: var(--heavy);
+}
+.chip:hover {
+	border-color: currentColor;
+}
+.chip[data-tip] {
+	cursor: help;
+}
+.chip.clk {
+	cursor: pointer;
+}
+
+/* cost: three bars, filled up to the level */
+.costbar {
+	display: inline-flex;
+	gap: 3px;
+	vertical-align: middle;
+	padding: 6px 2px;
+	margin: -6px -2px;
+	border-radius: 6px;
+	cursor: help;
+}
+.costbar b {
+	width: 14px;
+	height: 6px;
+	border-radius: 2px;
+	background: var(--line-strong);
+}
+.costbar[data-cost="1"] b:nth-child(-n + 1) {
+	background: var(--c1);
+}
+.costbar[data-cost="2"] b:nth-child(-n + 2) {
+	background: var(--c2);
+}
+.costbar[data-cost="3"] b {
+	background: var(--c3);
+}
+
+.kindtag {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	white-space: nowrap;
+}
+/* --kind is set inline to the kind's color token, e.g. style="--kind: var(--k-pb)" */
+.kindtag i {
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: var(--kind);
+}
+
+/* dropdowns (theme, language, API filters) */
+.dd {
+	position: relative;
+}
+.ddbtn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: 38px;
+	padding: 0 12px 0 14px;
+	border: 1px solid var(--line);
+	border-radius: 99px;
+	background: var(--bg);
+	color: var(--ink);
+	font: 600 0.86rem var(--f-body);
+	letter-spacing: 0.02em;
+	cursor: pointer;
+	transition:
+		border-color 0.15s,
+		background 0.15s;
+}
+.ddbtn:hover,
+.ddbtn[aria-expanded="true"] {
+	border-color: var(--line-strong);
+	background: var(--ghost);
+}
+.ddbtn.ic {
+	width: 38px;
+	padding: 0;
+	justify-content: center;
+}
+.ddbtn svg {
+	width: 17px;
+	height: 17px;
+}
+.ddbtn .chev {
+	width: 14px;
+	height: 14px;
+	color: var(--muted);
+	transition: transform 0.2s;
+}
+.ddbtn[aria-expanded="true"] .chev {
+	transform: rotate(180deg);
+}
+.dd-icon {
+	display: grid;
+	place-items: center;
+}
+/* the theme button shows the icon of the saved preference (html[data-theme-pref], set before first paint) */
+.dd-icon > svg {
+	display: none;
+}
+:root[data-theme-pref="system"] .dd-icon > .i-system,
+:root[data-theme-pref="light"] .dd-icon > .i-light,
+:root[data-theme-pref="dark"] .dd-icon > .i-dark {
+	display: block;
+}
+.ddmenu {
+	position: absolute;
+	right: 0;
+	top: calc(100% + 8px);
+	z-index: 80;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 184px;
+	padding: 6px;
+	background: var(--bg);
+	border: 1px solid var(--line);
+	border-radius: 16px;
+	box-shadow:
+		0 16px 40px rgba(15, 20, 25, 0.14),
+		0 2px 6px rgba(15, 20, 25, 0.06);
+	animation: ddIn 0.16s ease-out both;
+}
+:root[data-theme="dark"] .ddmenu {
+	box-shadow:
+		0 0 0 1px rgba(255, 255, 255, 0.04),
+		0 16px 40px rgba(0, 0, 0, 0.6);
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) .ddmenu {
+		box-shadow:
+			0 0 0 1px rgba(255, 255, 255, 0.04),
+			0 16px 40px rgba(0, 0, 0, 0.6);
+	}
+}
+@keyframes ddIn {
+	from {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+.dd-option {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	padding: 9px 10px;
+	border: 0;
+	border-radius: 10px;
+	background: none;
+	color: var(--ink);
+	font: 500 0.9rem var(--f-body);
+	text-align: left;
+	text-decoration: none;
+	cursor: pointer;
+}
+.dd-option:hover,
+.dd-option:focus-visible {
+	background: var(--ghost);
+	outline: none;
+}
+.ddmenu .oi {
+	display: grid;
+	place-items: center;
+	color: var(--muted);
+}
+.ddmenu .oi svg {
+	width: 16px;
+	height: 16px;
+}
+.ddmenu .oc {
+	width: 22px;
+	font: 700 0.72rem var(--f-body);
+	letter-spacing: 0.06em;
+	color: var(--muted);
+}
+.ddmenu .ot {
+	flex: 1;
+}
+.ddmenu .ck {
+	width: 16px;
+	height: 16px;
+	color: var(--accent);
+	visibility: hidden;
+}
+.ddmenu [aria-selected="true"] .ck {
+	visibility: visible;
+}
+.ddmenu [aria-selected="true"] .ot {
+	font-weight: 600;
+}
+.dd-field .ddbtn.field {
+	justify-content: space-between;
+	gap: 12px;
+	width: 100%;
+	min-width: 180px;
+	height: 42px;
+	padding: 0 12px 0 14px;
+	border-color: var(--line-strong);
+	border-radius: 12px;
+	font: 500 0.93rem var(--f-body);
+	letter-spacing: 0;
+}
+.dd-field .ddmenu {
+	left: 0;
+	right: auto;
+	min-width: 100%;
+}
+.dd-field .ddmenu .ot {
+	white-space: nowrap;
+}
+@media (max-width: 760px) {
+	.dd-field {
+		width: 100%;
+	}
+}
+@media (max-width: 520px) {
+	.ddbtn {
+		height: 34px;
+		padding: 0 10px 0 12px;
+	}
+	.ddbtn.ic {
+		width: 34px;
+	}
+}
+
+/* tooltip (cost bars and chips) */
+.tip {
+	position: fixed;
+	z-index: 200;
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	max-width: 260px;
+	padding: 10px 12px;
+	border-radius: 12px;
+	background: #0f1419;
+	color: #e7e9ea;
+	font: 400 0.84rem/1.45 var(--f-body);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+	pointer-events: none;
+}
+:root[data-theme="dark"] .tip {
+	background: #e7e9ea;
+	color: #0f1419;
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) .tip {
+		background: #e7e9ea;
+		color: #0f1419;
+	}
+}
+.tip b {
+	font-weight: 600;
+	text-transform: capitalize;
+}
+
+/* copy on click: the icon sits in the top right corner unless the block places it */
+.copyable {
+	position: relative;
+	cursor: copy;
+	transition:
+		border-color 0.15s,
+		box-shadow 0.15s;
+}
+.copyable .cpy {
+	position: absolute;
+	display: grid;
+	place-items: center;
+	width: 26px;
+	height: 26px;
+	border-radius: 8px;
+	transition:
+		color 0.15s,
+		background 0.15s;
+}
+.copyable .cpy svg {
+	width: 16px;
+	height: 16px;
+}
+.copyable .i-ok,
+.copyable.done .i-copy {
+	display: none;
+}
+.copyable.done .i-ok {
+	display: block;
+}

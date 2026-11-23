@@ -1,0 +1,149 @@
+---
+/** Details of one catalog item: what it is, who calls it, what it calls and at which step. Shown in the modal. */
+import CostBar from "../../../components/atoms/CostBar.astro";
+import KindTag from "../../../components/atoms/KindTag.astro";
+import { callersOf, callsOf, getItem, getItems, stepsOf } from "../../../services/content/catalog";
+import { REPO_BLOB_URL } from "../../../services/content/sources";
+import { useCasesWith } from "../../../services/content/use-cases";
+import { href } from "../../../services/i18n/config";
+import { plural } from "../../../services/i18n/localize";
+import { sharedMessages } from "../../../services/i18n/messages";
+import { itemMessages } from "../messages";
+import type { CatalogItem } from "../../../types/content";
+import type { Lang } from "../../../types/i18n";
+
+interface Props {
+	lang: Lang;
+	id: string;
+}
+const { lang, id } = Astro.props;
+const m = itemMessages(lang);
+const shared = sharedMessages(lang);
+const item = await getItem(id, lang);
+if (!item) throw new Error(`ItemPanel: unknown item "${id}"`);
+
+const bare = (x: CatalogItem) => x.label.replace(/^\//, "");
+const callers = (await getItems(await callersOf(id), lang)).sort((a, b) => bare(a).localeCompare(bare(b)));
+
+const steps = await stepsOf(id, lang);
+const stepLabel = (x: CatalogItem) => {
+	const s = steps.get(x.id);
+	if (!s) return null;
+	return {
+		label: s.text ? `${s.index + 1}. ${s.text}` : `${m.step} ${s.index + 1}`,
+		cond: s.cond ?? "",
+		/** calls made directly at a step sort first, then by step number */
+		order: s.text ? s.index + 1 : 0,
+	};
+};
+const order = (x: CatalogItem) => stepLabel(x)?.order ?? 999;
+const calls = (await getItems(await callsOf(id), lang)).sort(
+	(a, b) => order(a) - order(b) || a.label.localeCompare(b.label),
+);
+const useCases = await useCasesWith(id, lang);
+const inRepo = item.path && /^(skills|agents|automations|docs)\//.test(item.path);
+const kindColor = (x: CatalogItem) => `--kind: var(${x.color})`;
+---
+
+<div class="mpanel" role="dialog" aria-modal="true" aria-label={item.label}>
+	<div class="mtop">
+		<button type="button" class="mbtn" data-mback hidden>
+			← {m.back}
+		</button>
+		<button type="button" class="mbtn x" data-mclose aria-label={m.close}>
+			×
+		</button>
+	</div>
+	<div class="mgrid">
+		<div class="mleft">
+			<h2>{item.label}</h2>
+			<div class="mmeta">
+				<KindTag kind={item.kind} lang={lang} />
+				<span class="mcost">
+					<CostBar cost={item.cost} lang={lang} /> {shared.costLabels[item.cost]}
+				</span>
+			</div>
+			<p class="mdesc">{item.desc}</p>
+			{item.path && (
+				<div class="mblock">
+					<p class="lab">{m.file}</p>
+					{inRepo ? (
+						<a class="filelink" href={REPO_BLOB_URL + item.path} target="_blank" rel="noopener">
+							<code>{item.path}</code> ↗
+						</a>
+					) : (
+						<code>{item.path}</code>
+					)}
+				</div>
+			)}
+			<div class="mblock">
+				<p class="lab">{m.calledBy}</p>
+				{callers.length ? (
+					<ul class="rlist">
+						{callers.map((x) => (
+							<li tabindex="0" data-ref={x.id} title={x.kindName}>
+								<i style={kindColor(x)}></i>
+								<span class="rn">{x.label}</span>
+								<span class="rk">
+									<CostBar cost={x.cost} lang={lang} />
+								</span>
+							</li>
+						))}
+					</ul>
+				) : (
+					<span class="hint">{m.noCaller}</span>
+				)}
+			</div>
+			{useCases.length > 0 && (
+				<div class="mblock">
+					<p class="lab">{m.inUseCases}</p>
+					<div class="flist">
+						{useCases.map((u) => (
+							<a class="btn sm" href={href(lang, "use-cases", `#case-${u.id}`)}>
+								{u.title}
+							</a>
+						))}
+					</div>
+				</div>
+			)}
+		</div>
+		<div class:list={["mright", { empty: !calls.length }]}>
+			<p class="lab">{m.calls}</p>
+			{calls.length ? (
+				<>
+					<p class="mhint">{plural(m.callsHint, calls.length)}</p>
+					<ul class="clist">
+						{calls.map((x) => {
+							const s = stepLabel(x);
+							return (
+								<li tabindex="0" data-ref={x.id}>
+									<div class="ch">
+										<i style={kindColor(x)}></i>
+										<span class="cn">{x.label}</span>
+										<span class="ck">{x.kindName}</span>
+										<CostBar cost={x.cost} lang={lang} />
+									</div>
+									<p>{x.desc}</p>
+									{s && (
+										<span class="cs">
+											{m.atStep}
+											{lang === "fr" ? " :" : ":"} {s.label}
+											{s.cond && (
+												<>
+													{" "}
+													· <i>{s.cond}</i>
+												</>
+											)}
+										</span>
+									)}
+								</li>
+							);
+						})}
+					</ul>
+				</>
+			) : (
+				<p class="mhint">{m.nothingCalled}</p>
+			)}
+		</div>
+	</div>
+</div>

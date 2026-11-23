@@ -1,0 +1,130 @@
+---
+/** Lesson “The feature map”: what the verification skill contains, then the example files in tabs. */
+import { getExampleFiles } from "../../../services/content/feature-map-example";
+import { FEATURE_MAP_EXAMPLE_URL, TALK_URL, VERIFICATION_SKILL_URL } from "../../../services/content/sources";
+import { renderMarkdown } from "../../../helpers/markdown";
+import { lessonsMessages } from "../messages";
+import type { Lang } from "../../../types/i18n";
+import type { LinkRenderer } from "../../../types/ui";
+
+interface Props {
+	lang: Lang;
+}
+const f = lessonsMessages(Astro.props.lang).featureMap;
+
+/** Example files, in tab order. */
+const files = await getExampleFiles([
+	"SKILL.md",
+	"features/README.md",
+	"features/create-note.md",
+	"features/search.md",
+]);
+/** Relative links inside the files switch to the tab of the file they point to. */
+const LINKS = new Map([
+	["./create-note.md", 2],
+	["./search.md", 3],
+	["features/README.md", 1],
+]);
+const link: LinkRenderer = (text, target) => {
+	const tab = LINKS.get(target);
+	return tab === undefined ? text : `<button type="button" class="mdlink" data-fmf="${tab}">${text}</button>`;
+};
+const INDENT = "   ";
+/** Tree rows. `file` is the tab the row opens. */
+const rows: { indent: string; name: string; note: string; cls: string; file?: number }[] = [
+	{ indent: "├─", name: "SKILL.md", note: f.tree[0], cls: "sk", file: 0 },
+	{ indent: "├─", name: "scripts/control-notes", note: f.tree[1], cls: "cl" },
+	{ indent: "└─", name: "features/", note: f.tree[2], cls: "mp" },
+	{ indent: INDENT + "├─", name: "README.md", note: f.tree[3], cls: "mp2", file: 1 },
+	{ indent: INDENT + "├─", name: "create-note.md", note: f.tree[4], cls: "mp2", file: 2 },
+	{ indent: INDENT + "└─", name: "search.md", note: f.tree[5], cls: "mp2", file: 3 },
+];
+---
+
+<div class="fmap">
+	<p class="fmh">{f.get}</p>
+	<div class="fpair">
+		<div class="fbox sk">
+			<b>{f.skill}</b>
+			<code>SKILL.md</code>
+			<p>{f.skillD}</p>
+		</div>
+		<span class="fplus">+</span>
+		<div class="fbox cl">
+			<b>{f.cli}</b>
+			<code>scripts/control-notes</code>
+			<p>{f.cliD}</p>
+		</div>
+		<span class="fplus">+</span>
+		<div class="fbox mp">
+			<b>{f.map}</b>
+			<code>features/</code>
+			<p>{f.mapD}</p>
+		</div>
+	</div>
+	<div class="ftree">
+		<div class="fr root">
+			<code>.cursor/skills/verify-notes/</code>
+		</div>
+		{rows.map((r) => {
+			const inner = (
+				<>
+					<span class="ftree-indent">{r.indent}</span>
+					<code>{r.name}</code>
+					{r.note && <span class="fn">← {r.note}</span>}
+				</>
+			);
+			return r.file != null ? (
+				<button type="button" class:list={["fr", r.cls, { hl: r.file === 0 }]} data-fmf={r.file}>
+					{inner}
+				</button>
+			) : (
+				<div class:list={["fr", r.cls]}>{inner}</div>
+			);
+		})}
+	</div>
+
+	<p class="fmh">{f.cliH}</p>
+	<div class="fcli">
+		{f.cliP.map((p) => (
+			<p set:html={p} />
+		))}
+	</div>
+	<div class="srcrow">
+		<a class="srcline" href={TALK_URL} target="_blank" rel="noopener">
+			{f.talk} ↗
+		</a>
+		<a class="srcline" href={VERIFICATION_SKILL_URL} target="_blank" rel="noopener">
+			{f.skillSrc} ↗
+		</a>
+	</div>
+
+	<p class="fmh">{f.look}</p>
+	<div class="fdoc">
+		<div class="fdtabs" role="tablist">
+			{files.map((file, k) => (
+				<button type="button" role="tab" data-fmt={k} aria-selected={k === 0 ? "true" : "false"}>
+					{file.path}
+				</button>
+			))}
+		</div>
+		{files.map((file, k) => (
+			<div
+				class="mdprev"
+				role="tabpanel"
+				data-fm-file={k}
+				hidden={k !== 0}
+				set:html={renderMarkdown(file.body, { frontMatter: file.frontMatter, link })}
+			/>
+		))}
+	</div>
+	<a class="srcline" href={FEATURE_MAP_EXAMPLE_URL} target="_blank" rel="noopener">
+		{f.src} ↗
+	</a>
+</div>
+
+<script>
+	import { initFeatureMap } from "../helpers/feature-map";
+
+	initFeatureMap();
+</script>

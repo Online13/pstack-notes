@@ -1,0 +1,95 @@
+---
+/** Brand, section links (a bottom sheet on phones), theme and language menus. */
+import Icon from "../atoms/Icon.astro";
+import Dropdown from "../molecules/Dropdown.astro";
+import { LANGS, LANG_NAMES, SECTIONS, href } from "../../services/i18n/config";
+import { sharedMessages } from "../../services/i18n/messages";
+import type { Lang, Section } from "../../types/i18n";
+
+interface Props {
+	lang: Lang;
+	section: Section;
+}
+const { lang, section } = Astro.props;
+const ui = sharedMessages(lang);
+const THEMES = ["system", "light", "dark"] as const;
+---
+
+<header class="site-header">
+	<a class="brand" href={href(lang, "home")} aria-label="pstack notes">
+		<Icon name="book" />
+		<span>pstack notes</span>
+		<small>{ui.brandSub}</small>
+	</a>
+	<nav class="sections" id="sections">
+		{SECTIONS.slice(1).map((s, i) => (
+			<a class="nav-link" href={href(lang, s)} aria-current={s === section ? "page" : undefined}>
+				{ui.sections[i + 1]}
+			</a>
+		))}
+	</nav>
+	<div class="sheetbg" id="sheetBg" hidden></div>
+	<div class="hdr-r">
+		<button
+			class="ddbtn ic menubtn"
+			id="menuBtn"
+			type="button"
+			aria-label="Menu"
+			aria-expanded="false"
+			aria-controls="sections"
+		>
+			<Icon name="menu" />
+		</button>
+
+		<Dropdown id="ddTheme" variant="icon" label="Theme" name="theme">
+			<span class="dd-icon" slot="button">
+				{THEMES.map((k) => (
+					<Icon name={k} class={`i-${k}`} />
+				))}
+			</span>
+			<Fragment slot="options">
+				{THEMES.map((k) => (
+					<button type="button" class="dd-option" role="option" data-value={k} aria-selected="false">
+						<span class="oi">
+							<Icon name={k} />
+						</span>
+						<span class="ot">{ui.theme[k]}</span>
+						<Icon name="check" class="ck" width={2.4} />
+					</button>
+				))}
+			</Fragment>
+		</Dropdown>
+
+		<Dropdown id="ddLang" variant="pill" label="Language" value={lang}>
+			<Fragment slot="button">
+				<span>{lang.toUpperCase()}</span>
+				<Icon name="chevron" class="chev" width={2.2} />
+			</Fragment>
+			<Fragment slot="options">
+				{LANGS.map((l) => (
+					<a
+						class="dd-option"
+						role="option"
+						href={href(l, section)}
+						hreflang={l}
+						lang={l}
+						aria-selected={l === lang ? "true" : "false"}
+					>
+						<span class="oc">{l.toUpperCase()}</span>
+						<span class="ot">{LANG_NAMES[l]}</span>
+						<Icon name="check" class="ck" width={2.4} />
+					</a>
+				))}
+			</Fragment>
+		</Dropdown>
+	</div>
+</header>
+
+<script>
+	import { requireElement } from "../../helpers/dom";
+	import { initHeader } from "../../helpers/header";
+	import { initThemeMenu } from "../../helpers/theme";
+
+	initHeader(requireElement(".site-header", HTMLElement));
+	initThemeMenu(requireElement("#ddTheme", HTMLElement));
+</script>

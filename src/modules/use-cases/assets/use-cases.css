@@ -1,0 +1,228 @@
+/* Use cases: groups of collapsible cards; an open card shows the recipes and their steps. */
+.uc {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+.uclist {
+	display: flex;
+	flex-direction: column;
+	gap: 44px;
+}
+.ucgroup > h3 {
+	margin: 0 0 16px;
+	color: var(--muted);
+	font: 700 0.8rem var(--f-body);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+.ucgroup .cases {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+details.case {
+	scroll-margin-top: 12px;
+	border: 1px solid var(--line);
+	border-radius: 16px;
+	background: var(--card);
+}
+details.case[open] {
+	border-color: var(--line-strong);
+}
+details.case > summary {
+	display: grid;
+	grid-template-columns: 18px minmax(0, 1fr) auto;
+	gap: 6px 16px;
+	align-items: center;
+	padding: 20px 24px;
+	list-style: none;
+	cursor: pointer;
+}
+details.case > summary::-webkit-details-marker {
+	display: none;
+}
+.case .chev {
+	color: var(--muted);
+	font-size: 0.8rem;
+	transition: transform 0.2s;
+}
+details.case[open] .chev {
+	transform: rotate(90deg);
+}
+.case .ct {
+	font: 700 1.15rem var(--f-display);
+}
+.case .cw {
+	grid-column: 2 / 3;
+	color: var(--muted);
+	font-size: 0.95rem;
+	line-height: 1.55;
+}
+.case .cc {
+	grid-row: 1;
+	grid-column: 3;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	color: var(--muted);
+	font-size: 0.78rem;
+}
+.case .cbody {
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+	padding: 4px 24px 28px 58px;
+}
+
+/* the prompt to type */
+.try {
+	font-size: 0.92rem;
+}
+.try .lab {
+	margin-bottom: 8px;
+}
+.try pre {
+	margin: 0;
+	padding: 14px 46px 14px 18px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	border: 1px solid var(--line-strong);
+	border-radius: 16px;
+	background: var(--bg);
+	color: var(--ink);
+	font: 500 0.93rem/1.6 var(--f-mono);
+	box-shadow: 0 1px 2px rgba(15, 20, 25, 0.04);
+	transition:
+		border-color 0.15s,
+		box-shadow 0.15s;
+}
+.try pre:hover {
+	border-color: var(--muted);
+}
+.try .cpy {
+	top: 10px;
+	right: 10px;
+	color: var(--muted);
+}
+.try pre:hover .cpy {
+	background: var(--ghost);
+	color: var(--ink);
+}
+.try pre.done {
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.try pre.done .cpy {
+	color: #00ba7c;
+}
+
+/* a unit: one recipe (or plain step) with its steps */
+.unit {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+.unit + .unit {
+	padding-top: 28px;
+	border-top: 1px solid var(--line);
+}
+.uhead {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 10px;
+}
+.uhead .un {
+	font: 500 1.02rem var(--f-mono);
+}
+.uhead .un.step {
+	font-family: var(--f-display);
+	font-weight: 600;
+}
+.uhead .via {
+	color: var(--muted);
+	font-size: 0.82rem;
+	font-style: italic;
+}
+.unit > .ud {
+	margin: 0;
+	max-width: 75ch;
+	color: var(--muted);
+	font-size: 0.98rem;
+	line-height: 1.65;
+}
+.uhead .ic {
+	flex: 0 0 11px;
+	width: 11px;
+	height: 11px;
+	border-radius: 50%;
+	background: var(--kind);
+}
+.uhead .ic.step {
+	border: 2px solid var(--k-step);
+	border-radius: 3px;
+	background: transparent;
+}
+
+.steps {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.steps > li {
+	display: grid;
+	grid-template-columns: 22px minmax(0, 1fr);
+	gap: 0 8px;
+	padding: 12px 16px;
+	border: 1px solid var(--line);
+	border-radius: 12px;
+}
+.steps .sm {
+	width: 10px;
+	height: 10px;
+	margin-top: 7px;
+	border: 2px solid var(--k-step);
+	border-radius: 3px;
+}
+.steps .sm.ref {
+	border: 0;
+	border-radius: 50%;
+	background: var(--kind);
+}
+.steps .stx {
+	font-weight: 600;
+}
+.steps .scd {
+	color: var(--muted);
+	font-size: 0.84rem;
+	font-style: italic;
+}
+.steps .sub {
+	margin: 4px 0 0;
+	padding-left: 16px;
+	color: var(--muted);
+	font-size: 0.86rem;
+}
+.steps .chips {
+	gap: 6px;
+	margin-top: 10px;
+}
+
+@media (max-width: 760px) {
+	details.case > summary {
+		grid-template-columns: 14px minmax(0, 1fr);
+		padding: 16px 18px;
+	}
+	.case .cc {
+		grid-row: auto;
+		grid-column: 2 / 3;
+	}
+	.case .cbody {
+		padding: 4px 16px 22px 16px;
+	}
+}

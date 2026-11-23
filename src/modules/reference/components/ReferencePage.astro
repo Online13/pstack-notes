@@ -1,0 +1,52 @@
+---
+/** API reference page: catalog and guide tabs. */
+import BaseLayout from "../../../components/templates/BaseLayout.astro";
+/* after BaseLayout: the module sheet comes after the shared ones in the cascade */
+import "../assets/reference.css";
+import ItemModal from "../../item/components/ItemModal.astro";
+import Catalog from "./Catalog.astro";
+import ApiGuide from "./ApiGuide.astro";
+import { referenceMessages } from "../messages";
+import type { Lang } from "../../../types/i18n";
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const m = referenceMessages(lang);
+const tabs = [
+	["catalog", "apiSkills"],
+	["guide", "apiGuide"],
+] as const;
+---
+
+<BaseLayout lang={lang} section="api" title={m.apiTitle} description={m.apiIntro}>
+	<main class="api">
+		<div class="sec-intro">
+			<h2>{m.apiTitle}</h2>
+			<p>{m.apiIntro}</p>
+		</div>
+		<nav class="subnav" role="tablist">
+			{tabs.map(([tab, panel], i) => (
+				<button
+					type="button"
+					role="tab"
+					data-tab={tab}
+					aria-controls={panel}
+					aria-selected={i === 0 ? "true" : "false"}
+				>
+					{m.apiTabs[i]}
+				</button>
+			))}
+		</nav>
+		<Catalog lang={lang} />
+		<ApiGuide lang={lang} />
+	</main>
+	<ItemModal slot="overlays" lang={lang} />
+</BaseLayout>
+
+<script>
+	import { initTabs } from "../helpers/tabs";
+
+	initTabs();
+</script>

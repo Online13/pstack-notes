@@ -1,0 +1,105 @@
+---
+/** One lesson: kicker, title, intro, then its body (steps, cards, cheat sheet or the feature map) and a prompt to try. */
+import { Image } from "astro:assets";
+import LessonChip from "./LessonChip.astro";
+import PromptBox from "./PromptBox.astro";
+import FeatureMap from "./FeatureMap.astro";
+import CopyIcon from "../../../components/atoms/CopyIcon.astro";
+import { TALK_URL } from "../../../services/content/sources";
+import { sharedMessages } from "../../../services/i18n/messages";
+import { renderEmphasis } from "../../../helpers/markdown";
+import { lessonsMessages } from "../messages";
+import verifImage from "../assets/talk-verification-slide.jpg";
+import type { Lang } from "../../../types/i18n";
+import type { Lesson } from "../../../types/content";
+
+interface Props {
+	lesson: Lesson;
+	index: number;
+	lang: Lang;
+}
+const { lesson: l, index, lang } = Astro.props;
+const m = lessonsMessages(lang);
+const copyLabel = sharedMessages(lang).copy.copy;
+---
+
+<section class="gsl" id={`gsl-${index}`}>
+	<p class="kicker">
+		{m.lesson} {index + 1}
+	</p>
+	<h2>{l.title}</h2>
+	{l.intro && <p class="intro" set:html={l.intro} />}
+	{l.figure === "verif" && (
+		<figure class="lfig">
+			<button
+				type="button"
+				class="lfimg"
+				data-lightbox
+				data-full={verifImage.src}
+				data-caption={m.verifCaption}
+				data-source={TALK_URL}
+				aria-label={m.verifCaption}
+			>
+				<Image src={verifImage} alt={m.verifCaption} loading="lazy" />
+			</button>
+			<figcaption>
+				{m.verifCaption}{" "}
+				<a class="srcline" href={TALK_URL} target="_blank" rel="noopener">
+					{m.verifSource} ↗
+				</a>
+			</figcaption>
+		</figure>
+	)}
+
+	{l.type === "chain" && (
+		<ol class="gsteps">
+			{l.items.map((x, i) => (
+				<li>
+					<span class="gn">{i + 1}</span>
+					<div>
+						<h3>{x.title}</h3>
+						<p set:html={renderEmphasis(x.desc, "gen")} />
+						{x.chips && (
+							<div class="chips">
+								{x.chips.map((id) => (
+									<LessonChip id={id} lang={lang} />
+								))}
+							</div>
+						)}
+					</div>
+				</li>
+			))}
+		</ol>
+	)}
+	{l.type === "cards" && (
+		<div class="gsgrid">
+			{l.items.map((x) => (
+				<div>
+					<h3>{x.title}</h3>
+					<p>{x.desc}</p>
+					{x.chips && (
+						<div class="chips">
+							{x.chips.map((id) => (
+								<LessonChip id={id} lang={lang} />
+							))}
+						</div>
+					)}
+				</div>
+			))}
+		</div>
+	)}
+	{l.type === "sheet" && (
+		<div class="gssheet">
+			{l.items.map((x) => (
+				<div class="copyable" role="button" tabindex="0" title={copyLabel}>
+					<span>{x.want}</span>
+					<code>{x.type}</code>
+					<CopyIcon />
+				</div>
+			))}
+		</div>
+	)}
+	{l.type === "fmap" && <FeatureMap lang={lang} />}
+
+	{l.prompt && <PromptBox text={l.prompt} lang={lang} />}
+</section>

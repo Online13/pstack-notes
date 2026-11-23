@@ -1,0 +1,37 @@
+---
+/** "Type this": a command in a prompt box. It types itself when it scrolls into view (helpers/typing.ts) and copies on click. */
+import CopyIcon from "../../../components/atoms/CopyIcon.astro";
+import { sharedMessages } from "../../../services/i18n/messages";
+import type { Lang } from "../../../types/i18n";
+
+interface Props {
+	text: string;
+	lang: Lang;
+}
+const { text, lang } = Astro.props;
+const ui = sharedMessages(lang);
+---
+
+<div class="termwrap">
+	<p class="term-label">{ui.typeThis}</p>
+	<div class="term copyable" role="button" tabindex="0" title={ui.copy.copy}>
+		<div class="tbody">
+			<span class="tg" aria-hidden="true">
+				<code>{text}</code>
+			</span>
+			<span class="tt">
+				<span class="typed" data-text={text}>
+					{text}
+				</span>
+				<span class="caret"></span>
+			</span>
+		</div>
+		<CopyIcon />
+	</div>
+</div>
+
+<script>
+	import { initTyping } from "../helpers/typing";
+
+	initTyping();
+</script>

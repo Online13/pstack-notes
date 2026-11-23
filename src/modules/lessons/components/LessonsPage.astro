@@ -1,0 +1,61 @@
+---
+/** Getting started page: a sticky table of contents next to the lessons. */
+import BaseLayout from "../../../components/templates/BaseLayout.astro";
+/* after BaseLayout: the module sheet comes after the shared ones in the cascade */
+import "../assets/lessons.css";
+import ItemModal from "../../item/components/ItemModal.astro";
+import Lesson from "./Lesson.astro";
+import { listLessons } from "../../../services/content/lessons";
+import { href } from "../../../services/i18n/config";
+import { sharedMessages } from "../../../services/i18n/messages";
+import { lessonsMessages } from "../messages";
+import type { Lang } from "../../../types/i18n";
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const m = lessonsMessages(lang);
+const title = sharedMessages(lang).sections[1];
+const lessons = await listLessons(lang);
+---
+
+<BaseLayout lang={lang} section="getting-started" title={title} description={m.gsIntro}>
+	<main class="gs">
+		<div class="gsdoc">
+			<nav class="gstoc" aria-label={`${m.lesson}s`}>
+				<ol>
+					{lessons.map((l, k) => (
+						<li>
+							<a href={`#gsl-${k}`} data-k={k}>
+								<span>{k + 1}</span>
+								{l.short}
+							</a>
+						</li>
+					))}
+				</ol>
+			</nav>
+			<div class="gsbody">
+				<div class="sec-intro">
+					<h2>{title}</h2>
+					<p>{m.gsIntro}</p>
+				</div>
+				{lessons.map((lesson, index) => (
+					<Lesson lesson={lesson} index={index} lang={lang} />
+				))}
+				<div class="gsend">
+					<a class="btn primary" href={href(lang, "use-cases")}>
+						{m.toUseCases} →
+					</a>
+				</div>
+			</div>
+		</div>
+	</main>
+	<ItemModal slot="overlays" lang={lang} />
+</BaseLayout>
+
+<script>
+	import { initLessonToc } from "../helpers/lesson-toc";
+
+	initLessonToc();
+</script>

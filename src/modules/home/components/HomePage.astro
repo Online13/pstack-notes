@@ -1,0 +1,221 @@
+---
+/** Home page: what pstack is, why it matters, the talks, and where to start. */
+import BaseLayout from "../../../components/templates/BaseLayout.astro";
+/* after BaseLayout: the module sheet comes after the shared ones in the cascade */
+import "../assets/home.css";
+import Icon, { type IconName } from "../../../components/atoms/Icon.astro";
+import Shot from "./Shot.astro";
+import TrustChart from "./TrustChart.astro";
+import Pyramid from "./Pyramid.astro";
+import { listItemIds } from "../../../services/content/catalog";
+import { countLessons } from "../../../services/content/lessons";
+import { REPO_URL, TALK_URL, TRIANGLE_POST_URL } from "../../../services/content/sources";
+import { listTalks } from "../../../services/content/talks";
+import { countUseCases } from "../../../services/content/use-cases";
+import { href } from "../../../services/i18n/config";
+import { homeMessages } from "../messages";
+import prsImage from "../assets/talk-github-contributions.jpg";
+import slackImage from "../assets/talk-benny-slack.jpg";
+import type { Lang, Section } from "../../../types/i18n";
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const h = homeMessages(lang);
+const [lessonCount, useCaseCount, itemIds, talks] = await Promise.all([
+	countLessons(),
+	countUseCases(),
+	listItemIds(),
+	listTalks(lang),
+]);
+const ideaIcons = ["curve", "up", "done", "doc"] as const satisfies readonly IconName[];
+const talkSource = (i: 0 | 1 | 2 | 3) => `${h.wsPre}${h.ws[i]} ↗`;
+const stats = [
+	{ n: lessonCount, label: h.what[0][1] },
+	{ n: useCaseCount, label: h.what[1][1] },
+	{ n: itemIds.length, label: h.what[2][1] },
+];
+const cards: { section: Section; title: string; text: string }[] = [
+	{ section: "getting-started", title: h.map[0][0], text: h.map[0][1] },
+	{ section: "use-cases", title: h.map[1][0], text: h.map[1][1] },
+	{ section: "api", title: h.map[2][0], text: h.map[2][1] },
+];
+---
+
+<BaseLayout lang={lang} section="home" description={h.h1}>
+	<main class="home">
+		<section class="lp hero">
+			<div class="hero-text">
+				<span class="pillbadge">
+					<b>{h.badge}</b>
+					<span>pstack</span>
+				</span>
+				<h1>{h.h1}</h1>
+				<p class="lead" set:html={h.lead} />
+				<p class="credit">{h.credit}</p>
+				<div class="cta">
+					<a class="btn primary" href={href(lang, "getting-started")}>
+						{h.cta1} →
+					</a>
+					<a class="btn" href={href(lang, "api")}>
+						{h.cta2}
+					</a>
+				</div>
+				<dl class="whatrow">
+					{stats.map(({ n, label }) => (
+						<div>
+							<dt>{n}</dt>
+							<dd>{label}</dd>
+						</div>
+					))}
+				</dl>
+			</div>
+			<div class="hero-media">
+				<Shot image={prsImage} caption={h.cap1} lang={lang} eager />
+			</div>
+		</section>
+
+		<section class="lp">
+			<div class="lp-head">
+				<span class="eb">{h.uEb}</span>
+				<h2>{h.uT}</h2>
+				<p>{h.uS}</p>
+			</div>
+			<ol class="plist two">
+				{h.use.map(([title, text]) => (
+					<li>
+						<h3>{title}</h3>
+						<p>{text}</p>
+					</li>
+				))}
+			</ol>
+		</section>
+
+		<section class="lp">
+			<div class="lp-head">
+				<h2>{h.sT}</h2>
+				<p>{h.sS}</p>
+			</div>
+			<div class="statrow">
+				{h.stats.map(([n, label]) => (
+					<div>
+						<b>{n}</b>
+						<span>{label}</span>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section class="lp">
+			<div class="lp-head">
+				<span class="eb">{h.wEb}</span>
+				<h2>{h.wT}</h2>
+				<p>{h.wS}</p>
+			</div>
+			<div class="fgrid">
+				<div class="trust">
+					<span class="fi">
+						<Icon name={ideaIcons[0]} />
+					</span>
+					<h3>{h.w[0][0]}</h3>
+					<p>{h.w[0][1]}</p>
+					<div class="media">
+						<TrustChart lang={lang} />
+					</div>
+					<span class="srcline">{h.trustSrc}</span>
+					<a class="srcline" href={TALK_URL} target="_blank" rel="noopener">
+						{talkSource(0)}
+					</a>
+				</div>
+				<div>
+					<span class="fi">
+						<Icon name={ideaIcons[1]} />
+					</span>
+					<h3>{h.w[1][0]}</h3>
+					<p>{h.w[1][1]}</p>
+					<Pyramid lang={lang} />
+					<a class="srcline" href={TRIANGLE_POST_URL} target="_blank" rel="noopener">
+						{h.triangle.src} ↗
+					</a>
+					<a class="srcline" href={TALK_URL} target="_blank" rel="noopener">
+						{talkSource(1)}
+					</a>
+				</div>
+				<div>
+					<span class="fi">
+						<Icon name={ideaIcons[2]} />
+					</span>
+					<h3>{h.w[2][0]}</h3>
+					<p>{h.w[2][1]}</p>
+					<Shot image={slackImage} caption={h.cap2} lang={lang} />
+					<a class="linkbtn" href={href(lang, "getting-started", "#gsl-2")}>
+						{h.lesson} →
+					</a>
+					<a class="srcline" href={TALK_URL} target="_blank" rel="noopener">
+						{talkSource(2)}
+					</a>
+				</div>
+				<div>
+					<span class="fi">
+						<Icon name={ideaIcons[3]} />
+					</span>
+					<h3>{h.w[3][0]}</h3>
+					<p>{h.w[3][1]}</p>
+					<a class="srcline" href={TALK_URL} target="_blank" rel="noopener">
+						{talkSource(3)}
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="lp bigquote">
+			<blockquote>“{h.quote}”</blockquote>
+			<cite>
+				<a href={REPO_URL} target="_blank" rel="noopener">
+					{h.quoteBy} ↗
+				</a>
+			</cite>
+		</section>
+
+		<section class="lp">
+			<div class="lp-head">
+				<span class="eb">{h.tEb}</span>
+				<h2>{h.tT}</h2>
+				<p>{h.tS}</p>
+			</div>
+			<ul class="tlist">
+				{talks.map((talk) => (
+					<li>
+						<a href={talk.url} target="_blank" rel="noopener">
+							<h3>
+								{talk.title}
+								{talk.secondary && <span class="tag">{h.second}</span>}
+							</h3>
+							<div class="meta">{talk.meta}</div>
+							<p>{talk.desc}</p>
+							<span class="go">{h.open} ↗</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</section>
+
+		<section class="lp">
+			<div class="lp-head">
+				<span class="eb">{h.cEb}</span>
+				<h2>{h.cT}</h2>
+			</div>
+			<div class="ctagrid">
+				{cards.map(({ section, title, text }, i) => (
+					<a class="cta-card" href={href(lang, section)}>
+						<span class="n">0{i + 1}</span>
+						<h3>{title}</h3>
+						<p>{text}</p>
+						<span class="ar">{h.go} →</span>
+					</a>
+				))}
+			</div>
+		</section>
+	</main>
+</BaseLayout>

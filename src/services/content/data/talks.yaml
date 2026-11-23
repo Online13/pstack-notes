@@ -1,0 +1,70 @@
+# Talks and writing about pstack. `secondary`: about the author rather than by her.
+- id: shipped-2500-prs
+  url: https://x.com/poteto/status/2102050467505430555
+  title:
+     fr: Here's how I shipped 2,500 PRs last month
+     en: Here's how I shipped 2,500 PRs last month
+  meta:
+     fr: Vidéo sur X · ~38 min · prévue pour Cursor Compile London, diffusée en live
+     en: Video on X · ~38 min · planned for Cursor Compile London, streamed live
+  desc:
+     fr: "Le talk de base : la courbe de confiance, les 5 niveaux de correction, la codebase comme mémoire, les automatisations. Ce site le suit."
+     en: "The core talk: the trust curve, the 5 correction levels, the codebase as memory, automations. This site follows it."
+- id: pstack-guide-part-1
+  url: https://x.com/poteto/status/2094457600259842065
+  title:
+     fr: Guide pstack, partie 1
+     en: pstack guide, part 1
+  meta:
+     fr: Fil écrit sur X
+     en: Written thread on X
+  desc:
+     fr: La vérification comme infrastructure et la feature map comme mémoire.
+     en: Verification as infrastructure and the feature map as memory.
+- id: pstack-guide-part-2
+  url: https://x.com/poteto/status/2097732320606507506
+  title:
+     fr: Guide pstack, partie 2
+     en: pstack guide, part 2
+  meta:
+     fr: Fil écrit sur X
+     en: Written thread on X
+  desc:
+     fr: Prototyper pour planifier, et paralléliser seulement une fois la confiance acquise.
+     en: Prototype to plan, and only parallelize once trust is earned.
+- id: spacex-ai-engineer
+  url: https://sozai.app/transcript/spacex-ai-engineer-lauren-tan-part-1/
+  secondary: true
+  title:
+     fr: SpaceX AI Engineer Lauren Tan, part 1
+     en: SpaceX AI Engineer Lauren Tan, part 1
+  meta:
+     fr: Interview vidéo · ~55 min · lien vers la transcription
+     en: Video interview · ~55 min · links to the transcript
+  desc:
+     fr: Les agents gagnent la confiance en testant la vraie app. Le parallèle vient après.
+     en: Agents earn trust by testing the real app. Parallelism comes after.
+- id: ai-engineer-talk
+  url: https://www.teamday.ai/ai/lauren-tan-spacexsi-grok-bot-11000-agent-prs-lint-rules
+  secondary: true
+  title:
+     fr: Talk AI Engineer
+     en: AI Engineer talk
+  meta:
+     fr: Novembre 2026 · lien vers un résumé
+     en: November 2026 · links to a write-up
+  desc:
+     fr: Chaque correction doit devenir une vérification déterministe (lint, type, API), pas une ligne de plus dans un fichier de règles.
+     en: Every correction should become a deterministic check (lint, type, API), not one more line in a rules file.
+- id: lightcone-y-combinator
+  url: https://www.teamday.ai/ai/roman-ugarte-lauren-tan-grok-bot-ai-coworkers-trust-ladder
+  secondary: true
+  title:
+     fr: Lightcone (Y Combinator), avec Roman Ugarte
+     en: Lightcone (Y Combinator), with Roman Ugarte
+  meta:
+     fr: Podcast · novembre 2026 · lien vers un résumé
+     en: Podcast · November 2026 · links to a write-up
+  desc:
+     fr: "L'échelle de confiance jusqu'au bout : ses agents mergent leurs propres PR."
+     en: "The trust ladder all the way up: her agents merge their own PRs."

@@ -1,0 +1,266 @@
+/* API reference: catalog (search, filters, table or graph) and guide tabs. */
+.api {
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+}
+.catalog {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.subnav {
+	display: flex;
+	gap: 8px;
+	border-bottom: 1px solid var(--line);
+}
+.subnav button {
+	margin-bottom: -1px;
+	padding: 12px 16px;
+	border: 0;
+	border-bottom: 2px solid transparent;
+	background: none;
+	color: var(--muted);
+	font: 700 0.95rem var(--f-body);
+	cursor: pointer;
+}
+.subnav button:hover {
+	color: var(--ink);
+}
+.subnav button[aria-selected="true"] {
+	border-bottom-color: var(--ink);
+	color: var(--ink);
+}
+
+.tablewrap {
+	overflow-x: auto;
+	border-radius: 14px;
+}
+.panelcard {
+	min-width: 0;
+	border: 1px solid var(--line);
+	border-radius: 16px;
+	background: var(--card);
+}
+
+.tools {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px;
+	padding: 16px;
+}
+.tools input {
+	flex: 1 1 220px;
+	min-width: 0;
+	padding: 10px 12px;
+	border: 1px solid var(--line-strong);
+	border-radius: 12px;
+	background: var(--bg);
+	color: var(--ink);
+	font: 500 0.9rem var(--f-body);
+}
+.seg {
+	display: inline-flex;
+	margin-left: auto;
+	padding: 3px;
+	border-radius: 9px;
+	background: var(--ghost);
+}
+.seg button {
+	display: grid;
+	place-items: center;
+	padding: 7px 11px;
+	border: 0;
+	border-radius: 7px;
+	background: none;
+	color: var(--muted);
+	font: 600 0.85rem var(--f-body);
+	cursor: pointer;
+}
+.seg button[aria-pressed="true"] {
+	background: var(--ink);
+	color: var(--bg);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+.seg svg {
+	width: 18px;
+	height: 18px;
+}
+.resinfo {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px;
+	color: var(--muted);
+	font-size: 0.92rem;
+}
+
+/* table */
+tbody tr.sk {
+	cursor: pointer;
+}
+tbody tr.sk:hover {
+	background: var(--ghost);
+}
+td.nm {
+	padding-top: 15px;
+	font-family: var(--f-mono);
+	font-size: 0.85rem;
+	font-weight: 500;
+	white-space: nowrap;
+}
+tbody tr.sk td.nm::after {
+	content: "↗";
+	margin-left: 8px;
+	color: var(--muted);
+	opacity: 0;
+	transition: opacity 0.15s;
+}
+tbody tr.sk:hover td.nm::after {
+	opacity: 1;
+}
+td.ds {
+	max-width: 52ch;
+	min-width: 28ch;
+	color: var(--muted);
+}
+th.sortable {
+	cursor: pointer;
+	user-select: none;
+}
+th.sortable:hover {
+	color: var(--ink);
+}
+th .arr {
+	margin-left: 4px;
+	color: var(--accent);
+}
+
+/* call graph */
+.graphbox {
+	height: 78vh;
+	min-height: 520px;
+	overflow: hidden;
+	border: 1px solid var(--line);
+	border-radius: 14px;
+	background: var(--card);
+}
+.graphbox svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+	cursor: grab;
+}
+.grings circle {
+	fill: none;
+	stroke: var(--line-strong);
+	stroke-dasharray: 3 7;
+	opacity: 0.6;
+}
+.glink {
+	fill: none;
+	stroke: var(--line-strong);
+	stroke-width: 1;
+	opacity: 0.55;
+}
+.glink.hot {
+	stroke: var(--accent);
+	stroke-width: 1.8;
+	opacity: 1;
+}
+.glink.dim {
+	opacity: 0.08;
+}
+.garrow {
+	fill: var(--muted);
+}
+.gnode circle {
+	stroke: var(--card);
+	stroke-width: 1.5;
+	cursor: pointer;
+}
+.gnode text {
+	fill: var(--ink);
+	font-family: var(--f-mono);
+	font-size: 13px;
+	pointer-events: none;
+}
+.gnode text.hub {
+	font-size: 16px;
+	font-weight: 600;
+}
+.gnode.dim {
+	opacity: 0.18;
+}
+
+/* guide tab */
+.guide {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+.guide > p {
+	margin: 0;
+	color: var(--muted);
+}
+.guide section {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding: 28px;
+}
+.guide h3 {
+	margin: 0;
+	font: 600 1.3rem var(--f-display);
+}
+.guide section > p {
+	margin: 0;
+	max-width: 75ch;
+	color: var(--muted);
+	font-size: 0.9rem;
+}
+.guide table {
+	min-width: 600px;
+}
+.lvrow {
+	display: flex;
+	align-items: baseline;
+	gap: 16px;
+	padding: 4px 0;
+	font-size: 0.98rem;
+}
+.lvrow > b {
+	min-width: 90px;
+}
+.gloss {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 14px;
+}
+.gloss div {
+	padding: 14px 16px;
+	border: 1px solid var(--line);
+	border-radius: 10px;
+}
+.gloss b {
+	font-family: var(--f-mono);
+	font-size: 0.9rem;
+	font-weight: 500;
+}
+.gloss p {
+	margin: 2px 0 0;
+	color: var(--muted);
+	font-size: 0.86rem;
+}
+
+@media (max-width: 760px) {
+	td.ds,
+	th.ds {
+		display: none;
+	}
+	.seg {
+		margin-left: 0;
+	}
+}

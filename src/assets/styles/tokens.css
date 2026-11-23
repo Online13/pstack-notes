@@ -1,0 +1,77 @@
+/* Design tokens. Light by default; dark follows the system unless the visitor picked a theme (html[data-theme]). */
+:root {
+	--bg: #ffffff;
+	--card: #ffffff;
+	--ink: #0f1419;
+	--muted: #536471;
+	--line: #eff3f4;
+	--line-strong: #cfd9de;
+	--ghost: #f7f9f9;
+	--accent: #1d9bf0;
+	--accent-soft: #e8f5fd;
+	--heavy: #f4212e;
+	--heavy-soft: #fde8ea;
+	/* one color per catalog kind (see services/content/kinds.ts) */
+	--k-pb: #1d9bf0;
+	--k-pb-soft: #e8f5fd;
+	--k-sk: #00a36c;
+	--k-sk-soft: #e3f6ef;
+	--k-pr: #7856ff;
+	--k-ag: #f91880;
+	--k-loc: #00a36c;
+	--k-ext: #ff7a00;
+	--k-tool: #8b98a5;
+	--k-bn: #a0724b;
+	--k-step: #aab8c2;
+	/* cost bar, by level */
+	--c1: #e0a800;
+	--c2: #ff7a00;
+	--c3: #f4212e;
+	--f-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+	--f-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+	--f-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* The dark palette is declared twice: once for the system preference, once for an explicit choice. */
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--bg: #000000;
+		--card: #16181c;
+		--ink: #e7e9ea;
+		--muted: #71767b;
+		--line: #2f3336;
+		--line-strong: #3e4144;
+		--ghost: #1d1f23;
+		--accent-soft: #0b2133;
+		--heavy-soft: #2a1216;
+		--k-pb-soft: #0b2133;
+		--k-sk: #00ba7c;
+		--k-sk-soft: #062a1e;
+		--k-pr: #8b71ff;
+		--k-loc: #00ba7c;
+		--k-bn: #c08a5e;
+		--k-step: #536471;
+		--c1: #ffd400;
+		color-scheme: dark;
+	}
+}
+:root[data-theme="dark"] {
+	--bg: #000000;
+	--card: #16181c;
+	--ink: #e7e9ea;
+	--muted: #71767b;
+	--line: #2f3336;
+	--line-strong: #3e4144;
+	--ghost: #1d1f23;
+	--accent-soft: #0b2133;
+	--heavy-soft: #2a1216;
+	--k-pb-soft: #0b2133;
+	--k-sk: #00ba7c;
+	--k-sk-soft: #062a1e;
+	--k-pr: #8b71ff;
+	--k-loc: #00ba7c;
+	--k-bn: #c08a5e;
+	--k-step: #536471;
+	--c1: #ffd400;
+	color-scheme: dark;
+}

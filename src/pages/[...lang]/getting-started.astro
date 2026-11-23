@@ -1,0 +1,11 @@
+---
+import type { InferGetStaticPropsType } from "astro";
+import LessonsPage from "../../modules/lessons/components/LessonsPage.astro";
+import { langStaticPaths } from "../../services/i18n/config";
+
+export const getStaticPaths = langStaticPaths;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { lang } = Astro.props;
+---
+
+<LessonsPage lang={lang} />

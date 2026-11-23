@@ -1,0 +1,25 @@
+---
+/** Image preview, filled by helpers/lightbox.ts when a [data-lightbox] trigger is clicked. */
+import { sharedMessages } from "../../services/i18n/messages";
+import type { Lang } from "../../types/i18n";
+
+interface Props {
+	lang: Lang;
+}
+const m = sharedMessages(Astro.props.lang);
+---
+
+<div
+	id="lightbox"
+	class="lightbox"
+	hidden
+	data-close={m.closeImage}
+	data-source-label={`${m.imageSource} : ${m.theTalk}`}
+></div>
+
+<script>
+	import { requireElement } from "../../helpers/dom";
+	import { initLightbox } from "../../helpers/lightbox";
+
+	initLightbox(requireElement("#lightbox", HTMLElement));
+</script>

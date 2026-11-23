@@ -1,0 +1,11 @@
+// Cloudflare Worker serving the static build (./dist). No Worker code: assets only.
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "pstack-notes",
+	"compatibility_date": "2026-11-23",
+	"assets": {
+		"directory": "./dist",
+		// URLs end with "/" (astro.config.mjs: trailingSlash "always"): /api redirects to /api/
+		"html_handling": "force-trailing-slash",
+	},
+}

@@ -1,0 +1,57 @@
+# API reference guide: what is Cursor-specific, and what to plan instead.
+- id: loop
+  name: /loop
+  what:
+     fr: Relance l'agent à intervalle ou sur événement
+     en: Reruns the agent on an interval or event
+  equivalent:
+     fr: /loop de Claude Code, ou un cron
+     en: Claude Code's /loop, or a cron
+- id: create-skill
+  name: create-skill
+  what:
+     fr: Écrire un SKILL.md
+     en: Write a SKILL.md
+  equivalent:
+     fr: skill-creator côté Claude, ou ton propre skill
+     en: skill-creator on Claude, or your own skill
+- id: deslop-control-ui-control-cli
+  name: /deslop, control-ui, control-cli
+  what:
+     fr: Plugin cursor-team-kit
+     en: cursor-team-kit plugin
+  equivalent:
+     fr: Ton /verify-<app>, un skill deslop maison
+     en: Your /verify-<app>, a home-made deslop skill
+- id: task-subagent-type-environment-cloud
+  name: "Task + subagent_type, environment: cloud"
+  what:
+     fr: Outil de subagents Cursor
+     en: Cursor's subagent tool
+  equivalent:
+     fr: Outil Agent de Claude Code. Codex n'a pas toujours l'équivalent cloud
+     en: Claude Code's Agent tool. Codex may lack a cloud equivalent
+- id: cursor-rules-pstack-models-mdc
+  name: ~/.cursor/rules/pstack-models.mdc
+  what:
+     fr: Règle écrite par setup-pstack
+     en: Rule written by setup-pstack
+  equivalent:
+     fr: Un fichier de config de modèles lu par tes skills
+     en: A model config file your skills read
+- id: agent-transcripts-cursor-projects
+  name: agent-transcripts/, ~/.cursor/projects/
+  what:
+     fr: Où sont les transcripts
+     en: Where transcripts live
+  equivalent:
+     fr: ~/.claude/projects/ côté Claude Code
+     en: ~/.claude/projects/ on Claude Code
+- id: cursor-cloud-agents
+  name: Cursor cloud agents
+  what:
+     fr: Un agent distant par PR
+     en: One remote agent per PR
+  equivalent:
+     fr: Sessions cloud Claude Code, ou worktrees locaux
+     en: Claude Code cloud sessions, or local worktrees

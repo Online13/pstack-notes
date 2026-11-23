@@ -1,0 +1,502 @@
+# Getting started lessons, in reading order. In chain items, **bold** marks a generated artifact. type: chain | cards | sheet | fmap.
+- id: the-pieces
+  type: cards
+  short:
+     fr: Les pièces
+     en: The pieces
+  title:
+     fr: pstack, c'est une boîte à outils avec trois sortes de pièces
+     en: pstack is a toolbox with three kinds of pieces
+  intro:
+     fr: Avant les flows, il faut connaître les pièces. Il y en a <b>trois sortes</b>, et chacune a un rôle différent.
+     en: Before the flows, meet the pieces. There are <b>three kinds</b>, and each has a different job.
+  items:
+     - title:
+          fr: Skill
+          en: Skill
+       desc:
+          fr: Un outil précis que l'agent sait utiliser. Tu l'appelles avec /nom, par exemple /why. Un skill fait une seule chose.
+          en: A specific tool the agent knows how to use. You call it with /name, for example /why. A skill does one thing.
+       chips:
+          - why
+          - architect
+     - title:
+          fr: Playbook (recette)
+          en: Playbook (recipe)
+       desc:
+          fr: "Une recette pas à pas pour un type de tâche : corriger un bug, ajouter une feature... Une recette appelle des skills à certaines étapes."
+          en: "A step-by-step recipe for one kind of task: fix a bug, add a feature... A recipe calls skills at certain steps."
+       chips:
+          - bug-fix
+          - feature
+     - title:
+          fr: Principe
+          en: Principle
+       desc:
+          fr: Une règle de jugement courte. Elle ne fait rien seule. Les recettes s'en servent pour décider, par exemple « supprime avant d'ajouter ».
+          en: A short judgment rule. It does nothing on its own. Recipes use it to decide, for example “delete before you add”.
+       chips:
+          - principle
+- id: the-front-door
+  type: chain
+  short:
+     fr: La porte d'entrée
+     en: The front door
+  title:
+     fr: "Tu parles à une seule porte : /poteto-mode"
+     en: "You talk to one front door: /poteto-mode"
+  intro:
+     fr: Tu n'as pas besoin de retenir tous les skills. Tu décris ta tâche à <b>/poteto-mode</b>, et il choisit la recette pour toi.
+     en: You don't need to remember every skill. You describe your task to <b>/poteto-mode</b>, and it picks the recipe for you.
+  items:
+     - title:
+          fr: Toi
+          en: You
+       desc:
+          fr: Tu écris ta demande en langage normal, par exemple « le bouton export ne marche pas ».
+          en: You write your request in plain words, for example “the export button doesn't work”.
+     - title:
+          fr: /poteto-mode
+          en: /poteto-mode
+       desc:
+          fr: Il reformule ton but, puis reconnaît le type de tâche. Ici, c'est un bug.
+          en: It restates your goal, then recognizes the kind of task. Here, it's a bug.
+     - title:
+          fr: Une recette
+          en: A recipe
+       desc:
+          fr: Il ouvre la recette qui correspond, ici Bug fix, et copie ses étapes dans sa liste de tâches.
+          en: It opens the matching recipe, here Bug fix, and copies its steps into its task list.
+       chips:
+          - bug-fix
+     - title:
+          fr: Des skills
+          en: Some skills
+       desc:
+          fr: À chaque étape, la recette appelle les skills dont elle a besoin. Tu peux aussi appeler un skill toi-même, sans passer par la porte.
+          en: At each step, the recipe calls the skills it needs. You can also call a skill yourself, without going through the door.
+       chips:
+          - verify-app
+          - why
+          - architect
+  prompt: /poteto-mode the export button does nothing on Safari. repro first, then fix and verify.
+- id: the-proof
+  type: chain
+  short:
+     fr: La preuve
+     en: The proof
+  title:
+     fr: "Le skill qui sert partout : /verify-<app>"
+     en: "The skill used everywhere: /verify-<app>"
+  intro:
+     fr: Presque toutes les recettes finissent par <b>prouver</b> le travail sur la vraie app. Pour ça, il faut un skill qui sait piloter ton app. Tu le crées une fois.
+     en: Almost every recipe ends by <b>proving</b> the work on the real app. That needs a skill that can drive your app. You create it once.
+  figure: verif
+  items:
+     - title:
+          fr: Créer
+          en: Create
+       desc:
+          fr: /create-verification-skill lit ton repo et génère pour ton projet **un skill de vérification**, qui contient **un CLI** pour piloter l'app et **une feature map** (un fichier par feature).
+          en: /create-verification-skill reads your repo and generates **a verification skill** for your project, which holds **a CLI** to drive the app and **a feature map** (one file per feature).
+       chips:
+          - create-verification-skill
+     - title:
+          fr: Utiliser
+          en: Use
+       desc:
+          fr: Le skill obtenu, par exemple /verify-terms-era, lance l'app et clique dedans comme un humain.
+          en: The resulting skill, for example /verify-terms-era, starts the app and clicks through it like a person.
+       chips:
+          - verify-app
+     - title:
+          fr: Partout
+          en: Everywhere
+       desc:
+          fr: Bug fix, Feature, Refactoring, Prototype, Perf et Shipping l'appellent pour vérifier leur travail.
+          en: Bug fix, Feature, Refactoring, Prototype, Perf and Shipping call it to check their work.
+       chips:
+          - bug-fix
+          - feature
+          - refactoring
+          - shipping
+     - title:
+          fr: Entretenir
+          en: Maintain
+       desc:
+          fr: Quand l'app change, /maintain-verification-skill remet le skill et la feature map à jour.
+          en: When the app changes, /maintain-verification-skill brings the skill and feature map up to date.
+       chips:
+          - maintain-verification-skill
+  prompt: /create-verification-skill
+- id: the-feature-map
+  type: fmap
+  short:
+     fr: La feature map
+     en: The feature map
+  title:
+     fr: Une feature map, c'est le mode d'emploi de ton app, écrit pour l'agent
+     en: A feature map is your app's user guide, written for the agent
+  intro:
+     fr: "Pour prouver son travail, l'agent doit savoir où se trouve chaque fonctionnalité de ton app et comment l'atteindre. C'est le rôle de la <b>feature map</b> : un dossier de fichiers Markdown, un par fonctionnalité, rangé à côté du skill de vérification."
+     en: "To prove its work, the agent has to know where each feature of your app lives and how to reach it. That's the job of the <b>feature map</b>: a folder of Markdown files, one per feature, stored next to the verification skill."
+- id: a-bug
+  type: chain
+  short:
+     fr: Un bug
+     en: A bug
+  title:
+     fr: "Flow 1 : corriger un bug"
+     en: "Flow 1: fixing a bug"
+  intro:
+     fr: "La règle de cette recette : <b>on ne corrige rien qu'on n'a pas vu casser</b>. Suis les étapes une par une."
+     en: "The rule of this recipe: <b>never fix what you haven't seen break</b>. Follow the steps one by one."
+  items:
+     - title:
+          fr: Reproduire
+          en: Reproduce
+       desc:
+          fr: L'agent fait apparaître le bug lui-même dans la vraie app. Il ne te demande pas de le faire.
+          en: The agent makes the bug happen itself in the real app. It doesn't ask you to do it.
+       chips:
+          - verify-app
+     - title:
+          fr: Trouver la cause
+          en: Find the cause
+       desc:
+          fr: Il élimine les hypothèses une à une avec des preuves (logs, historique git), au lieu de deviner.
+          en: It rules out hypotheses one by one with evidence (logs, git history), instead of guessing.
+       chips:
+          - why
+     - title:
+          fr: Déléguer le fix
+          en: Delegate the fix
+       desc:
+          fr: Si le fix touche plusieurs fonctions, il dessine d'abord la forme. Puis un sous-agent écrit le code.
+          en: If the fix spans several functions, it sketches the shape first. Then a sub-agent writes the code.
+       chips:
+          - architect
+          - poteto-agent
+     - title:
+          fr: Vérifier
+          en: Verify
+       desc:
+          fr: Il refait exactement le même chemin dans l'app. Le bug doit avoir disparu.
+          en: It replays the exact same path in the app. The bug must be gone.
+       chips:
+          - verify-app
+     - title:
+          fr: Test d'abord
+          en: Test first
+       desc:
+          fr: Dans l'historique git, le test qui échoue arrive avant le fix. Seulement si un test simple existe.
+          en: In git history, the failing test comes before the fix. Only when a simple test exists.
+       chips:
+          - tdd
+     - title:
+          fr: Ouvrir la PR
+          en: Open the PR
+       desc:
+          fr: La recette de fin, la même pour tout le monde. On la voit en détail à la leçon 8.
+          en: The closing recipe, the same for everyone. Lesson 8 covers it.
+       chips:
+          - opening-a-pr
+  prompt: /poteto-mode <symptom>. repro first, then fix and verify.
+- id: a-feature
+  type: chain
+  short:
+     fr: Une feature
+     en: A feature
+  title:
+     fr: "Flow 2 : ajouter une feature"
+     en: "Flow 2: adding a feature"
+  intro:
+     fr: Ici l'agent principal <b>garde le design</b> et délègue l'écriture du code. Il agit comme un chef de projet.
+     en: Here the main agent <b>owns the design</b> and delegates the coding. It acts like a tech lead.
+  items:
+     - title:
+          fr: Comprendre la zone
+          en: Understand the area
+       desc:
+          fr: Il lit le code que la feature va toucher.
+          en: It reads the code the feature will touch.
+     - title:
+          fr: Dessiner la forme
+          en: Sketch the shape
+       desc:
+          fr: "Types, fonctions, modules : il esquisse deux options et garde la plus simple."
+          en: "Types, functions, modules: it sketches two options and keeps the simpler one."
+       chips:
+          - architect
+     - title:
+          fr: Déléguer le code
+          en: Delegate the code
+       desc:
+          fr: Un sous-agent écrit le code. Si plusieurs formes sont valables, il lance arena pour comparer, ce qui coûte plus cher.
+          en: A sub-agent writes the code. If several shapes are valid, it runs arena to compare them, which costs more.
+       chips:
+          - poteto-agent
+          - arena
+     - title:
+          fr: Vérifier
+          en: Verify
+       desc:
+          fr: Il teste la feature dans la vraie app.
+          en: It tests the feature in the real app.
+       chips:
+          - verify-app
+     - title:
+          fr: Challenger
+          en: Challenge
+       desc:
+          fr: "Seulement si le design est discutable : des agents essaient de casser le code."
+          en: "Only if the design is debatable: agents try to break the code."
+       chips:
+          - interrogate
+     - title:
+          fr: Ouvrir la PR
+          en: Open the PR
+       desc:
+          fr: Même recette de fin que pour un bug.
+          en: Same closing recipe as for a bug.
+       chips:
+          - opening-a-pr
+  prompt: /poteto-mode add <behavior>. <current output> stays identical. verify both.
+- id: other-recipes
+  type: cards
+  short:
+     fr: Autres recettes
+     en: Other recipes
+  title:
+     fr: Trois autres recettes, même logique
+     en: Three more recipes, same logic
+  intro:
+     fr: "Tu connais maintenant le schéma : <b>préparer, faire, prouver, ouvrir la PR</b>. Ces trois recettes le suivent aussi, avec une variante chacune."
+     en: "You now know the pattern: <b>prepare, do, prove, open the PR</b>. These three recipes follow it too, each with a twist."
+  items:
+     - title:
+          fr: Refactoring
+          en: Refactoring
+       desc:
+          fr: "Changer la structure sans changer le comportement. La variante : on fige d'abord le comportement avec un test, et le test doit rester vert à chaque pas."
+          en: "Change the structure without changing behavior. The twist: first freeze the behavior with a test, and keep it green at every step."
+       chips:
+          - refactoring
+          - architect
+     - title:
+          fr: Perf issue
+          en: Perf issue
+       desc:
+          fr: "Corriger une lenteur. La variante : une mesure avant, une mesure après, et on vérifie que la mesure est fiable."
+          en: "Fix slowness. The twist: one measurement before, one after, and a check that the measurement is reliable."
+       chips:
+          - perf-issue
+          - benchmark-checklist
+     - title:
+          fr: Prototype
+          en: Prototype
+       desc:
+          fr: "Choisir entre plusieurs designs. La variante : le code est jetable, le résultat est une décision. Ensuite on passe à la recette Feature."
+          en: "Pick between designs. The twist: the code is throwaway, the result is a decision. Then you move on to the Feature recipe."
+       chips:
+          - prototype
+          - feature
+- id: shipping
+  type: chain
+  short:
+     fr: Livrer
+     en: Shipping
+  title:
+     fr: La vie d'une PR, de l'ouverture au merge
+     en: A PR's life, from open to merge
+  intro:
+     fr: "Trois recettes se suivent. Retiens une règle : <b>celui qui a écrit le code ne valide jamais son propre travail</b>."
+     en: "Three recipes in a row. Remember one rule: <b>whoever wrote the code never approves their own work</b>."
+  items:
+     - title:
+          fr: Opening a PR
+          en: Opening a PR
+       desc:
+          fr: Petits commits propres, nettoyage du code et des commentaires, description courte avec des titres fixes. La PR est ouverte, jamais en brouillon.
+          en: Small clean commits, cleanup of code and comments, a short description with fixed headings. The PR opens ready, never as a draft.
+       chips:
+          - deslop
+          - no-comments
+          - technical-writing
+     - title:
+          fr: Babysit
+          en: Babysit
+       desc:
+          fr: "Surveille la PR. Ordre fixe : les conflits d'abord, puis les commentaires de review, puis la CI. Ne merge jamais."
+          en: "Watches the PR. Fixed order: conflicts first, then review comments, then CI. Never merges."
+       chips:
+          - babysit
+     - title:
+          fr: Shipping
+          en: Shipping
+       desc:
+          fr: Un agent neuf teste chaque PR dans la vraie app. Seules les PR validées sont mergées, de bas en haut de la pile.
+          en: A fresh agent tests each PR in the real app. Only approved PRs get merged, from the bottom of the stack up.
+       chips:
+          - verifier
+          - verify-app
+  prompt: |-
+     /poteto-mode open the pr.
+     /poteto-mode babysit this pr. get it green.
+     /poteto-mode land the stack.
+- id: the-multipliers
+  type: cards
+  short:
+     fr: Les multiplicateurs
+     en: The multipliers
+  title:
+     fr: Les skills qui lancent plusieurs agents
+     en: The skills that launch many agents
+  intro:
+     fr: Certains skills lancent <b>plusieurs agents en même temps</b>. Ils donnent de meilleurs résultats, mais coûtent beaucoup de tokens. Les recettes les appellent seulement quand ça vaut le coup.
+     en: Some skills launch <b>several agents at once</b>. They give better results but cost a lot of tokens. Recipes call them only when it's worth it.
+  items:
+     - title:
+          fr: "arena : comparer"
+          en: "arena: compare"
+       desc:
+          fr: 3 agents font la même chose, un juge les compare, on garde le meilleur et on lui greffe les bonnes idées des autres.
+          en: 3 agents do the same thing, a judge compares them, the best one wins and borrows the others' good ideas.
+       chips:
+          - arena
+     - title:
+          fr: "swarm : se répartir"
+          en: "swarm: split up"
+       desc:
+          fr: Un gros travail découpé en morceaux, un agent par morceau, puis un seul rapport.
+          en: A big job cut into pieces, one agent per piece, then a single report.
+       chips:
+          - swarm
+     - title:
+          fr: "interrogate : attaquer"
+          en: "interrogate: attack"
+       desc:
+          fr: Des agents essaient de casser ton changement. Un problème ne compte que s'il est prouvé par une commande.
+          en: Agents try to break your change. A problem only counts if a command proves it.
+       chips:
+          - interrogate
+     - title:
+          fr: Le piège
+          en: The catch
+       desc:
+          fr: architect a l'air léger, mais il appelle arena quand le design est gros. Une feature simple peut donc coûter cher sans prévenir.
+          en: architect looks light, but it calls arena when the design is big. So a simple feature can get expensive without warning.
+       chips:
+          - architect
+- id: without-you
+  type: chain
+  short:
+     fr: Sans toi
+     en: Without you
+  title:
+     fr: Laisser l'agent travailler pendant que tu dors
+     en: Letting the agent work while you sleep
+  intro:
+     fr: "La clé d'un travail sans toi : <b>dire à l'avance ce que « fini » veut dire</b>, pour que l'agent sache quand s'arrêter."
+     en: "The key to working without you: <b>say upfront what “done” means</b>, so the agent knows when to stop."
+  items:
+     - title:
+          fr: Définir « fini »
+          en: Define “done”
+       desc:
+          fr: Une condition vérifiable, par exemple « les tests passent et le bug ne se reproduit plus ».
+          en: A checkable condition, for example “tests pass and the bug no longer reproduces”.
+     - title:
+          fr: Boucler
+          en: Loop
+       desc:
+          fr: L'agent se réveille tout seul, fait le plus petit changement utile, vérifie, garde ou annule. Un plateau n'est pas une raison de s'arrêter.
+          en: The agent wakes itself up, makes the smallest useful change, checks, keeps or reverts. A plateau is not a reason to stop.
+       chips:
+          - loop
+     - title:
+          fr: Tout noter
+          en: Log everything
+       desc:
+          fr: Une ligne par décision avec sa preuve. Un autre modèle relit le journal et signale ce qui doit attirer ton attention.
+          en: One line per decision with its evidence. Another model reads the log and flags what needs your attention.
+       chips:
+          - show-me-your-work
+     - title:
+          fr: Te rattraper
+          en: Catch you up
+       desc:
+          fr: À ton retour, un résumé court de ce qui a changé et des décisions qui t'attendent.
+          en: When you're back, a short summary of what changed and which decisions wait for you.
+       chips:
+          - ketchup
+          - recall
+     - title:
+          fr: Version XXL
+          en: XXL version
+       desc:
+          fr: Autopilot fait la même chose pour toute une file de PR, avec un agent par PR. C'est le plus coûteux de pstack.
+          en: Autopilot does the same for a whole queue of PRs, one agent per PR. It's the most expensive part of pstack.
+       chips:
+          - autopilot
+  prompt: /poteto-mode im going to bed. <goal>. done means <checks>. keep a decision log. /loop until done.
+- id: cheat-sheet
+  type: sheet
+  short:
+     fr: Antisèche
+     en: Cheat sheet
+  title:
+     fr: "L'antisèche : quand tu veux X, tape Y"
+     en: "Cheat sheet: when you want X, type Y"
+  intro:
+     fr: Tout ce que tu as vu, résumé. Garde cet écran sous la main.
+     en: Everything you've seen, summed up. Keep this screen handy.
+  items:
+     - want:
+          fr: Je ne sais pas quoi utiliser
+          en: I don't know what to use
+       type: /poteto-mode <ta demande>
+     - want:
+          fr: Comprendre du code
+          en: Understand code
+       type: /how  /why  /teach
+     - want:
+          fr: Corriger un bug
+          en: Fix a bug
+       type: /poteto-mode <symptôme>. repro first
+     - want:
+          fr: Ajouter une feature
+          en: Add a feature
+       type: /poteto-mode add <comportement>
+     - want:
+          fr: Restructurer
+          en: Restructure
+       type: /poteto-mode refactor <code>, zero behavior change
+     - want:
+          fr: Choisir un design
+          en: Pick a design
+       type: /poteto-mode prototype options for <x>
+     - want:
+          fr: Faire challenger mon code
+          en: Get my code challenged
+       type: /interrogate
+     - want:
+          fr: Livrer
+          en: Ship
+       type: /poteto-mode open the pr → babysit → land the stack
+     - want:
+          fr: Partir la nuit
+          en: Leave overnight
+       type: /poteto-mode im going to bed… /loop until done
+     - want:
+          fr: Revenir
+          en: Come back
+       type: /ketchup  /recall
+     - want:
+          fr: Gros chantier sans recette
+          en: Big job with no recipe
+       type: /figure-it-out
+     - want:
+          fr: Une erreur qui revient
+          en: A recurring mistake
+       type: /correct  /reflect

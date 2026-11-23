@@ -1,0 +1,19 @@
+---
+/** Container of the item details panel. Pages that show items put it in BaseLayout's "overlays" slot. */
+import "../assets/item-modal.css";
+import { href } from "../../../services/i18n/config";
+import type { Lang } from "../../../types/i18n";
+
+interface Props {
+	lang: Lang;
+}
+---
+
+<div id="modal" class="modal" hidden data-src={href(Astro.props.lang, "items")}></div>
+
+<script>
+	import { requireElement } from "../../../helpers/dom";
+	import { initItemModal } from "../helpers/item-modal";
+
+	initItemModal(requireElement("#modal", HTMLElement));
+</script>

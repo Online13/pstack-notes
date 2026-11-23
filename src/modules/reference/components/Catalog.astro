@@ -1,0 +1,165 @@
+---
+/** “Catalog” tab: search, filters, then every item as a table (rendered here) or a call graph (drawn by helpers/call-graph.ts). */
+import Icon from "../../../components/atoms/Icon.astro";
+import CostBar from "../../../components/atoms/CostBar.astro";
+import KindTag from "../../../components/atoms/KindTag.astro";
+import Dropdown from "../../../components/molecules/Dropdown.astro";
+import { listCallEdges, listItems } from "../../../services/content/catalog";
+import { COST_LEVELS, KIND_KEYS, kindName } from "../../../services/content/kinds";
+import { plural } from "../../../services/i18n/localize";
+import { sharedMessages } from "../../../services/i18n/messages";
+import { referenceMessages } from "../messages";
+import type { CatalogData } from "../type";
+import type { Lang } from "../../../types/i18n";
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const m = referenceMessages(lang);
+const shared = sharedMessages(lang);
+
+const sortName = (label: string) => label.replace(/^\//, "").toLowerCase();
+const items = (await listItems(lang)).sort((a, b) => sortName(a.label).localeCompare(sortName(b.label)));
+const truncate = (s: string, n: number) => (s.length > n ? s.slice(0, n - 1) + "…" : s);
+
+/** What the client needs to filter, sort and draw the graph. */
+const data: CatalogData = {
+	kinds: [...KIND_KEYS],
+	items: items.map((n) => ({
+		id: n.id,
+		kind: n.kind,
+		cost: n.cost,
+		label: n.label,
+		color: n.color,
+		search: `${n.label} ${n.id} ${n.desc}`.toLowerCase(),
+	})),
+	edges: await listCallEdges(),
+};
+const columns = [
+	["name", 0],
+	["kind", 1],
+	["cost", 2],
+] as const;
+const views = [
+	["table", "table"],
+	["graph", "graph"],
+] as const;
+---
+
+<div class="catalog" id="apiSkills" role="tabpanel">
+	<div class="panelcard tools">
+		<input type="search" id="q" autocomplete="off" placeholder={m.search} aria-label={m.search} />
+		<Dropdown variant="field" name="kind" value="" label={m.allKinds}>
+			<Fragment slot="button">
+				<span class="ddv">{m.allKinds}</span>
+				<Icon name="chevron" class="chev" width={2.2} />
+			</Fragment>
+			<Fragment slot="options">
+				{[["", m.allKinds], ...KIND_KEYS.map((k) => [k, kindName(k, lang)])].map(([v, label]) => (
+					<button
+						type="button"
+						class="dd-option"
+						role="option"
+						data-value={v}
+						aria-selected={v === "" ? "true" : "false"}
+					>
+						<span class="ot">{label}</span>
+						<Icon name="check" class="ck" width={2.4} />
+					</button>
+				))}
+			</Fragment>
+		</Dropdown>
+		<Dropdown variant="field" name="cost" value="" label={m.allCosts}>
+			<Fragment slot="button">
+				<span class="ddv">{m.allCosts}</span>
+				<Icon name="chevron" class="chev" width={2.2} />
+			</Fragment>
+			<Fragment slot="options">
+				{[["", m.allCosts], ...COST_LEVELS.map((c) => [String(c), shared.costLabels[c]])].map(([v, label]) => (
+					<button
+						type="button"
+						class="dd-option"
+						role="option"
+						data-value={v}
+						aria-selected={v === "" ? "true" : "false"}
+					>
+						<span class="ot">{label}</span>
+						<Icon name="check" class="ck" width={2.4} />
+					</button>
+				))}
+			</Fragment>
+		</Dropdown>
+		<div class="seg" role="group">
+			{views.map(([v, icon], i) => (
+				<button
+					type="button"
+					data-view={v}
+					title={m.views[i]}
+					aria-label={m.views[i]}
+					aria-pressed={v === "table" ? "true" : "false"}
+				>
+					<Icon name={icon} />
+				</button>
+			))}
+		</div>
+	</div>
+
+	<div class="resinfo">
+		<span data-count data-one={m.results[0]} data-many={m.results[1]}>
+			{plural(m.results, items.length)}
+		</span>
+		<button type="button" class="btn sm" data-reset hidden>
+			{m.reset}
+		</button>
+		<span data-graph-hint hidden>
+			{m.graphHint}
+		</span>
+	</div>
+
+	<div>
+		<div class="panelcard tablewrap" data-table>
+			<table>
+				<thead>
+					<tr>
+						{columns.map(([key, i]) => (
+							<th class="sortable" data-sort={key} aria-sort={key === "name" ? "ascending" : "none"}>
+								{m.cols[i]}
+								<span class="arr">{key === "name" ? "↑" : ""}</span>
+							</th>
+						))}
+						<th class="ds">{m.cols[3]}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{items.map((n) => (
+						<tr class="sk" id={`row-${n.id}`} tabindex="0" data-open={n.id}>
+							<td class="nm">{n.label}</td>
+							<td>
+								<KindTag kind={n.kind} lang={lang} />
+							</td>
+							<td>
+								<CostBar cost={n.cost} lang={lang} />
+							</td>
+							<td class="ds">{truncate(n.desc, 140)}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</div>
+		<p class="hint" data-empty hidden>
+			{m.noResults}
+		</p>
+		<div class="graphbox" data-graph hidden>
+			<svg id="graph"></svg>
+		</div>
+	</div>
+
+	<script type="application/json" id="catalog-data" set:html={JSON.stringify(data).replace(/</g, "\\u003c")} />
+</div>
+
+<script>
+	import { initCatalog } from "../helpers/catalog";
+
+	initCatalog();
+</script>
