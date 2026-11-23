@@ -1,55 +1,55 @@
 # pstack notes
 
-Guide non officiel pour apprendre [pstack](https://github.com/cursor/plugins/tree/main/pstack), le kit de skills
-de Lauren Tan pour livrer du code de qualité avec des agents : des leçons, une carte par situation, et un catalogue
-de tous les skills avec le graphe de qui appelle quoi.
+Unofficial guide to learn [pstack](https://github.com/cursor/plugins/tree/main/pstack), Lauren Tan's skill kit
+for shipping quality code with agents: lessons, one card per situation, and a catalog of every skill with the
+graph of what calls what.
 
-## Démarrer
+## Getting started
 
-Prérequis : [bun](https://bun.sh) et Node.js 22.23.4 ou plus.
+Requirements: [bun](https://bun.sh) and Node.js 22.23.4 or later.
 
 ```sh
 bun install
 bun run dev      # http://localhost:4321
-bun run build    # génère ./dist/
-bun run check    # vérifie les types
-bun run lint     # ESLint (règles de typage strictes)
+bun run build    # builds ./dist/
+bun run check    # type checks
+bun run lint     # ESLint (strict type-aware rules)
 bun run format   # Prettier
 ```
 
-Le site est publié sur https://pstack-notes.nekena-rayane.com (`site` dans `astro.config.mjs`, remplaçable par `SITE_URL`).
+The site is published at https://pstack-notes.nekena-rayane.com (`site` in `astro.config.mjs`, overridden by `SITE_URL`).
 
-## Déploiement
+## Deployment
 
-Le site est servi par un Cloudflare Worker (fichiers statiques de `./dist`, configuration dans `wrangler.jsonc`) :
+The site is served by a Cloudflare Worker (static files from `./dist`, configuration in `wrangler.jsonc`):
 
 ```sh
 bunx wrangler login
 bun run deploy
 ```
 
-## Organisation
+## Structure
 
-Site statique [Astro](https://astro.build). Le code est dans `src/` :
+Static [Astro](https://astro.build) site. The code lives in `src/`:
 
-- `pages/` : les routes ;
-- `components/` : les composants partagés ;
-- `modules/` : une fonctionnalité par dossier (accueil, leçons, use cases, référence, fiche d'un élément) ;
-- `services/` : accès aux outils externes (données, traductions, SEO, graphe) ;
-- `helpers/` : logique sans outil externe ;
-- `types/` : types partagés ;
-- `services/content/data/` : le contenu, en YAML.
+- `pages/`: the routes;
+- `components/`: shared components;
+- `modules/`: one feature per folder (home, lessons, use cases, reference, item details);
+- `services/`: access to external tools (data, translations, SEO, graph);
+- `helpers/`: logic with no external tool;
+- `types/`: shared types;
+- `services/content/data/`: the content, in YAML.
 
-Les conventions détaillées sont dans [AGENTS.md](./AGENTS.md).
+Detailed conventions are in [AGENTS.md](./AGENTS.md).
 
-## Contribuer
+## Contributing
 
-1. Ouvre une issue pour une erreur de contenu ou une idée, avant tout gros changement.
-2. Crée une branche depuis `main`.
-3. Avant d'ouvrir la PR, vérifie que `bun run lint`, `bun run check`, `bun run format:check` et `bun run build` passent.
-4. Un changement de contenu doit citer sa source : un fichier du dépôt pstack ou un talk.
+1. Open an issue for a content error or an idea before any large change.
+2. Create a branch from `main`.
+3. Before opening the PR, check that `bun run lint`, `bun run check`, `bun run format:check` and `bun run build` pass.
+4. A content change must cite its source: a file of the pstack repository or a talk.
 
-## Licence
+## License
 
-Code sous licence [MIT](./LICENSE). Le contenu résumé ici vient du travail de Lauren Tan sur pstack :
-ce site n'est pas affilié à Cursor ni à l'autrice.
+Code under the [MIT](./LICENSE) license. The content summarized here comes from Lauren Tan's work on pstack:
+this site is not affiliated with Cursor or the author.
