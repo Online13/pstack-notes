@@ -1,5 +1,8 @@
 ---
-/** Brand, section links (a bottom sheet on phones), link to the site's repository, theme and language menus. */
+/**
+ * Brand and section links on the left (a bottom sheet on phones); on the right, a search pill that leads to the
+ * home search (except on the home page, which is the search), the site's repository, theme and language menus.
+ */
 import Icon from "../atoms/Icon.astro";
 import Dropdown from "../molecules/Dropdown.astro";
 import { SITE_REPO_URL } from "../../services/content/sources";
@@ -20,7 +23,6 @@ const THEMES = ["system", "light", "dark"] as const;
 	<a class="brand" href={href(lang, "home")} aria-label="pstack notes">
 		<Icon name="book" />
 		<span>pstack notes</span>
-		<small>{ui.brandSub}</small>
 	</a>
 	<nav class="sections" id="sections">
 		{SECTIONS.slice(1).map((s, i) => (
@@ -31,6 +33,13 @@ const THEMES = ["system", "light", "dark"] as const;
 	</nav>
 	<div class="sheetbg" id="sheetBg" hidden></div>
 	<div class="hdr-r">
+		{section !== "home" && (
+			<a class="hdr-search" href={`${href(lang, "home")}#search`} aria-label={ui.search}>
+				<Icon name="search" />
+				<span>{ui.search}</span>
+				<kbd>/</kbd>
+			</a>
+		)}
 		<button
 			class="ddbtn ic menubtn"
 			id="menuBtn"

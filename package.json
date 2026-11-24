@@ -2,7 +2,7 @@
 	"name": "pstack-notes",
 	"type": "module",
 	"version": "1.0.0",
-	"description": "Unofficial guide to learn pstack, Lauren Tan's skill kit.",
+	"description": "My notes and synthesis of pstack, Lauren Tan's skill kit.",
 	"author": "RATIARIVELO Nekena Rayane",
 	"license": "MIT",
 	"private": true,

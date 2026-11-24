@@ -39,18 +39,20 @@ export interface StepRef {
 	cond?: string;
 }
 
-/** A block of a use case card: a catalog item with its own steps, or a plain step with its sub-steps. */
-export type CaseUnit =
-	| { item: CatalogItem; steps: TreeNode[]; via?: string; cond?: string }
-	| { item?: undefined; text: string; steps: TreeNode[] };
+/**
+ * A block of a use case card: a catalog item with the one command to type (`prompt`), what it is for (`note`)
+ * and its own steps, or a plain step with its sub-steps. `via` is the router the command goes through.
+ */
+export type CaseBlock =
+	| { item: CatalogItem; steps: TreeNode[]; via?: string; prompt?: string; note?: string }
+	| { item?: undefined; text: string; steps: TreeNode[]; via?: undefined; prompt?: undefined; note?: string };
 
 export interface UseCase {
 	id: string;
 	title: string;
 	when: string;
-	prompt?: string;
 	cost: Cost;
-	units: CaseUnit[];
+	blocks: CaseBlock[];
 }
 
 export interface UseCaseGroup {

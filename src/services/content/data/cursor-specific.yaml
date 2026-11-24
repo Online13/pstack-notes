@@ -55,3 +55,11 @@
   equivalent:
      fr: Sessions cloud Claude Code, ou worktrees locaux
      en: Claude Code cloud sessions, or local worktrees
+- id: make-bot-ui
+  name: /make-bot-ui
+  what:
+     fr: Une page qui réveille un Grok Bot par une routine webhook de Cursor
+     en: A page that wakes a Grok Bot through a Cursor webhook routine
+  equivalent:
+     fr: Un webhook vers ton propre agent, ou retirer le skill
+     en: A webhook to your own agent, or drop the skill

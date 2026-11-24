@@ -7,11 +7,17 @@
 	--line: rgba(255, 255, 255, 0.14);
 	--line-strong: #3e4144;
 	--ghost: #1d1f23;
+	--well: #16181c;
+	--well-2: #1d1f23;
 	--accent-soft: #0b2133;
 	--heavy-soft: #2a1216;
 	--k-pb-soft: #0b2133;
 	--k-sk: #00ba7c;
 	--k-sk-soft: #062a1e;
+	--k-sk-ink: var(--k-sk);
+	--k-pb-ink: var(--k-pb);
+	--k-ag-ink: var(--k-ag);
+	--heavy-ink: var(--heavy);
 	--k-pr: #8b71ff;
 	--k-loc: #00ba7c;
 	--k-bn: #c08a5e;
@@ -83,9 +89,8 @@
 	gap: 24px;
 	min-height: 0;
 	padding: 36px;
-	border: 1px solid var(--line);
-	border-radius: 24px;
-	background: var(--card);
+	border-radius: 28px;
+	background: var(--well);
 }
 .mleft h2 {
 	margin: 0;

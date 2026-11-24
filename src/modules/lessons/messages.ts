@@ -1,12 +1,12 @@
-/** Strings of the getting started lessons (the lesson content itself is in the content service). */
+/** Strings of the getting started notes (their content is in the content service, as "lessons"). */
 import { defineMessages } from "../../services/i18n/localize";
 
 export const lessonsMessages = defineMessages({
 	fr: {
-		lesson: "Leçon",
+		lesson: "Note",
 		toUseCases: "Passer aux use cases",
 		gsIntro:
-			"Onze leçons courtes pour découvrir pstack, dans l'ordre. Lis-les d'une traite ou saute à celle qui t'intéresse.",
+			"Onze notes courtes sur les pièces de pstack, dans l'ordre. Lis-les d'une traite ou saute à celle qui t'intéresse.",
 		verifCaption:
 			"La diapo du talk : la feature map donne le contexte, le CLI donne le contrôle. Ensemble, l'agent peut vérifier son propre travail.",
 		verifSource: "Talk, vers 09:08",
@@ -39,9 +39,9 @@ export const lessonsMessages = defineMessages({
 		},
 	},
 	en: {
-		lesson: "Lesson",
+		lesson: "Note",
 		toUseCases: "Go to use cases",
-		gsIntro: "Eleven short lessons to discover pstack, in order. Read them in one go or jump to the one you need.",
+		gsIntro: "Eleven short notes on the pieces of pstack, in order. Read them in one go or jump to the one you need.",
 		verifCaption:
 			"The talk slide: the feature map gives context, the CLI gives control. Together, the agent can verify its own work.",
 		verifSource: "Talk, around 09:08",
@@ -74,8 +74,9 @@ export const lessonsMessages = defineMessages({
 		},
 	},
 	es: {
+		lesson: "Nota",
 		gsIntro:
-			"Once lecciones cortas para descubrir pstack, en orden. Léelas de un tirón o salta a la que te interese.",
+			"Once notas cortas sobre las piezas de pstack, en orden. Léelas de un tirón o salta a la que te interese.",
 		verifCaption:
 			"La diapositiva de la charla: la feature map da el contexto, el CLI da el control. Juntos, el agente puede verificar su propio trabajo.",
 		verifSource: "Charla, hacia 09:08",

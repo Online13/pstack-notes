@@ -1,4 +1,5 @@
-/* Use cases: groups of collapsible cards; an open card shows the recipes and their steps. */
+/* Use cases: groups of collapsible cards on grey wells; an open card shows one white block per command, then what
+   runs. */
 .uc {
 	display: flex;
 	flex-direction: column;
@@ -9,27 +10,27 @@
 	flex-direction: column;
 	gap: 44px;
 }
+.ucgroup {
+	scroll-margin-top: calc(var(--hdr, 72px) + 16px);
+}
 .ucgroup > h3 {
-	margin: 0 0 16px;
-	color: var(--muted);
-	font: 700 0.8rem var(--f-body);
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
+	margin: 0 0 14px;
+	font: 700 1.35rem/1.25 var(--f-display);
 }
 .ucgroup .cases {
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
+	gap: 8px;
 }
 
 details.case {
-	scroll-margin-top: 12px;
-	border: 1px solid var(--line);
-	border-radius: 16px;
-	background: var(--card);
+	scroll-margin-top: calc(var(--hdr, 72px) + 16px);
+	border-radius: 20px;
+	background: var(--well);
+	transition: background 0.15s;
 }
-details.case[open] {
-	border-color: var(--line-strong);
+details.case:not([open]):hover {
+	background: var(--well-2);
 }
 details.case > summary {
 	display: grid;
@@ -44,12 +45,14 @@ details.case > summary::-webkit-details-marker {
 	display: none;
 }
 .case .chev {
+	width: 18px;
+	height: 18px;
 	color: var(--muted);
-	font-size: 0.8rem;
+	transform: rotate(-90deg);
 	transition: transform 0.2s;
 }
 details.case[open] .chev {
-	transform: rotate(90deg);
+	transform: none;
 }
 .case .ct {
 	font: 700 1.15rem var(--f-display);
@@ -72,8 +75,8 @@ details.case[open] .chev {
 .case .cbody {
 	display: flex;
 	flex-direction: column;
-	gap: 28px;
-	padding: 4px 24px 28px 58px;
+	gap: 16px;
+	padding: 4px 24px 24px 58px;
 }
 
 /* the prompt to type */
@@ -88,18 +91,17 @@ details.case[open] .chev {
 	padding: 14px 46px 14px 18px;
 	overflow-x: auto;
 	white-space: pre-wrap;
-	border: 1px solid var(--line-strong);
-	border-radius: 16px;
-	background: var(--bg);
+	border: 1px solid transparent;
+	border-radius: 14px;
+	background: var(--well);
 	color: var(--ink);
 	font: 500 0.93rem/1.6 var(--f-mono);
-	box-shadow: 0 1px 2px rgba(15, 20, 25, 0.04);
 	transition:
 		border-color 0.15s,
 		box-shadow 0.15s;
 }
 .try pre:hover {
-	border-color: var(--muted);
+	border-color: var(--line-strong);
 }
 .try .cpy {
 	top: 10px;
@@ -107,7 +109,7 @@ details.case[open] .chev {
 	color: var(--muted);
 }
 .try pre:hover .cpy {
-	background: var(--ghost);
+	background: var(--bg);
 	color: var(--ink);
 }
 .try pre.done {
@@ -118,14 +120,26 @@ details.case[open] .chev {
 	color: #00ba7c;
 }
 
-/* a unit: one recipe (or plain step) with its steps */
-.unit {
+/* a block: one command, what it is for, then what runs */
+.block {
 	display: flex;
 	flex-direction: column;
 	gap: 14px;
+	padding: 20px;
+	border-radius: 16px;
+	background: var(--bg);
 }
-.unit + .unit {
-	padding-top: 28px;
+.block > .unote {
+	margin: 0;
+	max-width: 75ch;
+	font-size: 0.98rem;
+	line-height: 1.6;
+}
+.runs {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding-top: 14px;
 	border-top: 1px solid var(--line);
 }
 .uhead {
@@ -146,7 +160,7 @@ details.case[open] .chev {
 	font-size: 0.82rem;
 	font-style: italic;
 }
-.unit > .ud {
+.runs > .ud {
 	margin: 0;
 	max-width: 75ch;
 	color: var(--muted);
@@ -179,8 +193,8 @@ details.case[open] .chev {
 	grid-template-columns: 22px minmax(0, 1fr);
 	gap: 0 8px;
 	padding: 12px 16px;
-	border: 1px solid var(--line);
 	border-radius: 12px;
+	background: var(--well);
 }
 .steps .sm {
 	width: 10px;
@@ -223,6 +237,9 @@ details.case[open] .chev {
 		grid-column: 2 / 3;
 	}
 	.case .cbody {
-		padding: 4px 16px 22px 16px;
+		padding: 4px 12px 16px 12px;
+	}
+	.block {
+		padding: 16px 14px;
 	}
 }

@@ -3,7 +3,7 @@
 import type { ImageMetadata } from "astro";
 import { Picture, getImage } from "astro:assets";
 import { TALK_URL } from "../../../services/content/sources";
-import { homeMessages } from "../messages";
+import { aboutMessages } from "../messages";
 import type { Lang } from "../../../types/i18n";
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 	eager?: boolean;
 }
 const { image, caption, lang, eager = false } = Astro.props;
-const ui = homeMessages(lang);
+const ui = aboutMessages(lang);
 /** Full-size WebP for the lightbox, so it never loads the PNG source. */
 const full = await getImage({ src: image, format: "webp", quality: 90 });
 ---

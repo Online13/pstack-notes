@@ -1,30 +1,28 @@
 /* Shared pieces: section intros, labels, buttons, chips, cost bar, kind tag, dropdowns, tooltip, copy-on-click. */
+/* page title: big and tight, the same on every page (the home and about pages use the same values) */
 .sec-intro {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	max-width: 720px;
+	max-width: 760px;
 }
 .sec-intro h1 {
 	margin: 0;
-	font-family: var(--f-display);
-	font-size: clamp(1.35rem, 2vw, 1.6rem);
-	font-weight: 700;
-	line-height: 1.25;
+	font: 700 clamp(2.2rem, 3.6vw, 2.9rem)/1.1 var(--f-display);
+	letter-spacing: -0.025em;
 	text-wrap: balance;
 }
 .sec-intro p {
 	margin: 0;
-	max-width: 70ch;
+	max-width: 68ch;
 	color: var(--muted);
-	font-size: 1rem;
-	line-height: 1.65;
+	font-size: 1.05rem;
+	line-height: 1.6;
 }
 
+/* a small label over a field or a block, in sentence case */
 .lab {
-	font: 700 0.7rem var(--f-body);
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
+	font: 500 0.85rem var(--f-body);
 	color: var(--muted);
 }
 .hint {
@@ -34,9 +32,9 @@
 .note {
 	margin: 0;
 	max-width: 80ch;
-	padding: 10px 12px;
-	border-radius: 10px;
-	background: var(--accent-soft);
+	padding: 12px 16px;
+	border-radius: 14px;
+	background: var(--well);
 	font-size: 0.92rem;
 }
 .srcline {
@@ -53,16 +51,16 @@
 .btn {
 	display: inline-block;
 	padding: 9px 16px;
-	border: 1px solid var(--line-strong);
+	border: 1px solid transparent;
 	border-radius: 99px;
-	background: transparent;
+	background: var(--well);
 	color: var(--ink);
 	font: 600 0.9rem var(--f-body);
 	text-decoration: none;
 	cursor: pointer;
 }
 .btn:hover {
-	background: var(--ghost);
+	background: var(--well-2);
 }
 .btn.sm {
 	padding: 5px 11px;
@@ -100,17 +98,17 @@
 	border: 1px solid transparent;
 	border-radius: 99px;
 	background: var(--k-sk-soft);
-	color: var(--k-sk);
+	color: var(--k-sk-ink);
 	font: 500 0.84rem/1.4 var(--f-mono);
 	cursor: pointer;
 }
 .chip.pb {
 	background: var(--k-pb-soft);
-	color: var(--k-pb);
+	color: var(--k-pb-ink);
 }
 .chip.heavy {
 	background: var(--heavy-soft);
-	color: var(--heavy);
+	color: var(--heavy-ink);
 }
 .chip:hover {
 	border-color: currentColor;
@@ -309,17 +307,24 @@
 .ddmenu [aria-selected="true"] .ot {
 	font-weight: 600;
 }
+/* filter fields: grey pills, like the search box next to them */
 .dd-field .ddbtn.field {
 	justify-content: space-between;
 	gap: 12px;
 	width: 100%;
 	min-width: 180px;
-	height: 42px;
-	padding: 0 12px 0 14px;
-	border-color: var(--line-strong);
-	border-radius: 12px;
+	height: 44px;
+	padding: 0 14px 0 18px;
+	border-color: transparent;
+	border-radius: 999px;
+	background: var(--well);
 	font: 500 0.93rem var(--f-body);
 	letter-spacing: 0;
+}
+.dd-field .ddbtn.field:hover,
+.dd-field .ddbtn.field[aria-expanded="true"] {
+	border-color: transparent;
+	background: var(--well-2);
 }
 .dd-field .ddmenu {
 	left: 0;

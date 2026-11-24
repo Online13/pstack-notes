@@ -752,6 +752,22 @@
      fr: Réécrit ton prompt pour une tâche plus profonde, pas plus grosse.
      en: Rewrites your prompt for a deeper task, not a bigger one.
   path: skills/sharpen/SKILL.md
+- id: reframe
+  kind: sk
+  cost: 0
+  label: /reframe
+  desc:
+     fr: Quand tu n'arrives pas à nommer ce que tu construis. Donne les termes d'expert, avec des sources vérifiées, et réécrit ta description avec.
+     en: When you can't name what you're building. Gives the expert terms, with checked sources, and rewrites your description with them.
+  path: skills/reframe/SKILL.md
+  steps:
+     - text: Partir de tes fichiers et de tes mots
+     - text: Description floue ? Lister 2 ou 3 problèmes possibles, garder le plus probable
+     - text: 8 à 12 termes classés par impact, chacun avec un lien
+     - text: 2 ou 3 domaines voisins, et où l'analogie casse
+     - text: Ce que tu n'as pas mentionné
+     - text: Réécrire ta description avec les nouveaux mots
+     - text: Ouvrir chaque lien, couper ce qui ne se confirme pas
 - id: bro
   kind: sk
   cost: 0
@@ -789,6 +805,21 @@
      fr: Standard de rédaction pour docs, descriptions de PR et messages de commit.
      en: Writing standard for docs, PR descriptions and commit messages.
   path: skills/technical-writing/SKILL.md
+- id: typescript-best-practices
+  kind: sk
+  cost: 0
+  label: /typescript-best-practices
+  desc:
+     fr: Règles TypeScript concrètes pour les fichiers .ts et .tsx. Ne se charge pas seul, tape /typescript-best-practices.
+     en: Concrete TypeScript rules for .ts and .tsx files. It does not load on its own, type /typescript-best-practices.
+  path: skills/typescript-best-practices/SKILL.md
+  steps:
+     - ref: type-system-discipline
+       cond: d'abord
+     - text: Unions discriminées, types brandés, unknown plutôt que any
+     - text: Pas de as, satisfies à la place, switch exhaustifs
+     - ref: boundary-discipline
+       cond: valider aux frontières
 - id: no-comments
   kind: sk
   cost: 1
@@ -1014,6 +1045,19 @@
   steps:
      - text: Répond à tes questions sur pstack
      - text: Propose le skill, playbook ou principe adapté
+- id: make-bot-ui
+  kind: sk
+  cost: 0
+  label: /make-bot-ui
+  desc:
+     fr: Construire une page dont les boutons réveillent un Grok Bot par webhook, sans que la clé d'envoi touche le navigateur ou le chat, puis l'exposer sur Tailscale. Propre à Cursor.
+     en: Build a page whose buttons wake a Grok Bot over a webhook, without the sender key reaching the browser or the chat, then expose it on Tailscale. Cursor-specific.
+  path: skills/make-bot-ui/SKILL.md
+  steps:
+     - text: Créer la routine webhook
+     - text: Demander la clé d'envoi par une carte secrète, jamais dans le chat
+     - text: Un serveur local garde la clé et POST au webhook
+     - text: Exposer la page sur Tailscale
 - id: poteto-agent
   kind: ag
   cost: 1

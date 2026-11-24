@@ -1,4 +1,7 @@
-/** Header: the bottom sheet menu on phones, and --hdr (header height, used for sticky offsets). */
+/**
+ * Header: the bottom sheet menu on phones, the "/" shortcut to the search, and --hdr (header height, used for
+ * sticky offsets).
+ */
 import { closestFrom, requireElement } from "./dom";
 
 export function initHeader(header: HTMLElement) {
@@ -24,6 +27,24 @@ export function initHeader(header: HTMLElement) {
 	});
 	matchMedia("(min-width: 761px)").addEventListener("change", (m) => {
 		if (m.matches) setSheet(false);
+	});
+
+	/* "/" opens the search: the home search box when the page has it (data-site-search), else the home page */
+	document.addEventListener("keydown", (e) => {
+		if (e.key !== "/" || e.metaKey || e.ctrlKey || e.altKey) return;
+		const target = e.target;
+		if (target instanceof HTMLElement && (target.isContentEditable || target.closest("input, textarea, select"))) {
+			return;
+		}
+		const box = document.querySelector("[data-site-search]");
+		const link = header.querySelector(".hdr-search");
+		if (box instanceof HTMLInputElement) {
+			e.preventDefault();
+			box.focus();
+		} else if (link instanceof HTMLAnchorElement) {
+			e.preventDefault();
+			location.href = link.href;
+		}
 	});
 
 	const setHeaderHeight = () => root.style.setProperty("--hdr", `${header.offsetHeight}px`);

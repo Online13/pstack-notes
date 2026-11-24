@@ -3,13 +3,16 @@ import { defineMessages } from "./localize";
 
 /** One string per cost level. */
 type Four = readonly [string, string, string, string];
+/** One name per section, in the order of `SECTIONS`. */
+type SectionNames = readonly [string, string, string, string, string];
 
 export const sharedMessages = defineMessages({
 	fr: {
-		brandSub: "guide non officiel",
+		brandSub: "synthèse personnelle",
 		siteRepo: "Code source du site sur GitHub",
-		sections: ["Accueil", "Getting started", "Use cases", "API reference"],
+		sections: ["Accueil", "Getting started", "Use cases", "API reference", "À propos"] satisfies SectionNames,
 		typeThis: "À taper",
+		search: "Chercher dans pstack",
 		theme: { system: "Système", light: "Clair", dark: "Sombre" },
 		copy: { copy: "Cliquer pour copier", copied: "Copié" },
 		costLabels: ["léger", "moyen", "lourd", "très lourd"] satisfies Four,
@@ -24,22 +27,23 @@ export const sharedMessages = defineMessages({
 		theTalk: "le talk sur X",
 		footer: {
 			/** "{author}" becomes a link to the author's site. */
-			about: "Guide non officiel pour apprendre pstack, rédigé avec Claude par {author}. Tout le contenu vient du travail de Lauren Tan.",
+			about: "Mes notes et ma synthèse de pstack, écrites avec Claude par {author}. Tout le contenu vient du travail de Lauren Tan.",
 			site: "Le site",
 			src: "Sources",
 			gh: "pstack sur GitHub",
 			x: "Lauren Tan sur X",
 			talk: "Le talk",
 			post: "Le triangle sur X",
-			note: "Site non officiel, sans lien avec Cursor ni avec l'autrice de pstack.",
+			note: "Notes personnelles, sans lien avec Cursor ni avec l'autrice de pstack.",
 			top: "Haut de page",
 		},
 	},
 	en: {
-		brandSub: "unofficial guide",
+		brandSub: "personal synthesis",
 		siteRepo: "Site source code on GitHub",
-		sections: ["Home", "Getting started", "Use cases", "API reference"],
+		sections: ["Home", "Getting started", "Use cases", "API reference", "About"],
 		typeThis: "Type this",
+		search: "Search pstack",
 		theme: { system: "System", light: "Light", dark: "Dark" },
 		copy: { copy: "Click to copy", copied: "Copied" },
 		costLabels: ["light", "medium", "heavy", "very heavy"],
@@ -54,14 +58,14 @@ export const sharedMessages = defineMessages({
 		theTalk: "the talk on X",
 		footer: {
 			/** "{author}" becomes a link to the author's site. */
-			about: "An unofficial guide to learn pstack, written with Claude by {author}. All the content comes from Lauren Tan's work.",
+			about: "My notes and synthesis of pstack, written with Claude by {author}. All the content comes from Lauren Tan's work.",
 			site: "The site",
 			src: "Sources",
 			gh: "pstack on GitHub",
 			x: "Lauren Tan on X",
 			talk: "The talk",
 			post: "The triangle on X",
-			note: "Unofficial site, not affiliated with Cursor or with the author of pstack.",
+			note: "Personal notes, not affiliated with Cursor or with the author of pstack.",
 			top: "Back to top",
 		},
 	},
@@ -76,14 +80,14 @@ export const sharedMessages = defineMessages({
 		],
 		footer: {
 			/** "{author}" becomes a link to the author's site. */
-			about: "Una guía no oficial para aprender pstack, escrita con Claude por {author}. Todo el contenido viene del trabajo de Lauren Tan.",
+			about: "Mis notas y mi síntesis de pstack, escritas con Claude por {author}. Todo el contenido viene del trabajo de Lauren Tan.",
 			site: "El sitio",
 			src: "Fuentes",
 			gh: "pstack en GitHub",
 			x: "Lauren Tan en X",
 			talk: "La charla",
 			post: "El triángulo en X",
-			note: "Sitio no oficial, sin relación con Cursor ni con la autora de pstack.",
+			note: "Notas personales, sin relación con Cursor ni con la autora de pstack.",
 			top: "Volver arriba",
 		},
 	},

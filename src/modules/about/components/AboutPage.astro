@@ -1,0 +1,156 @@
+---
+/** About page: what these notes are, how they were written, what they hold, the ideas from the talk, the sources. */
+import BaseLayout from "../../../components/templates/BaseLayout.astro";
+/* after BaseLayout: the module sheet comes after the shared ones in the cascade */
+import "../assets/about.css";
+import Shot from "./Shot.astro";
+import TrustChart from "./TrustChart.astro";
+import Pyramid from "./Pyramid.astro";
+import { listItemIds } from "../../../services/content/catalog";
+import { countLessons } from "../../../services/content/lessons";
+import { REPO_URL, TALK_URL, TRIANGLE_POST_URL } from "../../../services/content/sources";
+import { listTalks } from "../../../services/content/talks";
+import { countUseCases } from "../../../services/content/use-cases";
+import { href } from "../../../services/i18n/config";
+import { sharedMessages } from "../../../services/i18n/messages";
+import { aboutMessages } from "../messages";
+import prsImage from "../assets/talk-github-contributions.png";
+import slackImage from "../assets/talk-benny-slack.png";
+import type { Lang, Section } from "../../../types/i18n";
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const a = aboutMessages(lang);
+const note = sharedMessages(lang).footer.note;
+const [lessonCount, useCaseCount, itemIds, talks] = await Promise.all([
+	countLessons(),
+	countUseCases(),
+	listItemIds(),
+	listTalks(lang),
+]);
+const talkSource = (i: 0 | 1 | 2 | 3) => `${a.wsPre}${a.ws[i]} ↗`;
+const sections: { section: Section; title: string; text: string }[] = [
+	{ section: "getting-started", title: a.map[0][0], text: a.map[0][1].replace("{n}", String(lessonCount)) },
+	{ section: "use-cases", title: a.map[1][0], text: a.map[1][1].replace("{n}", String(useCaseCount)) },
+	{ section: "api", title: a.map[2][0], text: a.map[2][1].replace("{n}", String(itemIds.length)) },
+];
+---
+
+<BaseLayout lang={lang} section="about" title={a.metaTitle} description={a.metaDesc}>
+	<main class="about">
+		<header class="ab-head">
+			<h1>{a.h1}</h1>
+			<p class="ab-intro" set:html={a.intro} />
+			<p class="ab-credit">{a.credit}</p>
+			<p class="ab-note">{note}</p>
+		</header>
+
+		<section>
+			<h2>{a.contentT}</h2>
+			<dl class="ab-map">
+				{sections.map(({ section, title, text }) => (
+					<div>
+						<dt>
+							<a href={href(lang, section)}>{title} →</a>
+						</dt>
+						<dd>{text}</dd>
+					</div>
+				))}
+			</dl>
+			<h3>{a.uT}</h3>
+			<p>{a.uS}</p>
+			<ul class="ab-list">
+				{a.use.map(([title, text]) => (
+					<li>
+						<b>{title}.</b> {text}
+					</li>
+				))}
+			</ul>
+		</section>
+
+		<section>
+			<h2>{a.sT}</h2>
+			<p>{a.sS}</p>
+			<ul class="ab-stats">
+				{a.stats.map(([n, label]) => (
+					<li>
+						<b>{n}</b> {label}
+					</li>
+				))}
+			</ul>
+			<Shot image={prsImage} caption={a.cap1} lang={lang} />
+		</section>
+
+		<section>
+			<h2>{a.wT}</h2>
+			<p>{a.wS}</p>
+
+			<h3>{a.w[0][0]}</h3>
+			<p>{a.w[0][1]}</p>
+			<figure class="ab-fig trust">
+				<TrustChart lang={lang} />
+				<figcaption>{a.trustSrc}</figcaption>
+			</figure>
+			<a class="srcline" href={TALK_URL} target="_blank" rel="noopener">
+				{talkSource(0)}
+			</a>
+
+			<h3>{a.w[1][0]}</h3>
+			<p>{a.w[1][1]}</p>
+			<Pyramid lang={lang} />
+			<a class="srcline" href={TRIANGLE_POST_URL} target="_blank" rel="noopener">
+				{a.triangle.src} ↗
+			</a>
+			<a class="srcline" href={TALK_URL} target="_blank" rel="noopener">
+				{talkSource(1)}
+			</a>
+
+			<h3>{a.w[2][0]}</h3>
+			<p>{a.w[2][1]}</p>
+			<Shot image={slackImage} caption={a.cap2} lang={lang} />
+			<a class="srcline" href={href(lang, "getting-started", "#gsl-2")}>
+				{a.lesson} →
+			</a>
+			<a class="srcline" href={TALK_URL} target="_blank" rel="noopener">
+				{talkSource(2)}
+			</a>
+
+			<h3>{a.w[3][0]}</h3>
+			<p>{a.w[3][1]}</p>
+			<a class="srcline" href={TALK_URL} target="_blank" rel="noopener">
+				{talkSource(3)}
+			</a>
+
+			<blockquote class="ab-quote">
+				<p>“{a.quote}”</p>
+				<cite>
+					<a href={REPO_URL} target="_blank" rel="noopener">
+						{a.quoteBy} ↗
+					</a>
+				</cite>
+			</blockquote>
+		</section>
+
+		<section>
+			<h2>{a.tT}</h2>
+			<p>{a.tS}</p>
+			<ul class="tlist">
+				{talks.map((talk) => (
+					<li>
+						<a href={talk.url} target="_blank" rel="noopener">
+							<h3>
+								{talk.title}
+								{talk.secondary && <span class="tag">{a.second}</span>}
+							</h3>
+							<div class="meta">{talk.meta}</div>
+							<p>{talk.desc}</p>
+							<span class="go">{a.open} ↗</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</section>
+	</main>
+</BaseLayout>

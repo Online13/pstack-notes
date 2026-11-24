@@ -13,7 +13,7 @@ export const LANG_NAMES: Record<Lang, string> = { fr: "Français", en: "English"
 export const LOCALES: Record<Lang, string> = { fr: "fr-FR", en: "en-US", es: "es-ES" };
 
 /** The site's sections, in navigation order. */
-export const SECTIONS = ["home", "getting-started", "use-cases", "api"] as const satisfies readonly Section[];
+export const SECTIONS = ["home", "getting-started", "use-cases", "api", "about"] as const satisfies readonly Section[];
 
 /** One page per language: the `[lang]` route param and the page props. */
 export const langStaticPaths = () => LANGS.map((lang) => ({ params: { lang }, props: { lang } }));

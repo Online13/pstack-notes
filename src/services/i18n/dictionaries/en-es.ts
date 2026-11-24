@@ -1,8 +1,5 @@
 /** English phrase -> Spanish. Spanish is always derived from the English text. */
 export const EN_ES: Record<string, string> = {
-	"Unofficial guide to pstack, the agent skill kit": "Guía no oficial de pstack, el kit de skills para agentes",
-	"Learn pstack, the skill kit for shipping quality code with agents: step-by-step lessons, one card per situation, and a reference of every skill.":
-		"Aprende pstack, el kit de skills para entregar código de calidad con agentes: lecciones paso a paso, una ficha por situación y una referencia de cada skill.",
 	"Site source code on GitHub": "Código fuente del sitio en GitHub",
 	"Restate your goal and the smallest change": "Reformula tu objetivo y el cambio más pequeño",
 	"Pick the playbook": "Elige el playbook",
@@ -189,11 +186,7 @@ export const EN_ES: Record<string, string> = {
 	"Root cause and bounded fix": "Causa raíz y arreglo acotado",
 	"Prove the fix twice on the same UI": "Prueba el arreglo dos veces en la misma UI",
 	"Open a draft PR": "Abre una PR en borrador",
-	"You want to understand": "Quieres entender",
 	"Big project": "Gran proyecto",
-	"Before shipping": "Antes de entregar",
-	"You're back": "Has vuelto",
-	"Once per project": "Una vez por proyecto",
 	"Then /verify-<app> is used by": "Después, /verify-<app> lo usan",
 	"Improve the system": "Mejorar el sistema",
 	"nothing fits, or big project": "nada encaja, o gran proyecto",
@@ -296,30 +289,6 @@ export const EN_ES: Record<string, string> = {
 	"3 in parallel over your transcripts": "3 en paralelo sobre tus transcripciones",
 	"if the bug is confirmed": "si el bug se confirma",
 	"same idea": "misma idea",
-	"“explain X”": "“explícame X”",
-	"“how does it work”": "“cómo funciona”",
-	"“why is it like this”": "“por qué es así”",
-	"“make me understand”": "“hazme entender”",
-	"“what could this change break”": "“qué podría romper este cambio”",
-	"“did you get my request”": "“¿entendiste mi petición?”",
-	"“improve my prompt”": "“mejora mi prompt”",
-	"“say it simply”": "“dilo de forma simple”",
-	"plan only": "solo el plan",
-	"break the change": "romper el cambio",
-	"what breaks elsewhere": "qué se rompe en otro sitio",
-	"clean up comments": "limpiar comentarios",
-	"“sum up the night”": "“resume la noche”",
-	"“what changed”": "“qué cambió”",
-	"“where was I”": "“dónde me quedé”",
-	"resume a session": "retomar una sesión",
-	"create a skill": "crear un skill",
-	"recurring mistake": "error recurrente",
-	"end of session": "fin de sesión",
-	"your <you>-mode": "tu <you>-mode",
-	"models per role": "modelos por rol",
-	"test a variant": "probar una variante",
-	"need help": "necesito ayuda",
-	"free disk space": "liberar espacio en disco",
 	"if the space is open": "si el espacio está abierto",
 	"don't do it, don't redo it, less, later, concurrently, cheaper":
 		"no lo hagas, no lo rehagas, menos, más tarde, en paralelo, más barato",
@@ -505,8 +474,6 @@ export const EN_ES: Record<string, string> = {
 	"You don't know which skill to use. Type /poteto-mode and your request, it picks for you.":
 		"No sabes qué skill usar. Escribe /poteto-mode y tu petición, él elige por ti.",
 	"Understand code": "Entender el código",
-	"You want to understand without changing anything. Go through the router, or call the right skill directly.":
-		"Quieres entender sin cambiar nada. Pasa por el router o llama directamente al skill adecuado.",
 	"I have a bug": "Tengo un bug",
 	"Something behaves wrong. Reproduce first, fix next, prove on the same surface.":
 		"Algo se comporta mal. Primero reproducir, luego arreglar, y probarlo en la misma superficie.",
@@ -534,17 +501,11 @@ export const EN_ES: Record<string, string> = {
 	"Either you only want a PR plan, or you want to run it when no playbook fits.":
 		"O solo quieres un plan de PRs, o quieres ejecutarlo cuando ningún playbook encaja.",
 	"Challenge before shipping": "Desafiar antes de entregar",
-	"You want someone to look for flaws in your change before the PR.":
-		"Quieres que alguien busque fallos en tu cambio antes de la PR.",
 	"Open, watch, merge": "Abrir, vigilar, hacer merge",
-	"A PR's life: open it, push it to green, merge the verified stack.":
-		"La vida de una PR: abrirla, llevarla al verde, hacer merge de la pila verificada.",
 	"A task overnight": "Una tarea de noche",
 	"You leave. The agent keeps going until a checkable stop condition.":
 		"Te vas. El agente sigue hasta una condición de parada comprobable.",
 	"A PR queue on autopilot": "Una cola de PRs en piloto automático",
-	"Several independent changes, handled in parallel until merge (or until verified).":
-		"Varios cambios independientes, gestionados en paralelo hasta el merge (o hasta la verificación).",
 	"Come back, resume, pause": "Volver, retomar, pausar",
 	"You're back and want to know where things stand, resume a session, or pause everything.":
 		"Has vuelto y quieres saber cómo va todo, retomar una sesión o ponerlo todo en pausa.",
@@ -557,29 +518,16 @@ export const EN_ES: Record<string, string> = {
 	"Automated Slack bugs": "Bugs de Slack automatizados",
 	"Cursor automations (not slash skills): each Slack report is triaged, then reproduced and fixed.":
 		"Automatizaciones de Cursor (no son slash skills): cada reporte de Slack se clasifica, luego se reproduce y se arregla.",
-	"Create skills, make a mistake impossible, keep lessons, configure models.":
-		"Crear skills, hacer imposible un error, conservar lecciones, configurar modelos.",
 	"Start here": "Empieza aquí",
 	"Without you": "Sin ti",
 	"Getting started": "Primeros pasos",
 	"Use cases": "Casos de uso",
 	"API reference": "Referencia API",
-	"Next step": "Siguiente paso",
-	"Next lesson": "Siguiente lección",
 	"Go to use cases": "Ir a los casos de uso",
 	"Type this": "Escribe esto",
-	"recipe (playbook)": "receta (playbook)",
-	"Tap a chip to see what it does.": "Toca una pastilla para ver qué hace.",
-	"Expand all": "Desplegar todo",
-	"Click a row to expand it and read what it does.": "Haz clic en una fila para desplegarla y leer qué hace.",
 	"It calls": "Llama a",
 	"Called by": "Llamado por",
 	"In use cases": "En los casos de uso",
-	"Step of": "Paso de",
-	"See its call tree": "Ver su árbol de llamadas",
-	"See in the reference": "Ver en la referencia",
-	"One card per situation. Open it to see the recipes used, their steps and the skills called at each step. Click a skill to read what it does.":
-		"Una tarjeta por situación. Ábrela para ver las recetas usadas, sus pasos y los skills llamados en cada paso. Haz clic en un skill para leer qué hace.",
 	"Landmarks for reading the reference: token cost, vocabulary, and what is Cursor-specific.":
 		"Referencias para leer la documentación: coste en tokens, vocabulario y lo que es específico de Cursor.",
 	"Everything in pstack: skills, playbooks, agents, principles. Search, filter, sort, then click a row for its details.":
@@ -587,10 +535,6 @@ export const EN_ES: Record<string, string> = {
 	"Search a skill…": "Buscar un skill…",
 	"All types": "Todos los tipos",
 	"All costs": "Todos los costes",
-	"Sort: name": "Ordenar: nombre",
-	"Sort: cost high to low": "Ordenar: coste de mayor a menor",
-	"Sort: cost low to high": "Ordenar: coste de menor a mayor",
-	"Sort: type": "Ordenar: tipo",
 	"What it does": "Qué hace",
 	"Clear filters": "Borrar filtros",
 	"Each arrow means “calls”. Click a node for its details, scroll or pinch to zoom. Principles only show when you filter on Principle.":
@@ -612,19 +556,11 @@ export const EN_ES: Record<string, string> = {
 	"In pstack": "En pstack",
 	"What it is": "Qué es",
 	"Equivalent to plan": "Equivalente a prever",
-	"Learn pstack": "Aprender pstack",
-	"unofficial guide": "guía no oficial",
-	"Unofficial guide": "Guía no oficial",
-	"My notes to understand pstack": "Mis notas para entender pstack",
-	'<a href="https://github.com/cursor/plugins/tree/main/pstack" target="_blank" rel="noopener">pstack</a> is the skill kit <b><a href="https://x.com/poteto" target="_blank" rel="noopener">Lauren Tan (poteto)</a></b> built to ship quality code with agents. This site is only a summary: to learn pstack, I asked Claude to read its code and her talks, then turn them into lessons, situations and a reference.':
-		'<a href="https://github.com/cursor/plugins/tree/main/pstack" target="_blank" rel="noopener">pstack</a> es el kit de skills que <b><a href="https://x.com/poteto" target="_blank" rel="noopener">Lauren Tan (poteto)</a></b> creó para entregar código de calidad con agentes. Este sitio es solo un resumen: para aprender pstack, le pedí a Claude que leyera su código y sus charlas, y que los convirtiera en lecciones, situaciones y una referencia.',
+	"personal synthesis": "síntesis personal",
+	About: "Sobre las notas",
 	"All the credit goes to its author. Nothing here is made up: every item points to a file in the repository or to a source.":
 		"Todo el mérito es de su autora. Nada aquí es inventado: cada elemento apunta a un archivo del repositorio o a una fuente.",
-	"Start the path": "Empezar el recorrido",
-	"Open the reference": "Abrir la referencia",
-	"lessons to discover the pieces of pstack": "lecciones para descubrir las piezas de pstack",
 	"situations, from a bug to a big project": "situaciones, de un bug a un gran proyecto",
-	"skills, playbooks, agents and principles in the catalog": "skills, playbooks, agentes y principios en el catálogo",
 	"GitHub contributions shown in the talk (around 2:30).":
 		"Contribuciones de GitHub mostradas en la charla (hacia el 2:30).",
 	"Benny, an automation agent, reproduces a bug reported on Slack (around 35:00).":
@@ -636,10 +572,6 @@ export const EN_ES: Record<string, string> = {
 	"PRs in six months, per her talk": "PRs en seis meses, según su charla",
 	"playbooks behind /poteto-mode": "playbooks detrás de /poteto-mode",
 	"levels where a correction can live": "niveles donde puede vivir una corrección",
-	"What this site is for": "Para qué sirve este sitio",
-	"A pstack reference to keep open": "Una referencia de pstack para tener abierta",
-	"The author already explains a lot in her X threads and in the repository. This site doesn't replace those sources: it gathers them in a form you can browse.":
-		"La autora ya explica mucho en sus hilos de X y en el repositorio. Este sitio no sustituye esas fuentes: las reúne en un formato que se puede recorrer.",
 	"Find the right playbook": "Encontrar el playbook adecuado",
 	"For each situation, the command to type, the steps and the skills it calls.":
 		"Para cada situación, el comando que escribir, los pasos y los skills que llama.",
@@ -653,9 +585,8 @@ export const EN_ES: Record<string, string> = {
 	"The pieces to replace to use pstack with Claude Code or Codex.":
 		"Las piezas que hay que sustituir para usar pstack con Claude Code o Codex.",
 	"The ideas from the talk": "Las ideas de la charla",
-	"Speed comes from trust": "La velocidad viene de la confianza",
-	"These ideas come from the talk, not from me. Each block points to the part where they are explained. The talk is not about shipping more: it is about setting up the agents' environment so they do good work even when you're not there.":
-		"Estas ideas vienen de la charla, no de mí. Cada bloque apunta al momento en que se explican. La charla no trata de entregar más: trata de preparar el entorno de los agentes para que trabajen bien incluso cuando no estás.",
+	"These ideas come from the talk, not from me. Each idea points to the part where they are explained. The talk is not about shipping more: it is about setting up the agents' environment so they do good work even when you're not there.":
+		"Estas ideas vienen de la charla, no de mí. Cada idea apunta al momento en que se explican. La charla no trata de entregar más: trata de preparar el entorno de los agentes para que trabajen bien incluso cuando no estás.",
 	"05:00 to 06:40, then 35:25": "05:00 a 06:40, luego 35:25",
 	"15:25 to 17:55": "15:25 a 17:55",
 	"07:05 to 12:05": "07:05 a 12:05",
@@ -680,32 +611,14 @@ export const EN_ES: Record<string, string> = {
 	"A maintained feature map tells the agent where things are and how to reach them. Lessons learned end up in code, not in a prompt.":
 		"Un feature map mantenido le dice al agente dónde están las cosas y cómo llegar a ellas. Las lecciones aprendidas acaban en el código, no en un prompt.",
 	"Curve redrawn from her talk's slide": "Curva redibujada a partir de la diapositiva de su charla",
-	"Read the lesson on verification": "Leer la lección sobre la verificación",
 	"if you want to go fast, go deep first.": "si quieres ir rápido, primero ve a fondo.",
 	"pstack README": "README de pstack",
-	"Talks and writing on pstack": "Charlas y textos sobre pstack",
-	"Her profile on X": "Su perfil en X",
-	"The real explanations live here. The last three come from articles about them, so double-check.":
-		"Las explicaciones de verdad están aquí. Las tres últimas vienen de artículos sobre ellas, así que compruébalo.",
 	"secondary source": "fuente secundaria",
-	"Where to start": "Por dónde empezar",
-	"Three ways to read this site": "Tres formas de leer este sitio",
-	"Eleven short lessons, to read in order or pick and choose.":
-		"Once lecciones cortas, para leer en orden o a la carta.",
-	"One card per situation: which playbook, which steps, which skills.":
-		"Una tarjeta por situación: qué playbook, qué pasos, qué skills.",
-	"The whole catalog to search, filter and sort, with the call graph.":
-		"Todo el catálogo para buscar, filtrar y ordenar, con el grafo de llamadas.",
-	"Unofficial guide, written with Claude by Rayane to learn pstack. pstack is the work of Lauren Tan.":
-		"Guía no oficial, escrita con Claude por Rayane para aprender pstack. pstack es obra de Lauren Tan.",
 	"Image source": "Fuente de la imagen",
 	"Enlarge image": "Ampliar la imagen",
 	"the talk on X": "la charla en X",
 	"File in the repository": "Archivo en el repositorio",
 	"At step": "En el paso",
-	"System theme": "Tema del sistema",
-	"Light theme": "Tema claro",
-	"Dark theme": "Tema oscuro",
 	"very heavy": "muy pesado",
 	"The router. It reads your request, picks the right recipe (playbook) and follows it.":
 		"El router. Lee tu petición, elige la receta adecuada (playbook) y la sigue.",
@@ -804,8 +717,6 @@ export const EN_ES: Record<string, string> = {
 	"The skill used everywhere: /verify-<app>": "El skill que se usa en todas partes: /verify-<app>",
 	"Almost every recipe ends by <b>proving</b> the work on the real app. That needs a skill that can drive your app. You create it once.":
 		"Casi todas las recetas terminan <b>demostrando</b> el trabajo en la app real. Para eso hace falta un skill capaz de manejar tu app. Lo creas una vez.",
-	"/create-verification-skill reads your repo and generates a skill for your project, plus a feature map (one file per feature).":
-		"/create-verification-skill lee tu repo y genera un skill para tu proyecto, más un feature map (un archivo por feature).",
 	"The resulting skill, for example /verify-terms-era, starts the app and clicks through it like a person.":
 		"El skill resultante, por ejemplo /verify-terms-era, arranca la app y hace clic en ella como una persona.",
 	"Bug fix, Feature, Refactoring, Prototype, Perf and Shipping call it to check their work.":
@@ -830,8 +741,8 @@ export const EN_ES: Record<string, string> = {
 	"In git history, the failing test comes before the fix. Only when a simple test exists.":
 		"En el historial de git, el test que falla va antes del arreglo. Solo cuando existe un test sencillo.",
 	"Open the PR": "Abrir la PR",
-	"The closing recipe, the same for everyone. Lesson 8 covers it.":
-		"La receta de cierre, la misma para todos. La lección 8 la explica.",
+	"The closing recipe, the same for everyone. Note 8 covers it.":
+		"La receta de cierre, la misma para todos. La nota 8 la explica.",
 	"A feature": "Una feature",
 	"Flow 2: adding a feature": "Flujo 2: añadir una feature",
 	"Here the main agent <b>owns the design</b> and delegates the coding. It acts like a tech lead.":
@@ -918,8 +829,8 @@ export const EN_ES: Record<string, string> = {
 	"Here's how I shipped 2,500 PRs last month": "Here's how I shipped 2,500 PRs last month",
 	"Video on X · ~38 min · planned for Cursor Compile London, streamed live":
 		"Vídeo en X · ~38 min · preparado para Cursor Compile London, emitido en directo",
-	"The core talk: the trust curve, the 5 correction levels, the codebase as memory, automations. This site follows it.":
-		"La charla central: la curva de confianza, los 5 niveles de corrección, el código como memoria, las automatizaciones. Este sitio la sigue.",
+	"The core talk: the trust curve, the 5 correction levels, the codebase as memory, automations. These notes follow it.":
+		"La charla central: la curva de confianza, los 5 niveles de corrección, el código como memoria, las automatizaciones. Estas notas la siguen.",
 	"pstack guide, part 1": "Guía de pstack, parte 1",
 	"Written thread on X": "Hilo escrito en X",
 	"Verification as infrastructure and the feature map as memory.":
@@ -942,8 +853,6 @@ export const EN_ES: Record<string, string> = {
 	"number of agents": "número de agentes",
 	"where you start": "donde empiezas",
 	"Trust grows with the number of agents": "La confianza crece con el número de agentes",
-	"Scroll, swipe or use the arrow keys": "Rueda, desliza o usa las flechas del teclado",
-	"Lesson: verification": "Lección: la verificación",
 	"A SKILL.md file the agent reads and follows. You call it with /name.":
 		"Un archivo SKILL.md que el agente lee y sigue. Se llama con /nombre.",
 	"A step-by-step recipe for one kind of task, opened by /poteto-mode.":
@@ -980,10 +889,6 @@ export const EN_ES: Record<string, string> = {
 	Back: "Atrás",
 	Step: "Paso",
 	Lesson: "Lección",
-	"token-heavy": "costoso en tokens",
-	Review: "Revisión",
-	Collapse: "Plegar",
-	Situation: "Situación",
 	Here: "Aquí",
 	File: "Archivo",
 	none: "ninguno",
@@ -998,7 +903,6 @@ export const EN_ES: Record<string, string> = {
 	Medium: "Medio",
 	Heavy: "Pesado",
 	Vocabulary: "Vocabulario",
-	Done: "Terminado",
 	of: "de",
 	Sources: "Fuentes",
 	Open: "Abrir",
@@ -1025,8 +929,6 @@ export const EN_ES: Record<string, string> = {
 	Agent: "Agente",
 	owner: "responsable",
 	proof: "prueba",
-	execute: "ejecutar",
-	pause: "pausa",
 	"Everything explained here was written and presented by Lauren Tan herself: her talks, her X threads and the pstack repository. This site only summarizes her work. The last three sources are articles about her, so double-check.":
 		"Todo lo que se explica aquí lo escribió y presentó la propia Lauren Tan: sus charlas, sus hilos en X y el repositorio de pstack. Este sitio solo resume su trabajo. Las tres últimas fuentes son artículos sobre ella, así que compruébalo.",
 	"The feature map": "La feature map",
@@ -1034,8 +936,161 @@ export const EN_ES: Record<string, string> = {
 		"Una feature map es el manual de tu app, escrito para el agente",
 	"To prove its work, the agent has to know where each feature of your app lives and how to reach it. That's the job of the <b>feature map</b>: a folder of Markdown files, one per feature, stored next to the verification skill.":
 		"Para demostrar su trabajo, el agente tiene que saber dónde está cada funcionalidad de tu app y cómo llegar a ella. Ese es el papel de la <b>feature map</b>: una carpeta de archivos Markdown, uno por funcionalidad, guardada junto al skill de verificación.",
-	"/create-verification-skill reads your repo and generates a verification skill for your project: a CLI that drives the app, plus a feature map (one file per feature).":
-		"/create-verification-skill lee tu repo y genera un skill de verificación para tu proyecto: un CLI que maneja la app, más una feature map (un archivo por funcionalidad).",
 	"/create-verification-skill reads your repo and generates **a verification skill** for your project, which holds **a CLI** to drive the app and **a feature map** (one file per feature).":
 		"/create-verification-skill lee tu repo y genera para tu proyecto **un skill de verificación**, que contiene **un CLI** para manejar la app y **una feature map** (un archivo por funcionalidad).",
+	"When you can't name what you're building. Gives the expert terms, with checked sources, and rewrites your description with them.":
+		"Cuando no sabes nombrar lo que construyes. Da los términos de experto, con fuentes verificadas, y reescribe tu descripción con ellos.",
+	"Start from your files and your own words": "Partir de tus archivos y tus propias palabras",
+	"Vague description? List 2 or 3 possible problems, keep the likeliest":
+		"¿Descripción vaga? Listar 2 o 3 problemas posibles, quedarse con el más probable",
+	"8 to 12 terms ranked by impact, each with a link": "8 a 12 términos ordenados por impacto, cada uno con un enlace",
+	"2 or 3 neighboring fields, and where the analogy breaks": "2 o 3 campos vecinos, y dónde se rompe la analogía",
+	"What you didn't mention": "Lo que no mencionaste",
+	"Rewrite your description with the new words": "Reescribir tu descripción con las nuevas palabras",
+	"Open every link, cut what doesn't hold up": "Abrir cada enlace, quitar lo que no se confirma",
+	"Concrete TypeScript rules for .ts and .tsx files. It does not load on its own, type /typescript-best-practices.":
+		"Reglas TypeScript concretas para archivos .ts y .tsx. No se carga solo, escribe /typescript-best-practices.",
+	first: "primero",
+	"Discriminated unions, branded types, unknown over any":
+		"Uniones discriminadas, tipos con marca, unknown en vez de any",
+	"No as, satisfies instead, exhaustive switches": "Sin as, satisfies en su lugar, switch exhaustivos",
+	"validate at boundaries": "validar en las fronteras",
+	"Build a page whose buttons wake a Grok Bot over a webhook, without the sender key reaching the browser or the chat, then expose it on Tailscale. Cursor-specific.":
+		"Construir una página cuyos botones despiertan un Grok Bot por webhook, sin que la clave de envío llegue al navegador ni al chat, y exponerla en Tailscale. Propio de Cursor.",
+	"Create the webhook routine": "Crear la rutina webhook",
+	"Ask for the sender key with a secret card, never in chat":
+		"Pedir la clave de envío con una tarjeta secreta, nunca en el chat",
+	"A local server keeps the key and POSTs to the webhook": "Un servidor local guarda la clave y hace POST al webhook",
+	"Expose the page on Tailscale": "Exponer la página en Tailscale",
+	"A page that wakes a Grok Bot through a Cursor webhook routine":
+		"Una página que despierta un Grok Bot mediante una rutina webhook de Cursor",
+	"A webhook to your own agent, or drop the skill": "Un webhook hacia tu propio agente, o quitar el skill",
+	"Describe what you want as you would to a colleague. The router restates your request, picks the playbook and follows its steps.":
+		"Describe lo que quieres como se lo dirías a un colega. El router reformula tu petición, elige el playbook y sigue sus pasos.",
+	"You want to understand without changing anything. Each block is a different question, take the one that fits.":
+		"Quieres entender sin cambiar nada. Cada bloque es una pregunta distinta, toma la que encaje.",
+	"A symptom to explain. The agent investigates and reports what it knows and its hypotheses, without touching the code.":
+		"Un síntoma que explicar. El agente investiga y devuelve lo que sabe y sus hipótesis, sin tocar el código.",
+	"How a part of the code works. Ask your question as is.":
+		"Cómo funciona una parte del código. Haz tu pregunta tal cual.",
+	"Why the code was written this way, and whether the reason still holds.":
+		"Por qué el código se escribió así, y si la razón sigue vigente.",
+	"Really understand a topic or a change, not just read a summary.":
+		"Entender de verdad un tema o un cambio, no solo leer un resumen.",
+	"On a small diff you don't fully trust. It looks for what the change could break elsewhere.":
+		"Sobre un diff pequeño del que dudas. Busca lo que el cambio podría romper en otra parte.",
+	"After a long request. The agent restates it, and you fix a misreading before it codes.":
+		"Tras una petición larga. El agente la reformula y corriges un malentendido antes de que programe.",
+	"Before sending a prompt. It makes it deeper, not bigger.":
+		"Antes de enviar un prompt. Lo hace más profundo, no más grande.",
+	"You can't name what you're building. It gives you the expert terms and rewrites your description.":
+		"No sabes nombrar lo que construyes. Te da los términos de experto y reescribe tu descripción.",
+	"The last reply was too technical. Nothing to add, the command alone is enough.":
+		"La última respuesta era demasiado técnica. Nada que añadir, basta con el comando.",
+	"Replace <symptôme> with what you observe, with a job id or an example if you have one.":
+		"Sustituye <symptôme> por lo que observas, con un id de job o un ejemplo si lo tienes.",
+	"Say what gets added and what must not change. The agent verifies both.":
+		"Di qué se añade y qué no debe cambiar. El agente verifica ambos.",
+	"The agent records the current output, restructures, then proves the output did not change.":
+		"El agente registra la salida actual, reestructura y luego demuestra que la salida no cambió.",
+	"Ask for screenshots or videos to compare the options yourself.":
+		"Pide capturas o vídeos para comparar tú mismo las opciones.",
+	"Give the measured time and the case that reproduces it. The agent shows before and after.":
+		"Da el tiempo medido y el caso que lo reproduce. El agente muestra el antes y el después.",
+	"One metric, a numeric target and a minimum number of attempts.":
+		"Una métrica, un objetivo numérico y un número mínimo de intentos.",
+	"The process is still running. The agent watches it live.":
+		"El proceso sigue en marcha. El agente lo observa en directo.",
+	"You already have a capture file (cpuprofile, trace). Attach it to your request.":
+		"Ya tienes un archivo de captura (cpuprofile, trace). Adjúntalo a tu petición.",
+	"The agent compares screenshots before and after, component by component.":
+		"El agente compara capturas antes y después, componente por componente.",
+	"You only want the plan. Nothing gets coded.": "Solo quieres el plan. No se programa nada.",
+	"You want the work done when no playbook fits. It designs its own steps and keeps a log.":
+		"Quieres el trabajo hecho cuando ningún playbook encaja. Diseña sus propios pasos y lleva un registro.",
+	"You want someone to look for flaws in your change before the PR. The three blocks run separately.":
+		"Quieres que alguien busque fallos en tu cambio antes de la PR. Los tres bloques se lanzan por separado.",
+	"Several agents try to break the change. It doesn't modify anything.":
+		"Varios agentes intentan romper el cambio. No modifica nada.",
+	"What the diff could break outside itself.": "Lo que el diff podría romper fuera de sí mismo.",
+	"Removes useless comments from the diff before review.":
+		"Quita los comentarios inútiles del diff antes de la revisión.",
+	"A PR's life, in three commands to type one after the other: open it, push it to green, merge the verified stack.":
+		"La vida de una PR, en tres comandos que se escriben uno tras otro: abrirla, llevarla a verde, mergear la pila verificada.",
+	"1. When the work is verified: the agent opens the PR with the evidence in the description.":
+		"1. Cuando el trabajo está verificado: el agente abre la PR con las pruebas en la descripción.",
+	"2. Once the PR is open: the agent watches CI and reviews until it's green.":
+		"2. Con la PR abierta: el agente vigila la CI y las revisiones hasta que esté en verde.",
+	"3. When everything is green: the agent merges the stack of verified PRs.":
+		"3. Cuando todo está en verde: el agente mergea la pila de PR verificadas.",
+	"Replace <checks> with a condition the agent can check on its own. /loop restarts it until it holds.":
+		"Sustituye <checks> por una condición que el agente pueda comprobar solo. /loop lo relanza hasta que se cumpla.",
+	"Several independent changes, handled in parallel. Pick one of the two blocks.":
+		"Varios cambios independientes, tratados en paralelo. Elige uno de los dos bloques.",
+	"All the way to merge. Each item in the queue must be independent.":
+		"Hasta el merge. Cada elemento de la cola debe ser independiente.",
+	"Up to verified, without merging. You merge yourself afterwards.":
+		"Hasta verificado, sin mergear. Luego mergeas tú.",
+	"After work done without you. Sums up the night from the decision log.":
+		"Tras un trabajo hecho sin ti. Resume la noche a partir del registro de decisiones.",
+	"In the chat that did the work. What changed since your last message.":
+		"En el chat que hizo el trabajo. Lo que cambió desde tu último mensaje.",
+	"Like /ketchup, as a short video.": "Como /ketchup, en un vídeo corto.",
+	"In a new chat. Finds where you were from your past chats, git and everything else.":
+		"En un chat nuevo. Encuentra dónde estabas a partir de tus chats anteriores, git y lo demás.",
+	"Take over a branch started by another session, without redoing finished work.":
+		"Retomar una rama empezada por otra sesión, sin rehacer lo terminado.",
+	"Stop everything cleanly to resume later.": "Pararlo todo limpiamente para retomarlo después.",
+	"Once per project. Nothing to add, it reads your repo.": "Una vez por proyecto. Nada que añadir, lee tu repo.",
+	"Every so often, when the code has moved. It brings the skill and the feature map back in line with the code.":
+		"De vez en cuando, cuando el código ha cambiado. Vuelve a alinear el skill y la feature map con el código.",
+	"Name the rule that must never break and the code that carries it.":
+		"Nombra la regla que nunca debe romperse y el código que la sostiene.",
+	"No command to type. Setup follows the automations/benny/FOR_AGENTS.md file in the pstack repository.":
+		"No hay comando que escribir. La instalación sigue el archivo automations/benny/FOR_AGENTS.md del repositorio de pstack.",
+	"Create skills, make a mistake impossible, keep lessons, configure models. Each block runs on its own.":
+		"Crear skills, hacer imposible un error, conservar las lecciones, configurar los modelos. Cada bloque se lanza solo.",
+	"You keep correcting agents for the same mistake. It makes it impossible in the code.":
+		"Corriges a los agentes por el mismo error una y otra vez. Lo hace imposible en el código.",
+	"At the end of a long session. It proposes skill edits so the same mistakes don't happen again.":
+		"Al final de una sesión larga. Propone cambios en los skills para no repetir los mismos errores.",
+	"Write a new skill for your repo.": "Escribir un skill nuevo para tu repo.",
+	"Test what a skill or prompt change does, blinded, before keeping it.":
+		"Probar a ciegas lo que hace un cambio de skill o de prompt, antes de conservarlo.",
+	"Creates or updates your own <you>-mode from your past chats.":
+		"Crea o actualiza tu propio <tú>-mode a partir de tus chats anteriores.",
+	"Pick the model and budget for each role. Run it at install time.":
+		"Elegir el modelo y el presupuesto de cada rol. Se lanza al instalar.",
+	"Free disk space without losing uncommitted work.": "Liberar disco sin perder trabajo sin commitear.",
+	"A question about pstack itself.": "Una pregunta sobre pstack en sí.",
+	"One card per situation. Open it: each block is one command to type on its own, with what it is for, then what it runs. Click a skill to read what it does.":
+		"Una ficha por situación. Ábrela: cada bloque es un comando que se escribe solo, con para qué sirve y lo que lanza. Haz clic en un skill para leer lo que hace.",
+	"What runs": "Lo que se ejecuta",
+	"Why these notes on pstack exist, how they were written, the ideas from Lauren Tan's talk, and the sources.":
+		"Por qué existen estas notas sobre pstack, cómo se escribieron, las ideas de la charla de Lauren Tan y las fuentes.",
+	'This site is my notes on <a href="https://github.com/cursor/plugins/tree/main/pstack" target="_blank" rel="noopener">pstack</a>, the skill kit <a href="https://x.com/poteto" target="_blank" rel="noopener">Lauren Tan (poteto)</a> built to ship quality code with agents. To understand pstack, I asked Claude to read its repository and her talks, then sorted what came out: notes to read in order, situations and a reference.':
+		'Este sitio son mis notas sobre <a href="https://github.com/cursor/plugins/tree/main/pstack" target="_blank" rel="noopener">pstack</a>, el kit de skills que <a href="https://x.com/poteto" target="_blank" rel="noopener">Lauren Tan (poteto)</a> creó para entregar código de calidad con agentes. Para entender pstack, le pedí a Claude que leyera su repositorio y sus charlas, y luego ordené lo que salió: notas para leer en orden, situaciones y una referencia.',
+	"All the credit goes to its author. Nothing here is made up: every item points to a file in the repository or to a source. These are only notes: when a note and the repository disagree, the repository is right.":
+		"Todo el mérito es de su autora. Aquí no se inventa nada: cada elemento remite a un archivo del repositorio o a una fuente. Son solo notas: cuando una nota y el repositorio no dicen lo mismo, el repositorio tiene razón.",
+	"What these notes hold": "Lo que contienen estas notas",
+	"{n} notes to read in order, from the pieces of pstack to work done without you.":
+		"{n} notas para leer en orden, de las piezas de pstack al trabajo hecho sin ti.",
+	"{n} situations, from a bug to a big project: the command to type and what it runs.":
+		"{n} situaciones, del bug al gran proyecto: el comando que escribir y lo que lanza.",
+	"{n} skills, playbooks, agents and principles, with the call graph.":
+		"{n} skills, playbooks, agentes y principios, con el grafo de llamadas.",
+	"What I use them for": "Para qué las uso",
+	"The author already explains a lot in her X threads and in the repository. These notes don't replace those sources: they gather them in a form I can browse.":
+		"La autora ya explica mucho en sus hilos de X y en el repositorio. Estas notas no sustituyen esas fuentes: las reúnen en una forma que puedo recorrer.",
+	"The ideas from the talk: speed comes from trust": "Las ideas de la charla: la velocidad viene de la confianza",
+	"Read the note on verification": "Leer la nota sobre la verificación",
+	"My notes on pstack, the agent skill kit": "Mis notas sobre pstack, el kit de skills para agentes",
+	"My notes and synthesis of pstack, Lauren Tan's skill kit for shipping quality code with agents: every skill, playbook and principle, and the command to type for each situation.":
+		"Mis notas y mi síntesis de pstack, el kit de skills de Lauren Tan para entregar código de calidad con agentes: cada skill, playbook y principio, y el comando que escribir en cada situación.",
+	"Search pstack": "Buscar en pstack",
+	"My notes on the skill kit Lauren Tan (poteto) built to code with agents.":
+		"Mis notas sobre el kit de skills que Lauren Tan (poteto) creó para programar con agentes.",
+	"About these notes": "Acerca de estas notas",
+	"A skill, a playbook, a situation…": "Un skill, un playbook, una situación…",
+	Note: "Nota",
 };

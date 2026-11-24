@@ -1,4 +1,7 @@
-# One card per situation. `root` is the call tree the situation starts from (same node shape as catalog steps).
+# One card per situation, made of blocks. A block is one thing you type: a catalog item (`ref`), the command to
+# type (`prompt`, one command per block), what it is for (`note`) and, when you type it through the router,
+# `via: poteto-mode`. A block without a command is a plain step (`text`, a French phrase) with its `kids`.
+# Commands come from the pstack README and docs/guide.
 - id: router
   group: start-here
   title:
@@ -7,41 +10,67 @@
   when:
      fr: Tu ne sais pas quel skill prendre. Tu tapes /poteto-mode et ta demande, il choisit pour toi.
      en: You don't know which skill to use. Type /poteto-mode and your request, it picks for you.
-  prompt: /poteto-mode <ta demande en langage normal>
-  root:
-     ref: poteto-mode
+  blocks:
+     - ref: poteto-mode
+       prompt: /poteto-mode <ta demande en langage normal>
+       note:
+          fr: Décris ce que tu veux comme à un collègue. Le routeur reformule ta demande, choisit le playbook et suit ses étapes.
+          en: Describe what you want as you would to a colleague. The router restates your request, picks the playbook and follows its steps.
 - id: understand
   group: understand
   title:
      fr: Comprendre du code
      en: Understand code
   when:
-     fr: Tu veux comprendre sans rien changer. Soit tu passes par le routeur, soit tu appelles directement le bon skill.
-     en: You want to understand without changing anything. Go through the router, or call the right skill directly.
-  prompt: |-
-     /poteto-mode investigate why <symptôme>. don't change any code yet.
-     /how <sous-système>   /why <décision>   /teach <sujet>
-  root:
-     text: Tu veux comprendre
-     kids:
-        - ref: poteto-mode
-          cond: « explique X »
-          kids:
-             - ref: investigation
-        - ref: how
-          cond: « comment ça marche »
-        - ref: why
-          cond: « pourquoi c'est comme ça »
-        - ref: teach
-          cond: « fais-moi comprendre »
-        - ref: blast-radius
-          cond: « que peut casser ce changement »
-        - ref: in-your-own-words
-          cond: « as-tu compris ma demande »
-        - ref: sharpen
-          cond: « améliore mon prompt »
-        - ref: bro
-          cond: « redis-le simplement »
+     fr: Tu veux comprendre sans rien changer. Chaque bloc est une question différente, prends celui qui colle.
+     en: You want to understand without changing anything. Each block is a different question, take the one that fits.
+  blocks:
+     - ref: investigation
+       via: poteto-mode
+       prompt: /poteto-mode investigate why <symptôme>. don't change any code yet.
+       note:
+          fr: Un symptôme à expliquer. L'agent enquête et rend ce qu'il sait et ses hypothèses, sans toucher au code.
+          en: A symptom to explain. The agent investigates and reports what it knows and its hypotheses, without touching the code.
+     - ref: how
+       prompt: /how <question sur un sous-système>
+       note:
+          fr: Comment une partie du code marche. Pose ta question telle quelle.
+          en: How a part of the code works. Ask your question as is.
+     - ref: why
+       prompt: /why <décision>
+       note:
+          fr: Pourquoi le code a été écrit comme ça, et si la raison tient encore.
+          en: Why the code was written this way, and whether the reason still holds.
+     - ref: teach
+       prompt: /teach me <sujet>
+       note:
+          fr: Vraiment comprendre un sujet ou un changement, pas seulement en lire un résumé.
+          en: Really understand a topic or a change, not just read a summary.
+     - ref: blast-radius
+       prompt: /blast-radius
+       note:
+          fr: Sur un petit diff dont tu doutes. Il cherche ce que le changement peut casser ailleurs.
+          en: On a small diff you don't fully trust. It looks for what the change could break elsewhere.
+     - ref: in-your-own-words
+       prompt: /in-your-own-words
+       note:
+          fr: Après une longue demande. L'agent la reformule, et tu corriges un malentendu avant qu'il code.
+          en: After a long request. The agent restates it, and you fix a misreading before it codes.
+     - ref: sharpen
+       prompt: /sharpen <ton prompt>
+       note:
+          fr: Avant d'envoyer un prompt. Il le rend plus profond, pas plus gros.
+          en: Before sending a prompt. It makes it deeper, not bigger.
+     - ref: reframe
+       prompt: /reframe <ta description>
+       note:
+          fr: Tu n'arrives pas à nommer ce que tu construis. Il te donne les termes d'expert et réécrit ta description.
+          en: You can't name what you're building. It gives you the expert terms and rewrites your description.
+     - ref: bro
+       prompt: /bro
+       note:
+          fr: La dernière réponse était trop technique. Rien à ajouter, la commande seule suffit.
+          en: The last reply was too technical. Nothing to add, the command alone is enough.
 - id: bug
   group: build
   title:
@@ -50,11 +79,13 @@
   when:
      fr: Un comportement est faux. On reproduit d'abord, on fixe ensuite, on prouve sur la même surface.
      en: Something behaves wrong. Reproduce first, fix next, prove on the same surface.
-  prompt: /poteto-mode <symptôme>. repro first, then fix and verify.
-  root:
-     ref: poteto-mode
-     kids:
-        - ref: bug-fix
+  blocks:
+     - ref: bug-fix
+       via: poteto-mode
+       prompt: /poteto-mode <symptôme>. repro first, then fix and verify.
+       note:
+          fr: Remplace <symptôme> par ce que tu observes, avec un id de job ou un exemple si tu en as un.
+          en: Replace <symptôme> with what you observe, with a job id or an example if you have one.
 - id: feature
   group: build
   title:
@@ -63,11 +94,13 @@
   when:
      fr: Tu ajoutes un comportement. Tu gardes le design, un subagent écrit le code.
      en: You add a behavior. You keep the design, a subagent writes the code.
-  prompt: /poteto-mode add <comportement>. <sortie actuelle> stays byte-identical. verify both.
-  root:
-     ref: poteto-mode
-     kids:
-        - ref: feature
+  blocks:
+     - ref: feature
+       via: poteto-mode
+       prompt: /poteto-mode add <comportement>. <sortie actuelle> stays byte-identical. verify both.
+       note:
+          fr: Dis ce qui s'ajoute et ce qui ne doit pas bouger. L'agent vérifie les deux.
+          en: Say what gets added and what must not change. The agent verifies both.
 - id: refacto
   group: build
   title:
@@ -76,11 +109,13 @@
   when:
      fr: La structure change, le comportement non. Si c'est gros ou transverse, ça part en figure-it-out.
      en: The structure changes, the behavior doesn't. If it's big or cross-cutting, it goes to figure-it-out.
-  prompt: /poteto-mode move <code> into one module, zero behavior change.
-  root:
-     ref: poteto-mode
-     kids:
-        - ref: refactoring
+  blocks:
+     - ref: refactoring
+       via: poteto-mode
+       prompt: /poteto-mode move <code> into one module, zero behavior change.
+       note:
+          fr: L'agent enregistre la sortie actuelle, restructure, puis prouve que la sortie n'a pas changé.
+          en: The agent records the current output, restructures, then proves the output did not change.
 - id: proto
   group: build
   title:
@@ -89,11 +124,13 @@
   when:
      fr: Plusieurs options possibles. On construit du jetable pour comparer. poteto-mode y va aussi tout seul quand un test peut trancher.
      en: Several options. Build throwaway code to compare. poteto-mode also goes there on its own when a test can settle it.
-  prompt: /poteto-mode prototype a few options for <feature>.
-  root:
-     ref: poteto-mode
-     kids:
-        - ref: prototype
+  blocks:
+     - ref: prototype
+       via: poteto-mode
+       prompt: /poteto-mode prototype a few options for <feature>.
+       note:
+          fr: Demande des captures ou des vidéos pour comparer les options toi-même.
+          en: Ask for screenshots or videos to compare the options yourself.
 - id: perf
   group: build
   title:
@@ -102,11 +139,13 @@
   when:
      fr: Une lenteur ponctuelle à corriger, mesurée avant et après.
      en: A one-off slowness to fix, measured before and after.
-  prompt: /poteto-mode <opération> takes <temps> on <cas>. trace it, fix the measured cause.
-  root:
-     ref: poteto-mode
-     kids:
-        - ref: perf-issue
+  blocks:
+     - ref: perf-issue
+       via: poteto-mode
+       prompt: /poteto-mode <opération> takes <temps> on <cas>. trace it, fix the measured cause.
+       note:
+          fr: Donne le temps mesuré et le cas qui le reproduit. L'agent montre l'avant et l'après.
+          en: Give the measured time and the case that reproduces it. The agent shows before and after.
 - id: hill
   group: build
   title:
@@ -115,11 +154,13 @@
   when:
      fr: Tu veux faire baisser (ou monter) une métrique jusqu'à une cible, essai par essai.
      en: You want to push a metric to a target, attempt by attempt.
-  prompt: /poteto-mode hillclimb <métrique> to <cible>. at least 10 iterations.
-  root:
-     ref: poteto-mode
-     kids:
-        - ref: hillclimb
+  blocks:
+     - ref: hillclimb
+       via: poteto-mode
+       prompt: /poteto-mode hillclimb <métrique> to <cible>. at least 10 iterations.
+       note:
+          fr: Une métrique, une cible chiffrée et un nombre minimum d'essais.
+          en: One metric, a numeric target and a minimum number of attempts.
 - id: forensics
   group: build
   title:
@@ -128,12 +169,19 @@
   when:
      fr: Un processus déraille (CPU, mémoire) ou tu as déjà un fichier de capture. Livre un diagnostic, puis rend la main.
      en: A process misbehaves (CPU, memory) or you already have a capture file. Delivers a diagnosis, then hands back.
-  prompt: /poteto-mode the app spins at 100% CPU after <action>. find why, no fix yet.
-  root:
-     ref: poteto-mode
-     kids:
-        - ref: runtime-forensics
-        - ref: trace-forensics
+  blocks:
+     - ref: runtime-forensics
+       via: poteto-mode
+       prompt: /poteto-mode the app spins at 100% CPU after <action>. find why, no fix yet.
+       note:
+          fr: Le processus tourne encore. L'agent l'observe en direct.
+          en: The process is still running. The agent watches it live.
+     - ref: trace-forensics
+       via: poteto-mode
+       prompt: /poteto-mode here's a cpuprofile from <cas>. tell me where the time goes. no fix yet.
+       note:
+          fr: Tu as déjà un fichier de capture (cpuprofile, trace). Joins-le à ta demande.
+          en: You already have a capture file (cpuprofile, trace). Attach it to your request.
 - id: parity
   group: build
   title:
@@ -142,11 +190,13 @@
   when:
      fr: Tu changes l'implémentation de composants, l'apparence doit rester identique.
      en: You change how components are built, the look must stay identical.
-  prompt: /poteto-mode migrate <composants> to <cible>. pixel-identical.
-  root:
-     ref: poteto-mode
-     kids:
-        - ref: visual-parity
+  blocks:
+     - ref: visual-parity
+       via: poteto-mode
+       prompt: /poteto-mode migrate <composants> to <cible>. pixel-identical.
+       note:
+          fr: L'agent compare des captures avant et après, composant par composant.
+          en: The agent compares screenshots before and after, component by component.
 - id: big
   group: build
   title:
@@ -155,54 +205,69 @@
   when:
      fr: Soit tu veux seulement un plan de PR, soit tu veux l'exécuter alors qu'aucun playbook ne colle.
      en: Either you only want a PR plan, or you want to run it when no playbook fits.
-  prompt: |-
-     /poteto-mode turn this design into a plan. small verifiable PRs.
-     /figure-it-out <gros chantier>
-  root:
-     text: Gros chantier
-     kids:
-        - ref: poteto-mode
-          cond: plan seul
-          kids:
-             - ref: multi-phase-plan
-        - ref: figure-it-out
-          cond: exécuter
+  blocks:
+     - ref: multi-phase-plan
+       via: poteto-mode
+       prompt: /poteto-mode turn this design into a plan. small verifiable PRs.
+       note:
+          fr: Tu veux seulement le plan. Rien n'est codé.
+          en: You only want the plan. Nothing gets coded.
+     - ref: figure-it-out
+       prompt: /figure-it-out <gros chantier>
+       note:
+          fr: Tu veux que le chantier soit fait alors qu'aucun playbook ne colle. Il conçoit ses étapes et tient un journal.
+          en: You want the work done when no playbook fits. It designs its own steps and keeps a log.
 - id: review
   group: ship
   title:
      fr: Challenger avant de livrer
      en: Challenge before shipping
   when:
-     fr: Tu veux qu'on cherche les failles de ton changement avant la PR.
-     en: You want someone to look for flaws in your change before the PR.
-  prompt: /interrogate the whole branch, skeptically. don't change anything yet.
-  root:
-     text: Avant de livrer
-     kids:
-        - ref: interrogate
-          cond: casser le changement
-        - ref: blast-radius
-          cond: ce qui casse ailleurs
-        - ref: no-comments
-          cond: nettoyer les commentaires
+     fr: Tu veux qu'on cherche les failles de ton changement avant la PR. Les trois blocs se lancent séparément.
+     en: You want someone to look for flaws in your change before the PR. The three blocks run separately.
+  blocks:
+     - ref: interrogate
+       prompt: /interrogate the whole branch, skeptically. don't change anything yet.
+       note:
+          fr: Plusieurs agents cherchent à casser le changement. Il ne modifie rien.
+          en: Several agents try to break the change. It doesn't modify anything.
+     - ref: blast-radius
+       prompt: /blast-radius
+       note:
+          fr: Ce que le diff peut casser en dehors de lui-même.
+          en: What the diff could break outside itself.
+     - ref: no-comments
+       prompt: /no-comments the diff
+       note:
+          fr: Retire les commentaires inutiles du diff avant la review.
+          en: Removes useless comments from the diff before review.
 - id: pr
   group: ship
   title:
      fr: Ouvrir, suivre, merger
      en: Open, watch, merge
   when:
-     fr: "La vie d'une PR : on l'ouvre, on la pousse au vert, on merge la stack vérifiée."
-     en: "A PR's life: open it, push it to green, merge the verified stack."
-  prompt: |-
-     /poteto-mode open the pr.
-     /poteto-mode babysit this pr. get it green.
-     /poteto-mode land the stack.
-  root:
-     ref: poteto-mode
-     kids:
-        - ref: opening-a-pr
-        - ref: babysit
-        - ref: shipping
+     fr: "La vie d'une PR, en trois commandes à taper l'une après l'autre : on l'ouvre, on la pousse au vert, on merge la stack vérifiée."
+     en: "A PR's life, in three commands to type one after the other: open it, push it to green, merge the verified stack."
+  blocks:
+     - ref: opening-a-pr
+       via: poteto-mode
+       prompt: /poteto-mode open the pr.
+       note:
+          fr: "1. Quand le travail est vérifié : l'agent ouvre la PR avec les preuves dans la description."
+          en: "1. When the work is verified: the agent opens the PR with the evidence in the description."
+     - ref: babysit
+       via: poteto-mode
+       prompt: /poteto-mode babysit this pr. get it green.
+       note:
+          fr: "2. Une fois la PR ouverte : l'agent suit la CI et les reviews jusqu'au vert."
+          en: "2. Once the PR is open: the agent watches CI and reviews until it's green."
+     - ref: shipping
+       via: poteto-mode
+       prompt: /poteto-mode land the stack.
+       note:
+          fr: "3. Quand tout est vert : l'agent merge la stack de PR vérifiées."
+          en: "3. When everything is green: the agent merges the stack of verified PRs."
 - id: night
   group: without-you
   title:
@@ -211,27 +276,34 @@
   when:
      fr: Tu pars. L'agent continue jusqu'à une condition de fin vérifiable.
      en: You leave. The agent keeps going until a checkable stop condition.
-  prompt: /poteto-mode im going to bed. <but>. done means <checks>. keep a decision log. /loop until done.
-  root:
-     ref: poteto-mode
-     kids:
-        - ref: autonomous-run
+  blocks:
+     - ref: autonomous-run
+       via: poteto-mode
+       prompt: /poteto-mode im going to bed. <but>. done means <checks>. keep a decision log. /loop until done.
+       note:
+          fr: Remplace <checks> par une condition que l'agent peut vérifier seul. /loop le relance jusqu'à ce qu'elle soit vraie.
+          en: Replace <checks> with a condition the agent can check on its own. /loop restarts it until it holds.
 - id: autopilot
   group: without-you
   title:
      fr: Une file de PR en autopilote
      en: A PR queue on autopilot
   when:
-     fr: Plusieurs changements indépendants, traités en parallèle jusqu'au merge (ou jusqu'à vérifié).
-     en: Several independent changes, handled in parallel until merge (or until verified).
-  prompt: |-
-     /poteto-mode full autopilot on this queue.
-     /poteto-mode autopilot these changes, but don't merge.
-  root:
-     ref: poteto-mode
-     kids:
-        - ref: autopilot-full
-        - ref: autopilot-stack
+     fr: Plusieurs changements indépendants, traités en parallèle. Choisis un des deux blocs.
+     en: Several independent changes, handled in parallel. Pick one of the two blocks.
+  blocks:
+     - ref: autopilot-full
+       via: poteto-mode
+       prompt: /poteto-mode full autopilot on this queue.
+       note:
+          fr: Jusqu'au merge. Chaque élément de la file doit être indépendant.
+          en: All the way to merge. Each item in the queue must be independent.
+     - ref: autopilot-stack
+       via: poteto-mode
+       prompt: /poteto-mode autopilot these changes, but don't merge.
+       note:
+          fr: Jusqu'à vérifié, sans merger. Tu merges toi-même ensuite.
+          en: Up to verified, without merging. You merge yourself afterwards.
 - id: back
   group: without-you
   title:
@@ -240,27 +312,39 @@
   when:
      fr: Tu reviens et tu veux savoir où on en est, ou reprendre une session, ou tout mettre en pause.
      en: You're back and want to know where things stand, resume a session, or pause everything.
-  prompt: |-
-     /show-me-your-work catch me up on what you did last night.
-     /ketchup   /recall my work on <sujet>
-  root:
-     text: Tu reviens
-     kids:
-        - ref: show-me-your-work
-          cond: « résume la nuit »
-        - ref: ketchup
-          cond: « qu'est-ce qui a changé »
-        - ref: ketchup-video
-        - ref: recall
-          cond: « où j'en étais »
-        - ref: poteto-mode
-          cond: reprendre une session
-          kids:
-             - ref: session-pickup
-        - ref: poteto-mode
-          cond: faire pause
-          kids:
-             - ref: pause-safely
+  blocks:
+     - ref: show-me-your-work
+       prompt: /show-me-your-work catch me up on what you did last night
+       note:
+          fr: Après un travail sans toi. Résume la nuit à partir du journal de décisions.
+          en: After work done without you. Sums up the night from the decision log.
+     - ref: ketchup
+       prompt: /ketchup
+       note:
+          fr: Dans le chat qui a fait le travail. Ce qui a changé depuis ton dernier message.
+          en: In the chat that did the work. What changed since your last message.
+     - ref: ketchup-video
+       prompt: /ketchup-video
+       note:
+          fr: Comme /ketchup, en petite vidéo.
+          en: Like /ketchup, as a short video.
+     - ref: recall
+       prompt: /recall my work on <sujet>
+       note:
+          fr: Dans un nouveau chat. Retrouve où tu en étais à partir de tes anciens chats, de git et du reste.
+          en: In a new chat. Finds where you were from your past chats, git and everything else.
+     - ref: session-pickup
+       via: poteto-mode
+       prompt: /poteto-mode take over this branch. read the decision log, figure out what's done, and continue from there.
+       note:
+          fr: Reprendre une branche commencée par une autre session, sans refaire ce qui est fini.
+          en: Take over a branch started by another session, without redoing finished work.
+     - ref: pause-safely
+       via: poteto-mode
+       prompt: /poteto-mode pause. i'm about to go offline.
+       note:
+          fr: Tout arrêter proprement pour reprendre plus tard.
+          en: Stop everything cleanly to resume later.
 - id: verif
   group: system
   title:
@@ -269,24 +353,28 @@
   when:
      fr: Une fois par projet (ex. terms-era). Le skill produit est ensuite utilisé par presque tous les playbooks.
      en: Once per project (e.g. terms-era). The resulting skill is then used by almost every playbook.
-  prompt: |-
-     /create-verification-skill
-     /maintain-verification-skill
-  root:
-     text: Une fois par projet
-     kids:
-        - ref: create-verification-skill
-        - text: Ensuite /verify-<app> sert à
-          kids:
-             - ref: bug-fix
-             - ref: feature
-             - ref: refactoring
-             - ref: prototype
-             - ref: perf-issue
-             - ref: visual-parity
-             - ref: shipping
-             - ref: autopilot-full
-             - ref: reproduce-and-fix-issues
+  blocks:
+     - ref: create-verification-skill
+       prompt: /create-verification-skill
+       note:
+          fr: Une fois par projet. Rien à ajouter, il lit ton repo.
+          en: Once per project. Nothing to add, it reads your repo.
+     - ref: maintain-verification-skill
+       prompt: /maintain-verification-skill
+       note:
+          fr: De temps en temps, quand le code a bougé. Il remet le skill et la feature map d'accord avec le code.
+          en: Every so often, when the code has moved. It brings the skill and the feature map back in line with the code.
+     - text: Ensuite /verify-<app> sert à
+       kids:
+          - ref: bug-fix
+          - ref: feature
+          - ref: refactoring
+          - ref: prototype
+          - ref: perf-issue
+          - ref: visual-parity
+          - ref: shipping
+          - ref: autopilot-full
+          - ref: reproduce-and-fix-issues
 - id: formal
   group: system
   title:
@@ -295,9 +383,12 @@
   when:
      fr: Une race condition ou une règle qui ne doit jamais casser. On la prouve formellement.
      en: A race condition or a rule that must never break. Prove it formally.
-  prompt: /create-formal-verification-skill prove <propriété> holds in <module>.
-  root:
-     ref: create-formal-verification-skill
+  blocks:
+     - ref: create-formal-verification-skill
+       prompt: /create-formal-verification-skill prove <propriété> holds in <module>.
+       note:
+          fr: Nomme la règle qui ne doit jamais casser et le code qui la porte.
+          en: Name the rule that must never break and the code that carries it.
 - id: benny
   group: system
   title:
@@ -306,40 +397,60 @@
   when:
      fr: "Automatisations Cursor (pas des slash skills) : chaque rapport Slack est trié, puis reproduit et corrigé."
      en: "Cursor automations (not slash skills): each Slack report is triaged, then reproduced and fixed."
-  prompt: (installation via automations/benny/FOR_AGENTS.md)
-  root:
-     ref: setup-benny
+  blocks:
+     - ref: setup-benny
+       note:
+          fr: Pas de commande à taper. L'installation suit le fichier automations/benny/FOR_AGENTS.md du dépôt pstack.
+          en: No command to type. Setup follows the automations/benny/FOR_AGENTS.md file in the pstack repository.
 - id: meta
   group: system
   title:
      fr: Améliorer le système
      en: Improve the system
   when:
-     fr: Créer des skills, rendre une erreur impossible, retenir les leçons, configurer les modèles.
-     en: Create skills, make a mistake impossible, keep lessons, configure models.
-  prompt: /correct   /reflect   /automate-me   /setup-pstack
-  root:
-     text: Améliorer le système
-     kids:
-        - ref: poteto-mode
-          cond: créer un skill
-          kids:
-             - ref: authoring-a-skill
-        - ref: correct
-          cond: erreur répétée
-        - ref: reflect
-          cond: fin de session
-        - ref: automate-me
-          cond: ton <toi>-mode
-        - ref: setup-pstack
-          cond: modèles par rôle
-        - ref: poteto-mode
-          cond: tester une variante
-          kids:
-             - ref: eval
-        - ref: poteto-help
-          cond: besoin d'aide
-        - ref: poteto-mode
-          cond: libérer du disque
-          kids:
-             - ref: worktree-cleanup
+     fr: Créer des skills, rendre une erreur impossible, retenir les leçons, configurer les modèles. Chaque bloc se lance seul.
+     en: Create skills, make a mistake impossible, keep lessons, configure models. Each block runs on its own.
+  blocks:
+     - ref: correct
+       prompt: /correct <erreur que les agents répètent>
+       note:
+          fr: Tu corriges les agents pour la même erreur. Il la rend impossible dans le code.
+          en: You keep correcting agents for the same mistake. It makes it impossible in the code.
+     - ref: reflect
+       prompt: /reflect
+       note:
+          fr: En fin de longue session. Il propose des édits de skills pour ne pas refaire les mêmes erreurs.
+          en: At the end of a long session. It proposes skill edits so the same mistakes don't happen again.
+     - ref: authoring-a-skill
+       via: poteto-mode
+       prompt: /poteto-mode write a skill for <tâche>
+       note:
+          fr: Écrire un nouveau skill pour ton repo.
+          en: Write a new skill for your repo.
+     - ref: eval
+       via: poteto-mode
+       prompt: /poteto-mode run the eval playbook on this skill change.
+       note:
+          fr: Tester l'effet d'un changement de skill ou de prompt, à l'aveugle, avant de le garder.
+          en: Test what a skill or prompt change does, blinded, before keeping it.
+     - ref: automate-me
+       prompt: /automate-me
+       note:
+          fr: Crée ou met à jour ton propre <toi>-mode à partir de tes anciens chats.
+          en: Creates or updates your own <you>-mode from your past chats.
+     - ref: setup-pstack
+       prompt: /setup-pstack
+       note:
+          fr: Choisir le modèle et le budget de chaque rôle. À lancer à l'installation.
+          en: Pick the model and budget for each role. Run it at install time.
+     - ref: worktree-cleanup
+       via: poteto-mode
+       prompt: /poteto-mode what's eating my disk? prune the worktrees that are safe to prune.
+       note:
+          fr: Libérer du disque sans perdre de travail non commité.
+          en: Free disk space without losing uncommitted work.
+     - ref: poteto-help
+       prompt: /poteto-help <ta question sur pstack>
+       note:
+          fr: Une question sur pstack lui-même.
+          en: A question about pstack itself.

@@ -1,8 +1,8 @@
 # pstack notes
 
-Unofficial guide to learn [pstack](https://github.com/cursor/plugins/tree/main/pstack), Lauren Tan's skill kit
-for shipping quality code with agents: lessons, one card per situation, and a catalog of every skill with the
-graph of what calls what.
+My notes and synthesis of [pstack](https://github.com/cursor/plugins/tree/main/pstack), Lauren Tan's skill kit
+for shipping quality code with agents: notes to read in order, one card per situation, and a catalog of every skill
+with the graph of what calls what. The home page searches all of it.
 
 ## Getting started
 
@@ -34,7 +34,7 @@ Static [Astro](https://astro.build) site. The code lives in `src/`:
 
 - `pages/`: the routes;
 - `components/`: shared components;
-- `modules/`: one feature per folder (home, lessons, use cases, reference, item details);
+- `modules/`: one feature per folder (home search, about, getting started notes, use cases, reference, item details);
 - `services/`: access to external tools (data, translations, SEO, graph);
 - `helpers/`: logic with no external tool;
 - `types/`: shared types;

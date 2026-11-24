@@ -1,10 +1,15 @@
 ---
-/** A situation: collapsed it shows title, cost and when to use it; open it shows the prompt and each recipe's steps. */
+/**
+ * A situation: collapsed it shows title, cost and when to use it. Open it shows one block per thing you can type:
+ * the command, what it is for, then what runs.
+ */
 import CostBar from "../../../components/atoms/CostBar.astro";
+import Icon from "../../../components/atoms/Icon.astro";
 import KindTag from "../../../components/atoms/KindTag.astro";
 import CopyIcon from "../../../components/atoms/CopyIcon.astro";
 import CaseStep from "./CaseStep.astro";
 import { sharedMessages } from "../../../services/i18n/messages";
+import { useCasesMessages } from "../messages";
 import type { Lang } from "../../../types/i18n";
 import type { UseCase } from "../../../types/content";
 
@@ -14,12 +19,12 @@ interface Props {
 }
 const { useCase: u, lang } = Astro.props;
 const m = sharedMessages(lang);
-const via = (v?: string, cond?: string) => [v ? `via ${v}` : "", cond ?? ""].filter(Boolean).join(" · ");
+const uc = useCasesMessages(lang);
 ---
 
 <details class="case" id={`case-${u.id}`} data-case={u.id}>
 	<summary>
-		<span class="chev">▶</span>
+		<Icon name="chevron" class="chev" width={2.2} />
 		<span class="ct">{u.title}</span>
 		<span class="cc">
 			<CostBar cost={u.cost} lang={lang} /> {m.costLabels[u.cost]}
@@ -27,44 +32,45 @@ const via = (v?: string, cond?: string) => [v ? `via ${v}` : "", cond ?? ""].fil
 		<span class="cw">{u.when}</span>
 	</summary>
 	<div class="cbody">
-		{u.prompt && (
-			<div class="try">
-				<div class="lab">{m.typeThis}</div>
-				<pre class="copyable" role="button" tabindex="0" title={m.copy.copy}>{u.prompt}<CopyIcon /></pre>
-			</div>
-		)}
-		{u.units.map((unit) =>
-			unit.item ? (
-				<div class="unit">
-					<div class="uhead">
-						<span class="ic" style={`--kind: var(${unit.item.color})`}></span>
-						<span class="un">{unit.item.label}</span>
-						<KindTag kind={unit.item.kind} lang={lang} />
-						<CostBar cost={unit.item.cost} lang={lang} />
-						{via(unit.via, unit.cond) && <span class="via">{via(unit.via, unit.cond)}</span>}
-					</div>
-					<p class="ud">{unit.item.desc}</p>
-					{unit.steps.length > 0 && (
-						<ol class="steps">
-							{unit.steps.map((s) => (
-								<CaseStep node={s} lang={lang} />
-							))}
-						</ol>
+		{u.blocks.map((b) => (
+			<section class="block">
+				<div class="uhead">
+					{b.item ? (
+						<>
+							<span class="ic" style={`--kind: var(${b.item.color})`}></span>
+							<span class="un">{b.item.label}</span>
+							<KindTag kind={b.item.kind} lang={lang} />
+							<CostBar cost={b.item.cost} lang={lang} />
+							{b.via && <span class="via">via /{b.via}</span>}
+						</>
+					) : (
+						<>
+							<span class="ic step"></span>
+							<span class="un step">{b.text}</span>
+						</>
 					)}
 				</div>
-			) : (
-				<div class="unit">
-					<div class="uhead">
-						<span class="ic step"></span>
-						<span class="un step">{unit.text}</span>
+				{b.prompt && (
+					<div class="try">
+						<div class="lab">{m.typeThis}</div>
+						<pre class="copyable" role="button" tabindex="0" title={m.copy.copy}>{b.prompt}<CopyIcon /></pre>
 					</div>
-					<ol class="steps">
-						{unit.steps.map((s) => (
-							<CaseStep node={s} lang={lang} />
-						))}
-					</ol>
-				</div>
-			),
-		)}
+				)}
+				{b.note && <p class="unote">{b.note}</p>}
+				{(b.item !== undefined || b.steps.length > 0) && (
+					<div class="runs">
+						<div class="lab">{uc.whatRuns}</div>
+						{b.item && <p class="ud">{b.item.desc}</p>}
+						{b.steps.length > 0 && (
+							<ol class="steps">
+								{b.steps.map((s) => (
+									<CaseStep node={s} lang={lang} />
+								))}
+							</ol>
+						)}
+					</div>
+				)}
+			</section>
+		))}
 	</div>
 </details>

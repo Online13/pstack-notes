@@ -197,8 +197,8 @@
           fr: Ouvrir la PR
           en: Open the PR
        desc:
-          fr: La recette de fin, la même pour tout le monde. On la voit en détail à la leçon 8.
-          en: The closing recipe, the same for everyone. Lesson 8 covers it.
+          fr: La recette de fin, la même pour tout le monde. On la voit en détail dans la note 8.
+          en: The closing recipe, the same for everyone. Note 8 covers it.
        chips:
           - opening-a-pr
   prompt: /poteto-mode <symptom>. repro first, then fix and verify.

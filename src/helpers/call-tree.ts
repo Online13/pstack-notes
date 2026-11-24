@@ -44,29 +44,15 @@ export function firstSteps(steps: TreeNode[]): Map<string, StepRef> {
 	return found;
 }
 
-const ROUTER = "poteto-mode";
-
-/** The blocks a use case card shows: the root's children, unwrapping the router when the case goes through it. */
-export function caseUnits(root: TreeNode): { node: TreeNode; via?: string; cond?: string }[] {
-	if (root.ref)
-		return root.kids
-			? root.kids.map((node) => ({ node, via: root.ref === ROUTER ? `/${ROUTER}` : undefined }))
-			: [{ node: root }];
-	return (root.kids ?? []).map((k) => {
-		const first = k.ref === ROUTER ? k.kids?.[0] : undefined;
-		return first ? { node: first, via: `/${ROUTER}`, cond: k.cond } : { node: k, cond: k.cond };
-	});
-}
-
 /** Every item a use case can reach: its blocks, their own trees, and their children. */
-export function reachableFromCase(root: TreeNode, trees: Trees): Set<string> {
+export function reachableFromBlocks(blocks: TreeNode[], trees: Trees): Set<string> {
 	const ids = new Set<string>();
-	caseUnits(root).forEach(({ node }) => {
-		if (node.ref) {
-			ids.add(node.ref);
-			refsIn(trees.get(node.ref), ids);
+	blocks.forEach((block) => {
+		if (block.ref) {
+			ids.add(block.ref);
+			refsIn(trees.get(block.ref), ids);
 		}
-		refsIn(node.kids, ids);
+		refsIn(block.kids, ids);
 	});
 	return ids;
 }

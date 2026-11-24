@@ -1,7 +1,7 @@
 {
 	"name": "pstack notes",
 	"short_name": "pstack notes",
-	"description": "Unofficial guide to pstack, the skill kit for shipping quality code with agents.",
+	"description": "My notes and synthesis of pstack, the skill kit for shipping quality code with agents.",
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#ffffff",

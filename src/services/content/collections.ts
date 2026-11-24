@@ -65,9 +65,22 @@ const useCaseGroups = defineCollection({
 	schema: z.object({ order, name: text }),
 });
 
+/** A use case block: a catalog item with the one command to type, or a plain step with its children. */
+const caseBlock = z
+	.object({
+		ref: z.string().optional(),
+		text: z.string().optional(),
+		/** The router the command goes through, e.g. "poteto-mode". */
+		via: z.string().optional(),
+		prompt: z.string().optional(),
+		note: text.optional(),
+		kids: z.array(node).optional(),
+	})
+	.refine((b) => (b.ref === undefined) !== (b.text === undefined), "a block has either `ref` or `text`");
+
 const useCases = defineCollection({
 	loader: orderedList("use-cases.yaml"),
-	schema: z.object({ order, group: z.string(), title: text, when: text, prompt: z.string().optional(), root: node }),
+	schema: z.object({ order, group: z.string(), title: text, when: text, blocks: z.array(caseBlock).min(1) }),
 });
 
 const lessonItem = z.object({ title: text, desc: text, chips: z.array(z.string()).optional() });

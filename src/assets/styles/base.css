@@ -50,11 +50,9 @@ td {
 th {
 	position: sticky;
 	top: 0;
-	font: 600 0.78rem/1.5 var(--f-body);
-	letter-spacing: 0.07em;
-	text-transform: uppercase;
+	font: 500 0.85rem/1.5 var(--f-body);
 	color: var(--muted);
-	background: var(--card);
+	background: var(--bg);
 }
 @media (max-width: 760px) {
 	th,

@@ -4,6 +4,8 @@
 	--page: 1180px;
 	--gutter-l: calc(8px + max(20px, env(safe-area-inset-left, 0px)));
 	--gutter-r: calc(8px + max(20px, env(safe-area-inset-right, 0px)));
+	/* header height (layout.css), so a page can fill the screen under it */
+	--header-h: 67px;
 	--bg: #ffffff;
 	--card: #ffffff;
 	--ink: #0f1419;
@@ -11,6 +13,9 @@
 	--line: #eff3f4;
 	--line-strong: #cfd9de;
 	--ghost: #f7f9f9;
+	/* wells: flat grey fields that hold content instead of bordered cards; -2 for hover and nested fields */
+	--well: #f3f4f5;
+	--well-2: #e9ebed;
 	--accent: #1d9bf0;
 	--accent-soft: #e8f5fd;
 	--heavy: #f4212e;
@@ -20,6 +25,11 @@
 	--k-pb-soft: #e8f5fd;
 	--k-sk: #00a36c;
 	--k-sk-soft: #e3f6ef;
+	/* chip text on the soft tints: darker than the kind color in light, the kind color itself in dark */
+	--k-sk-ink: #00704b;
+	--k-pb-ink: #0a69a8;
+	--k-ag-ink: #c0105f;
+	--heavy-ink: #c0111d;
 	--k-pr: #7856ff;
 	--k-ag: #f91880;
 	--k-loc: #00a36c;
@@ -46,11 +56,17 @@
 		--line: #2f3336;
 		--line-strong: #3e4144;
 		--ghost: #1d1f23;
+		--well: #121316;
+		--well-2: #1d1f23;
 		--accent-soft: #0b2133;
 		--heavy-soft: #2a1216;
 		--k-pb-soft: #0b2133;
 		--k-sk: #00ba7c;
 		--k-sk-soft: #062a1e;
+		--k-sk-ink: var(--k-sk);
+		--k-pb-ink: var(--k-pb);
+		--k-ag-ink: var(--k-ag);
+		--heavy-ink: var(--heavy);
 		--k-pr: #8b71ff;
 		--k-loc: #00ba7c;
 		--k-bn: #c08a5e;
@@ -67,11 +83,17 @@
 	--line: #2f3336;
 	--line-strong: #3e4144;
 	--ghost: #1d1f23;
+	--well: #121316;
+	--well-2: #1d1f23;
 	--accent-soft: #0b2133;
 	--heavy-soft: #2a1216;
 	--k-pb-soft: #0b2133;
 	--k-sk: #00ba7c;
 	--k-sk-soft: #062a1e;
+	--k-sk-ink: var(--k-sk);
+	--k-pb-ink: var(--k-pb);
+	--k-ag-ink: var(--k-ag);
+	--heavy-ink: var(--heavy);
 	--k-pr: #8b71ff;
 	--k-loc: #00ba7c;
 	--k-bn: #c08a5e;
